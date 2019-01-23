@@ -35,8 +35,11 @@ Route::post('/dashboard/data/buy', 'DataController@store')->name('data.buy')->mi
 //'DataController@index')->name('data.buy')->middleware('auth);
 
 //Airtime
-Route::get('dashboard/airtime/cash', 'AirtimeController@cash')->name('airtime.toCash')->middleware('auth');
-Route::post('dashboard/airtime/cash', 'AirtimeController@airtime2cash')->name('airtime.toCash')->middleware('auth');
+//Route::get('dashboard/airtime/cash', 'AirtimeController@cash')->name('airtime.toCash')->middleware('auth');
+//Route::post('dashboard/airtime/cash', 'AirtimeController@airtime2cash')->name('airtime.toCash')->middleware('auth');
+
+Route::get('dashboard/airtime/topup', 'AirtimeController@topup')->name('airtime.topup')->middleware('auth');
+Route::post('dashboard/airtime/topup', 'AirtimeController@storeTopup')->name('airtime.topup')->middleware('auth');
 Route::get('dashboard/airtime/swap', 'AirtimeController@swap')->name('airtime.swap')->middleware('auth');
 Route::post('dashboard/airtime/swap', 'AirtimeController@airtimeSwap')->name('airtime.swap')->middleware('auth');
 
