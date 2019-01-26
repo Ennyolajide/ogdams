@@ -19,7 +19,7 @@ class CreateAirtimesTable extends Migration
             $table->unsignedInteger('user_id');
             $table->unsignedInteger('amount');
             $table->string('from_network')->nullable(); //for airtime swaps only
-            $table->string('to_network')->nullable();  //for airtime swaps and airtime topup(network)
+            $table->string('to_network')->nullable();  //for airtime swaps 
             $table->unsignedInteger('percentage')->nullable();  //for airtime to Cash only
             $table->string('from_phone')->nullable();   //for both airtime swaps and airtime to cash
             $table->string('to_phone'); //for airtime swap,airtime to cash and airtime topup(phone)

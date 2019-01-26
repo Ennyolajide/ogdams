@@ -17,7 +17,8 @@ class CreateUsersTable extends Migration
             $table->increments('id');
             $table->string('name');
             $table->string('email',40)->unique();
-            $table->boolean('active')->default(true);
+            $table->boolean('active')->default(false);
+            $table->string('token')->nullable();
             $table->string('role')->default('customer');
             $table->string('number')->nullable();
             $table->string('referal')->nullable();

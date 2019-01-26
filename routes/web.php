@@ -15,7 +15,22 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Auth::routes();
+//Auth::routes();
+
+Route::get('users/verify/{email}/{token}', 'VerificationController@verify');
+
+
+Route::get('users/logout', 'LoginController@logout')->name('user.logout');
+Route::get('users/login', 'LoginController@index')->name('user.login');
+Route::post('users/login', 'LoginController@login')->name('user.login');
+
+
+Route::get('users/register', 'RegisterController@index')->name('user.register');
+Route::post('users/register', 'RegisterController@register')->name('user.register');
+
+Route::get('users/reset', 'PasswordResetController@index')->name('user.passwordReset');
+Route::post('users/reset', 'PasswordResetController@reset')->name('user.passwordReset');
+
 
 Route::get('/home', 'HomeController@index')->name('home');
 Route::get('/dashboard', 'DashboardController@index')->name('dashboard.index')->middleware('auth');

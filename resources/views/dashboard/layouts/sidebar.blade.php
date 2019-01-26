@@ -46,7 +46,7 @@
         </li>
         <li><a href="#"><i class="fa fa-wrench"></i> <span>Account Settings</span></a></li>
         <li><a href="#"><i class="fa fa-gears"></i> <span>Transactions</span></a></li>
-        <li><a href="#"><i class="fa fa-power-off"></i> <span>Logout</span></a></li>
+        <li><a href="{{ route('user.logout') }}"><i class="fa fa-power-off"></i> <span>Logout</span></a></li>
 
 
 
