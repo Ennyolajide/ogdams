@@ -35,7 +35,7 @@
                             <section class="container">
                                 <div class="row">
                                     <div class="col-xs-7 col-sm-7 col-md-7 col-lg-7">
-                                        <form id="fund-wallet-form" class="form-horizontal" action="{{ route('wallet.fund') }}" method="post">
+                                        <form id="fund-wallet-form" class="form-horizontal" method="post">
                                             @csrf
                                             <br/>
                                             <div id="atmBankBitcoin-form">
@@ -106,7 +106,7 @@
                                                 <div class="form-group">
                                                     <label class="col-sm-2 control-label">Phone Number</label>
                                                     <div class="col-sm-10 form-grouping">
-                                                        <input type="text" class="form-control" name="from" required>
+                                                        <input type="text" class="form-control" name="phone" required>
                                                         <p class="help-block">The phone number you want to transfer the airtime from.</p>
                                                     </div>
                                                 </div>
@@ -139,6 +139,7 @@
                         </div>
                     </div>
                     <!-- /.box-body -->
+                    @include('dashboard.layouts.errors')
 
                     <div class="box-footer clearfix">
                         <a href="invest" class="btn btn-sm bg-purple btn-flat pull-left">Invest Now</a>
@@ -179,6 +180,7 @@
                     var gateway = $('#gateway').val();
                     console.log(gateway);
                     if(gateway == 1){//airtime
+                        $('#fund-wallet-form').attr('action',"{{ route('wallet.fund.airtime')}}");
                         $('#amount-field,#ecard-form').hide();
                         $('#airtime-form').show();
                         $('#airtimeAmount').keyup(function(){
@@ -193,13 +195,26 @@
                                 console.log(walletAmount);
                             }
                         });
+
+                    }else if(gateway == 2){
+                        $('#ecard-form,#airtime-form').hide();
+                        $('#atmBankBitcoin-form,#amount-field').show();
+                        $('#fund-wallet-form').attr('action','{{ route("payments.paystack") }}');
+                    }else if(gateway == 3){
+                        $('#ecard-form,#airtime-form').hide();
+                        $('#atmBankBitcoin-form,#amount-field').show();
+                        $('#fund-wallet-form').attr('action','{{ route("wallet.fund.bank") }}');
+                    }else if(gateway == 4){
+                        $('#ecard-form,#airtime-form').hide();
+                        $('#atmBankBitcoin-form,#amount-field').show();
+                        //$('#fund-wallet-form').attr('action','{{--route("wallet.fund.bitcoin")--}}');
                     }else if(gateway == 5){//ecard
                         $('#amount-field,#airtime-form').hide();
                         $('#ecard-form').show();
                         $('#fund-wallet-form').attr('action','{{ route("wallet.fund.voucher") }}');
                     }else{
-                        $('#ecard-form,#airtime-form').hide();
-                        $('#atmBankBitcoin-form,#amount-field').show();
+
+
                     }
 
                 });

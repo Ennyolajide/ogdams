@@ -18,7 +18,7 @@ class CreateMessagesTable extends Migration
             $table->unsignedInteger('user_id');
             $table->string('subject');
             $table->text('content');
-            $table->string('sender_id');
+            $table->string('sender_id')->default(1);
             $table->boolean('read')->default(false);
             $table->unsignedInteger('reply')->nullable();
             $table->timestamps();

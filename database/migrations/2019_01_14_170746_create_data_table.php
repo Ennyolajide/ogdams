@@ -8,19 +8,18 @@ class CreateDataTable extends Migration
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
     public function up()
     {
         Schema::create('data', function (Blueprint $table) {
             $table->increments('id');
-            $table->unsignedTinyInteger('transaction_type')->default(5);
             $table->unsignedInteger('user_id');
             $table->string('network');
             $table->unsignedInteger('amount');
             $table->string('volume');
             $table->string('phone');
+            $table->string('class');
+            //$table->unsignedTinyInteger('transaction_type')->default(5);
             $table->unsignedTinyInteger('status')->default(1);
             $table->timestamps();
         });
@@ -28,8 +27,6 @@ class CreateDataTable extends Migration
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
     public function down()
     {

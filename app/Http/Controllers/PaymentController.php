@@ -4,25 +4,25 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Paystack;
-use App\Bank;
 
-class PaymentController extends Controller
+class PaymentController extends NotificationController
 {
-    //
     public $url;
 
     /**
-     * Redirect the User to Paystack Payment Page
+     * Redirect the User to Paystack Payment Page.
+     *
      * @return Url
      */
     public function redirectToGateway()
-    {   request()->merge([ 'amount' => request()->amount * 100 ]);
+    {
+        request()->merge(['amount' => request()->amount * 100]);
+
         return Paystack::getAuthorizationUrl()->redirectNow();
     }
 
     /**
-     * Obtain Paystack payment information
-     * @return void
+     * Obtain Paystack payment information.
      */
     public function handleGatewayCallback()
     {
@@ -33,16 +33,4 @@ class PaymentController extends Controller
         // you can store the authorization_code in your db to allow for recurrent subscriptions
         // you can then redirect or do whatever you want
     }
-
-    public function bankTransfer(){
-        $banks = Bank::where('user_id',1)->get();
-        return view('dashboard/wallet/bank',compact('banks'));
-    }
-
-    public function fundWithBankTransfer(){
-        return request();
-    }
-
-
 }
-

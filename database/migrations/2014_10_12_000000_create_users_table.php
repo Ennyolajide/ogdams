@@ -8,21 +8,20 @@ class CreateUsersTable extends Migration
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
     public function up()
     {
         Schema::create('users', function (Blueprint $table) {
             $table->increments('id');
             $table->string('name');
-            $table->string('email',40)->unique();
+            $table->string('email', 40)->unique();
             $table->boolean('active')->default(false);
             $table->string('token')->nullable();
             $table->string('role')->default('customer');
             $table->string('number')->nullable();
             $table->string('referal')->nullable();
             $table->unsignedBigInteger('balance')->default(0);
+            $table->string('avatar')->default('user1-128x128.jpg');
             $table->string('address')->nullable();
             $table->string('city')->nullable();
             $table->string('state')->nullable();
@@ -36,8 +35,6 @@ class CreateUsersTable extends Migration
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
     public function down()
     {

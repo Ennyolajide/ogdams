@@ -27,11 +27,12 @@
       <!-- sidebar menu: : style can be found in sidebar.less -->
       <ul class="sidebar-menu" data-widget="tree">
         <li class="header">MAIN NAVIGATION</li>
-        <li><a href="#"><i class="fa fa-money"></i> <span>Withdraw</span></a></li>
+        <li><a href="{{ route('wallet.withdraw') }}"><i class="fa fa-money"></i> <span>Withdraw</span></a></li>
         <li><a href="{{ route('wallet.fund') }}"><i class="fa fa-google-wallet"></i> <span>Fund Wallet</span></a></li>
         <li><a href="{{ route('airtime.topup') }}"><i class="fa fa-volume-control-phone"></i> <span>Airtime Topup</span></a></li>
         <li><a href="{{ route('data.buy') }}"><i class="fa fa-wifi"></i> <span>Buy Data</span></a></li>
         <li><a href="{{ route('airtime.swap') }}"><i class="fa fa-circle-o text-red"></i> <span>Airtime Swap</span></a></li>
+        <li><a href="{{ route('coins') }}"><i class="glyphicon glyphicon-bitcoin"></i> <span>Buy Coins</span></a></li>
         <li><a href="#"><i class="glyphicon glyphicon-envelope"></i> <span>Bulk Sms</span></a></li>
         <li><a href="#"><i class="fa fa-credit-card custom"></i> <span>Pay Bills</span></a></li>
         <li>
@@ -45,7 +46,7 @@
             </a>
         </li>
         <li><a href="#"><i class="fa fa-wrench"></i> <span>Account Settings</span></a></li>
-        <li><a href="#"><i class="fa fa-gears"></i> <span>Transactions</span></a></li>
+        <li><a href="{{ route('user.transactions') }}"><i class="fa fa-gears"></i> <span>Transactions</span></a></li>
         <li><a href="{{ route('user.logout') }}"><i class="fa fa-power-off"></i> <span>Logout</span></a></li>
 
 

@@ -2,22 +2,15 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
+use App\Transaction;
+use Illuminate\Support\Facades\Auth;
 
 class TransactionController extends Controller
 {
-    //
+    public function index()
+    {
+        $transactions = Transaction::where('user_id', Auth::user()->id)->get();
 
-
-    public function data(){
-        return $this->belongsTo(Data::class, 'id', 'transaction_id');
-    }
-
-    public function airtime(){
-        return $this->belongsTo(Data::class, 'id', 'transaction_id');
-    }
-
-    public function voucher(){
-        return $this->belongsTo(Data::class, 'id', 'transaction_id');
+        return view('dashboard/transactions', compact('transactions'));
     }
 }

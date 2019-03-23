@@ -3,7 +3,6 @@
 namespace App;
 
 use Illuminate\Notifications\Notifiable;
-use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
 class User extends Authenticatable
@@ -16,7 +15,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password','token',
+        'name', 'email', 'password', 'token',
     ];
 
     /**
@@ -28,26 +27,35 @@ class User extends Authenticatable
         'password', 'remember_token',
     ];
 
-    public function banks(){
+    public function banks()
+    {
         return $this->hasMany(Bank::class);
     }
 
-    public function messages(){
+    public function messages()
+    {
         return $this->hasMany(Message::class);
     }
 
-    public function sentMessages(){
+    public function sentMessages()
+    {
         return $this->hasMany(Message::class, 'sender_id', 'id');
     }
 
-    public function vouchers(){
+    public function vouchers()
+    {
         return $this->hasMany(Voucher::class);
     }
 
-    public function transactions(){
+    public function transactions()
+    {
         return $this->hasMany(Transaction::class);
     }
 
+    public function withdrawals()
+    {
+        return $this->hasMany(Withdrawal::class);
+    }
 
     /* public function data(){
         return $this->hasMany(Data::class);
@@ -69,5 +77,4 @@ class User extends Authenticatable
 
 
  */
-
 }

@@ -12,6 +12,7 @@
         "fideloper/proxy": "^4.0",
         "laravel/framework": "5.7.*",
         "laravel/tinker": "^1.0",
+        "twilio/sdk": "^5.29",
         "unicodeveloper/laravel-paystack": "^1.0"
     },
     "require-dev": {

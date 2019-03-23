@@ -32,13 +32,13 @@
                             <h3 class="box-title">Choose Bank</h3>
                         </div>
                         <div style="margin: 10px 10px;">
-                            <p class="text-center well well-sm no-shadow alert-info" style="line-height:1.5;">
-                                Make a mobile transfer or bank deposit of @naira(session('amount')) to the selected preferred bank using ogmd as narrator, description or remarks.
+                            <p class="text-center well well-sm no-shadow alert-info" style="line-height:1.8;">
+                                Make a mobile transfer or bank deposit of @naira($amount) to the selected preferred bank using ogmd as narrator, description or remarks.
                                 <br/>
                                 Use the "SUBMIT" button, once you have successfully made a payment
 
                             </p>
-                            <form method="post" action="{{ route('wallet.fund.bank') }}">
+                            <form method="post" action="{{ route('wallet.fund.bank.action') }}">
                                 @csrf
                                 <div class="radio-group">
                                     @foreach ($banks as $bank)
@@ -51,8 +51,9 @@
                                         </div>
                                     @endforeach
                                 </div>
+                                <input type="hidden" name="amount" value="{{ $amount }}"/>
                                 <input id="bank" type="hidden" name="bank_id"/>
-                                <button id="continue" style="margin:20px 0px;" class="btn bg-purple btn-block btn-flat" disabled="disabled">Continue</button>
+                                <button id="continue" style="margin:20px 0px;" class="btn bg-purple btn-block btn-flat" disabled="disabled">Submit</button>
                             </form>
                             <div class="clearfix"></div>
                         </div>
