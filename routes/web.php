@@ -1,5 +1,6 @@
 <?php
 
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -86,3 +87,4 @@ Route::post('dashboard/coins/sell/', 'CoinsController@save')->name('coins.sell')
 
 Route::get('sms', 'NotificationController@sendSms');
 Route::get('dashboard/transactions', 'TransactionController@index')->name('user.transactions');
+Route::get('ringo', 'RingoApiController@index');

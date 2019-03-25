@@ -31,13 +31,12 @@ class NotificationController extends HomeController
         return $notification;
     }
 
-    public function sendSms()//$to, $content)
+    public function sendSms($to, $content)//$to, $content)
     {
-        $to = '+2347063637002';
         $client = new Client(env('TWILIO_SID'), env('TWILIO_TOKEN'));
         $message = $client->messages->create($to, [
             'from' => env('TWILIO_NUMBER'),
-            'body' => 'hello word',
+            'body' => $content,
         ]);
 
         return $message;
