@@ -9,24 +9,18 @@ class AppServiceProvider extends ServiceProvider
 {
     /**
      * Bootstrap any application services.
-     *
-     * @return void
      */
     public function boot()
     {
-        //
-        Blade::directive('naira', function($amount){
-            return "<?php echo '₦'. number_format($amount,2);?>";
+        Blade::directive('naira', function ($amount) {
+            return "<?= '₦'. number_format($amount,2);?>";
         });
     }
 
     /**
      * Register any application services.
-     *
-     * @return void
      */
     public function register()
     {
-        //
     }
 }

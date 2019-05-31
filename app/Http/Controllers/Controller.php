@@ -25,22 +25,35 @@ class Controller extends BaseController
 
     public function naira($amount)
     {
-        return '₦'.number_format($amount, 2);
+        return '₦' . number_format($amount, 2);
     }
 
-    public function creditWallet($amount, $notification)
+    public function creditWallet($amount)
     {
         $user = User::find(Auth::user()->id);
         $user->balance = Auth::user()->balance + $amount;
         $user->save();
-        $this->notify($notification);
+        return true;
     }
 
-    public function debitWallet($amount, $notification)
+    public function debitWallet($amount)
     {
         $user = User::find(Auth::user()->id);
         $user->balance = Auth::user()->balance - $amount;
         $user->save();
-        $this->notify($notification);
+        return true;
+    }
+
+    protected function formatPhoneNumber($msisdn)
+    {
+        return preg_replace('/^0/', '234', '0' . (int)$msisdn);
+    }
+
+    /**
+     * generate a unique reference
+     */
+    protected function getUniqueReference()
+    {
+        return md5(env('APP_REFERENCE') . time() . rand(1, 10000));
     }
 }

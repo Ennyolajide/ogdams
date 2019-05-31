@@ -84,7 +84,7 @@
                             </div>
                             <!-- /.mailbox-read-info -->
                             <!-- /.mailbox-controls -->
-                            <div class="mailbox-read-message">
+                            <div class="mailbox-read-message text-primary" style="padding: 30px; line-height:2; font-size: 16px;">
                                 @if($message->repliedMessage)
                                     To : me
                                     <br/>

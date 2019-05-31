@@ -120,20 +120,24 @@
                                     <tbody>
                                         @php
                                             function getStatus($status){
-                                                $array = ['Success','Pending','Cancel'];
+                                                $array = ['Declined','Pending','Success','Canceled'];
                                                 return $status ? $array[$status] : 'Decline';
                                             }
                                         @endphp
 
                                         @foreach ($transactions as $transaction)
                                             <tr>
-                                                <td>{{ md5($transaction->id) }}</td>
-                                                <td>{{ $transaction->amount }}</td>
-                                                <td>xxxx</td>
+                                                <td>{{ str_limit($transaction->reference, 10, '...') }}</td>
+                                                <td class="text-right">@naira($transaction->amount)</td>
+                                                <td>{{ $transaction->class->type }}</td>
 
                                                 <td>{{ getStatus($transaction->status) }}</td>
                                                 <td>{{ $transaction->created_at }}</td>
-                                                <td><a href="#"><i class="fa fa-eye"></i>view</a></td>
+                                                <td>
+                                                <a href="#" data-toggle="modal" data-target="#{{ $transaction->id }}">
+                                                        <i class="fa fa-eye"></i>view
+                                                    </a>
+                                                </td>
                                             </tr>
                                         @endforeach
                                     </tbody>
@@ -829,4 +833,57 @@
         <!-- /.row -->
       </section>
       <!-- /.content -->
+
+      @foreach ($transactions as $transaction)
+        <!-- Modal -->
+        <div id="{{ $transaction->id }}" class="modal fade" role="dialog">
+            <div class="modal-dialog">
+
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">View transaction</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="row" style="font-size: 20px;">
+                        <div class="col-md-5 col-xs-11  col-xs-offset-1 col-sm-offset-1 col-md-offset-1">
+                            <small>Transaction Reference :</small>
+                            <p class=""><b> {{ '7e38yrb8383hnfj8f8' }} </b></p>
+                        </div>
+                        <div class="col-md-5 col-xs-11 col-xs-offset-1 col-sm-offset-1 col-md-offset-1">
+                            <small>Transaction Type : </small>
+                            <p class=""><b> {{ $transaction->class->type }} </b></p>
+
+                        </div>
+                        <div class="col-md-5 col-xs-11 col-xs-offset-1 col-sm-offset-1 col-md-offset-1">
+                           <small>Transaction Amount : </small>
+                            <p class=""><b>@naira($transaction->amount) </b></p>
+                        </div>
+                        <div class="col-md-5 col-xs-11 col-xs-offset-1 col-sm-offset-1 col-md-offset-1">
+                            <small> Before : </small>
+                            <p class=""><b>@naira($transaction->balance_before) </b></p>
+                        </div>
+                        <div class="col-md-5 col-xs-11 col-xs-offset-1 col-sm-offset-1 col-md-offset-1">
+                            <small>Balance After : </small>
+                            <p class=""><b>@naira($transaction->balance_after)</b></p>
+                        </div>
+                        <div class="col-md-5 col-xs-11 col-xs-offset-1 col-sm-offset-1 col-md-offset-1">
+                            <small>Transaction Status </small>
+                            <p class=""><b> {{ getStatus($transaction->status) }} </b></p>
+                        </div>
+
+
+                    </div>
+                </div>
+                <!--div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div-->
+            </div>
+
+            </div>
+        </div>
+        <!-- /Modal -->
+        @endforeach
+
     @endSection

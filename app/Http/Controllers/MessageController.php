@@ -7,7 +7,7 @@ use App\Message;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
-class MessageController extends HomeController
+class MessageController extends NotificationController
 {
     protected $messages;
 

@@ -96,6 +96,7 @@
                                 <button type="button" class="btn btn-default btn-sm">
                                     <i class="fa fa-refresh"></i>
                                 </button>
+
                                 <div class="pull-right">
                                     @if ($messages->hasPages())
                                         {{ $messages->firstItem() }} - {{ $messages->lastItem() }}/{{ $messages->total() }}
@@ -181,17 +182,27 @@
                                 <button type="button" class="btn btn-default btn-sm">
                                     <i class="fa fa-refresh"></i>
                                 </button>
+
                                 <div class="pull-right">
-                                    1-50/200
-                                    <div class="btn-group">
-                                        <button type="button" class="btn btn-default btn-sm">
-                                            <i class="fa fa-chevron-left"></i>
-                                        </button>
-                                        <button type="button" class="btn btn-default btn-sm">
-                                            <i class="fa fa-chevron-right"></i>
-                                        </button>
-                                    </div>
-                                    <!-- /.btn-group -->
+                                    @if ($messages->hasPages())
+                                        {{ $messages->firstItem() }} - {{ $messages->lastItem() }}/{{ $messages->total() }}
+                                        <div class="btn-group">
+                                            {{-- Previous Page Link --}}
+                                            @if (!$messages->onFirstPage())
+                                                <button type="button" class="previousPage btn btn-default btn-sm">
+                                                    <i class="fa fa-chevron-left"></i>
+                                                </button>
+                                            @endif
+                                            {{-- Next Page Link --}}
+                                            @if ($messages->hasMorePages())
+                                                <button type="button" class="nextPage btn btn-default btn-sm">
+                                                    <i class="fa fa-chevron-right"></i>
+                                                </button>
+                                            @endif
+
+                                        </div>
+                                        <!-- /.btn-group -->
+                                    @endif
                                 </div>
                                 <!-- /.pull-right -->
                             </div>

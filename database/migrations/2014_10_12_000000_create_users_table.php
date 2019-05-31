@@ -29,6 +29,7 @@ class CreateUsersTable extends Migration
             $table->string('password');
             $table->string('pin')->nullable();
             $table->rememberToken();
+            $table->string('api_token');
             $table->timestamps();
         });
     }

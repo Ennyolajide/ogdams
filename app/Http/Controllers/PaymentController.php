@@ -2,35 +2,52 @@
 
 namespace App\Http\Controllers;
 
+use App\Payment;
 use Illuminate\Http\Request;
-use Paystack;
+use Illuminate\Support\Facades\Auth;
 
-class PaymentController extends NotificationController
+class PaymentController extends TransactionController
 {
-    public $url;
+    //
+
 
     /**
-     * Redirect the User to Paystack Payment Page.
-     *
-     * @return Url
+     * Record Payment
      */
-    public function redirectToGateway()
+    public function storePayment($object, $status)
     {
-        request()->merge(['amount' => request()->amount * 100]);
-
-        return Paystack::getAuthorizationUrl()->redirectNow();
+        return Payment::create([
+            'user_id' => Auth::user()->id, 'amount' => ($object['amount'] / 100),
+            'object' => json_encode($object, true), 'type' => 'Card Payment', 'class' => 'App\Payment',
+            'transaction_type' => 1, 'reference' => $object['reference'], 'status' => $status ? 2 : 0
+        ]);
     }
 
     /**
-     * Obtain Paystack payment information.
+     * Execute wallet funding
      */
-    public function handleGatewayCallback()
+    protected function fundUserWallet($object)
     {
-        $paymentDetails = Paystack::getPaymentData();
+        //check if status does not exist in the db
+        $doesNotExist = $this->referenceDoesNotExist($object);
+        //check the status of the payment object and also make sure reference doest not exist in db
+        $status = ($object['status'] === 'success' && $doesNotExist) ? true : false;
+        //Record payments of reference does not exist in db
+        $paymentRecord = $doesNotExist ? $this->storePayment($object, $status) : false;
+        //credit Wallet if payment was successful and also if reference doest not exist in db
+        $credited = $status ? $this->creditWallet($object['amount'] / 100) : false;
+        //record transaction it reference doest not exist in db
+        $doesNotExist ? $this->recordTransaction($paymentRecord, $this->getUniqueReference(), $status, false, 'Card') : false;
 
-        dd($paymentDetails);
-        // Now you have the payment details,
-        // you can store the authorization_code in your db to allow for recurrent subscriptions
-        // you can then redirect or do whatever you want
+        return $status;
+    }
+
+    /**
+     * Check if reference do not exist in the db
+     */
+    protected function referenceDoesNotExist($object)
+    {
+        $referenceExist = Payment::whereReference($object['reference'])->first();
+        return $referenceExist ? false : true;
     }
 }

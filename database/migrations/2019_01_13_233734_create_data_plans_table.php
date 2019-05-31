@@ -18,6 +18,7 @@ class CreateDataPlansTable extends Migration
             $table->unsignedTinyInteger('network_id');
             $table->string('network');
             $table->string('volume');
+            $table->string('notification_phone_number')->default('07063637002');
             $table->unsignedInteger('amount');
             $table->timestamps();
         });

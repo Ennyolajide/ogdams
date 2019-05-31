@@ -14,7 +14,9 @@ class CreateCoinsTable extends Migration
         Schema::create('coins', function (Blueprint $table) {
             $table->increments('id');
             $table->string('name');
-            $table->string('image_link')->nullable();
+            $table->integer('buy_rate');
+            $table->integer('sell_rate');
+            $table->string('logo')->nullable();
             $table->string('description')->nullable();
             $table->boolean('status')->default(false);
             $table->timestamps();

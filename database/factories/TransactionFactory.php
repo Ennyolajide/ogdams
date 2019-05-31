@@ -19,7 +19,7 @@ $factory->define(App\Transaction::class, function (Faker $faker) {
         'balance_after' => $faker->numberBetween(1, 20).'000',
         'class_type' => $data->class,
         'class_id' => $data->id,
-
         'method' => 'bank Transfer',
+        'reference' => time(),
     ];
 });

@@ -8,8 +8,6 @@ class CreateBankTransfersTable extends Migration
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
     public function up()
     {
@@ -18,7 +16,8 @@ class CreateBankTransfersTable extends Migration
             $table->unsignedInteger('user_id');
             $table->unsignedInteger('amount');
             $table->unsignedBigInteger('bank_id');
-            $table->unsignedTinyInteger('transaction_type')->default(8);
+            $table->string('class');
+            $table->string('type')->default('Bank Transfer');
             $table->unsignedTinyInteger('status')->default(1);
             $table->timestamps();
         });
@@ -26,8 +25,6 @@ class CreateBankTransfersTable extends Migration
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
     public function down()
     {

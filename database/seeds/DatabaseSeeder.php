@@ -16,11 +16,21 @@ class DatabaseSeeder extends Seeder
         //Message Seeder
         factory(App\Message::class, 20)->create();
 
+        //Tansaction Seeder
+        factory(App\Transaction::class, 5)->create();
+
         $this->call(UsersTableSeeder::class);
-        $this->call(DataPlansTableSeeder::class);
         $this->call(BanksTableSeeder::class);
-        $this->call(PaymentGatewaysTableSeeder::class);
-        $this->call(AirtimePercentagesTableSeeder::class);
-        $this->call(CoinsTableSeeder::class);
+        $this->call(CoinsTableSeeder::class); //First time Run
+        $this->call(ChargesTableSeeder::class);
+        $this->call(DataPlansTableSeeder::class); //First time Run
+
+        $this->call(BulkSmsConfigsTableSeeder::class); //first time run
+
+        $this->call(PaymentGatewaysTableSeeder::class); //First time Run
+        $this->call(AirtimePercentagesTableSeeder::class); //First time Run
+
+        $this->call(RingoProductsTableSeeder::class); //First time Run
+        $this->call(RingoSubProductListTableSeeder::class); //First time Run
     }
 }

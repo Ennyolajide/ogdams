@@ -41,13 +41,6 @@
                                             <div id="atmBankBitcoin-form">
                                                 <div class="form-group" id="gateway-type">
                                                     <label for="inputWallet" class="col-sm-2 control-label">Payment Method</label>
-                                                    @php
-                                                        //$percentages = str_replace("&quot;","'",$networks);
-                                                        //$percentages = json_decode($percentages,true);
-
-                                                    @endphp
-
-
                                                     <div class="col-sm-10">
                                                         <select class="form-control" id="gateway" name="gateway" required>
                                                             <option value="" disabled selected>Select gateway Method</option>
@@ -140,24 +133,17 @@
                     </div>
                     <!-- /.box-body -->
                     @include('dashboard.layouts.errors')
-
-                    <div class="box-footer clearfix">
-                        <a href="invest" class="btn btn-sm bg-purple btn-flat pull-left">Invest Now</a>
-                        <a href="javascript:void(0)" class="btn btn-sm btn-default btn-flat pull-right">View All Subscriptions</a>
-                    </div>
+                    <!-- .box-footer -->
+                    @include('dashboard.layouts.box-footer')
                     <!-- /.box-footer -->
                 </div>
                 <!-- /.box -->
             </div>
-        </div>
+        </section>
 
     @endSection
 
     @section('scripts')
-        @if (session('response'))
-            <script>alert('{{ session('response') }}');</script>
-        @endif
-
         <script src="https://ajax.aspnetcdn.com/ajax/jquery.validate/1.16.0/jquery.validate.min.js"></script>
         <script>
             $(document).ready(function(){
@@ -199,7 +185,7 @@
                     }else if(gateway == 2){
                         $('#ecard-form,#airtime-form').hide();
                         $('#atmBankBitcoin-form,#amount-field').show();
-                        $('#fund-wallet-form').attr('action','{{ route("payments.paystack") }}');
+                        $('#fund-wallet-form').attr('action','{{ route("paystack.pay") }}');
                     }else if(gateway == 3){
                         $('#ecard-form,#airtime-form').hide();
                         $('#atmBankBitcoin-form,#amount-field').show();

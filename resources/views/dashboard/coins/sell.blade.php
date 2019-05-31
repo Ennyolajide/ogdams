@@ -74,23 +74,18 @@
                             </section>
                         </div>
                     </div>
-                    <!-- /.box-body -->
-
-                    <div class="box-footer clearfix">
-                        <a href="#" class="btn btn-sm bg-purple btn-flat pull-left">Invest Now</a>
-                        <a href="javascript:void(0)" class="btn btn-sm btn-default btn-flat pull-right">View All Subscriptions</a>
-                    </div>
-                    <!-- /.box-footer -->
-                </div>
-                <!-- /.box -->
+                     <!-- /.box-body -->
+                     @include('dashboard.layouts.errors')
+                     <!-- .box-footer -->
+                     @include('dashboard.layouts.box-footer')
+                     <!-- /.box-footer -->
+                 </div>
+                 <!-- /.box -->
             </div>
         </section>
     @endSection
 
     @section('scripts')
-        @if (session('response'))
-            <script>alert('{{ session('response') }}');</script>
-        @endif
 
         <script src="https://ajax.aspnetcdn.com/ajax/jquery.validate/1.16.0/jquery.validate.min.js"></script>
         <script>

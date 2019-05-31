@@ -8,6 +8,31 @@ use App\DataPlan;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
+class DataMethods extends TransactionController
+{
+    /**
+     * Record Airtime Topup
+     */
+    public function recordDataTopup($status)
+    {
+        return Airtime::create([
+            'user_id' => Auth::user()->id, 'network' => request()->network, 'amount' => request()->amount,
+            'to_phone' => request()->phone, 'transaction_type' => 1, 'class' => 'App\Airtime', 'type' => 'Mobile Topup',
+            'status' => $status
+        ]);
+    }
+
+    /**
+     * This Execute Airtime Topup Request
+     */
+    protected function executeTopup($msisdn, $reference)
+    {
+        $body = $this->generateTopupRequestBody($msisdn, request()->amount, $reference);
+
+        return $body ? $this->ringo('topup/exec/' . $msisdn, 'post', $body) : false;
+    }
+}
+
 class DataController extends WalletController
 {
     public function index()
@@ -43,11 +68,12 @@ class DataController extends WalletController
                 'volume' => $dataPlan->volume,
                 'phone' => request()->phone,
             ]);
+
             $response = 'Data Purchase successful';
         } else {
             $response = 'Insuffient balance, Pls fund your account';
         }
-
+        //notification_phone_number
         return $response;
     }
 }

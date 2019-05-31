@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\PaymentGateway;
 use App\AirtimePercentage;
 
-class WalletController extends PaymentController
+class WalletController extends PaystackController
 {
     public function index()
     {

@@ -8,8 +8,6 @@ class CreateVouchersTable extends Migration
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
     public function up()
     {
@@ -18,7 +16,9 @@ class CreateVouchersTable extends Migration
             $table->string('voucher');
             $table->unsignedInteger('value');
             $table->unsignedInteger('user_id')->nullable();
-            $table->unsignedTinyInteger('transaction_type')->default(6);
+            $table->string('class')->default('App\Vouchers');
+            $table->string('type')->default('Vouchers');
+            //$table->unsignedTinyInteger('transaction_type')->default(6);
             $table->unsignedTinyInteger('status')->default(1);
             $table->timestamps();
         });
@@ -26,8 +26,6 @@ class CreateVouchersTable extends Migration
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
     public function down()
     {

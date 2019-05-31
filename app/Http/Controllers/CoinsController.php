@@ -4,9 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Coin;
 use App\Transaction;
+use App\CurrencyConverter;
 use Illuminate\Support\Facades\Auth;
 
-class CoinsController extends WalletController
+class CoinsController extends CurrencyConverterController
 {
     public function index()
     {
@@ -17,7 +18,8 @@ class CoinsController extends WalletController
 
     public function buy(Coin $coin)
     {
-        return view('dashboard/coins/buy', compact('coin'));
+        $rate = $this->getExchangeRate();
+        return view('dashboard/coins/buy', compact('coin', 'rate'));
     }
 
     public function sell(Coin $coin)

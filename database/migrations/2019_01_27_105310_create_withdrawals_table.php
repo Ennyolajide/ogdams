@@ -16,7 +16,8 @@ class CreateWithdrawalsTable extends Migration
             $table->unsignedInteger('user_id');
             $table->unsignedInteger('amount');
             $table->unsignedBigInteger('bank_id');
-            $table->unsignedTinyInteger('transaction_type')->default(7);
+            $table->string('class')->default('App\Withdwal');
+            $table->string('type')->default('Withdrawal');
             $table->unsignedTinyInteger('status')->default(1);
             $table->timestamps();
         });

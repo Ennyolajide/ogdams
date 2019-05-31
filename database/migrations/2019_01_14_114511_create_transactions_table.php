@@ -20,6 +20,7 @@ class CreateTransactionsTable extends Migration
             $table->morphs('class');
             $table->string('method');
             $table->unsignedTinyInteger('status')->default(1);
+            $table->string('reference');
             $table->timestamps();
         });
     }
