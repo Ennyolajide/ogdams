@@ -11,8 +11,20 @@ class PaystackController extends PaymentController
 {
     public $url;
 
-    protected $successResponse = 'Wallet funding successful';
     protected $failureResponse = 'Payment failed';
+    protected $successResponse = 'Wallet funding successful';
+
+
+    /**
+     * Auth Headers for Paystack
+     */
+    protected function headers()
+    {
+        return [
+            'Content-Type' => 'application/json',
+            'Authorization' => 'Bearer ' . env('PAYSTACK_SECRET_KEY'),
+        ];
+    }
 
     /**
      * Redirect the User to Paystack Payment Page.
@@ -41,4 +53,29 @@ class PaystackController extends PaymentController
         //redirect back and show message
         return redirect(route('wallet.fund'))->withNotification($this->clientNotify($message, $status));
     }
+
+    /**
+     * Get the list of all Banks
+     */
+    protected function bankList()
+    {
+        return json_decode($this->getPaystack('bank'));
+    }
+
+    /**
+     * Make a paystack call
+     */
+    protected function getPaystack($query)
+    {
+        $endPoint = \config('constants.url.paystack') .$query;
+        $client = new \GuzzleHttp\Client(['http_errors' => false]);
+        $request = $client->get($endPoint, ['headers' => $this->headers()]);
+        $status = $request->getStatusCode() == '200' ? true : false;
+        return $status ? $request->getBody()->getContents() : false;
+    }
+
+    public function test(){
+        return $this->bankList();
+    }
 }
+

@@ -12,7 +12,7 @@ class CreateVouchersTable extends Migration
     public function up()
     {
         Schema::create('vouchers', function (Blueprint $table) {
-            $table->increments('id');
+            $table->bigIncrements('id');
             $table->string('voucher');
             $table->unsignedInteger('value');
             $table->unsignedInteger('user_id')->nullable();

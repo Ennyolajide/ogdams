@@ -8,33 +8,11 @@ use App\DataPlan;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
-class DataMethods extends TransactionController
+class DataController extends TransactionController
 {
-    /**
-     * Record Airtime Topup
-     */
-    public function recordDataTopup($status)
-    {
-        return Airtime::create([
-            'user_id' => Auth::user()->id, 'network' => request()->network, 'amount' => request()->amount,
-            'to_phone' => request()->phone, 'transaction_type' => 1, 'class' => 'App\Airtime', 'type' => 'Mobile Topup',
-            'status' => $status
-        ]);
-    }
+    protected $successResponse = 'Data Topup successful';
+    protected $failureResponse = 'Insuffient balance, Pls fund your account';
 
-    /**
-     * This Execute Airtime Topup Request
-     */
-    protected function executeTopup($msisdn, $reference)
-    {
-        $body = $this->generateTopupRequestBody($msisdn, request()->amount, $reference);
-
-        return $body ? $this->ringo('topup/exec/' . $msisdn, 'post', $body) : false;
-    }
-}
-
-class DataController extends WalletController
-{
     public function index()
     {
         return view('dashboard.data.prices');
@@ -50,30 +28,56 @@ class DataController extends WalletController
 
     public function store()
     {
-        $this->validate(request(), ['plan' => 'required|numeric|', 'phone' => 'required']);
-        $dataPlan = DataPlan::find(request()->plan)->first();
-        $response = $this->processDataPurchase($dataPlan);
+        $this->validate(request(), [
+            'plan' => 'required|numeric|',
+            'phone' => 'required'
+        ]);
 
-        return back()->withResponse($response);
+        $dataPlan = DataPlan::find(request()->plan)->first();
+
+        $status = $dataPlan ? $this->processDataPurchase($dataPlan) : false;
+
+        $message = $status ? $this->successResponse : $this->failureResponse;
+
+        return back()->withNotification($this->clientNotify($message, $status));
     }
 
     public function processDataPurchase($dataPlan)
     {
         if (Auth::user()->balance >= $dataPlan->amount) {
-            $this->debitWallet($dataPlan->amount);
-            Data::create([
-                'user_id' => Auth::user()->id,
-                'amount' => $dataPlan->amount,
-                'network' => $dataPlan->network,
-                'volume' => $dataPlan->volume,
-                'phone' => request()->phone,
-            ]);
 
-            $response = 'Data Purchase successful';
-        } else {
-            $response = 'Insuffient balance, Pls fund your account';
+            $status = $this->topup($dataPlan);
+
+            $status ? $this->notify($this->dataTopupNotification($dataPlan)) : false;
+
+            return $status;
         }
-        //notification_phone_number
-        return $response;
+
     }
+
+    /**
+     * This Execute Airtime Topup Request
+     */
+    protected function topup($dataPlan)
+    {
+        $dataRecord = $this->storeTopup($dataPlan);
+        $status = $dataRecord ? $this->debitWallet($dataPlan->amount) : false;
+        $status ? $this->notifyAdminViaSms($this->adminDataNotification($dataPlan), $dataPlan->notification_phone) : false;
+        $dataRecord ? $this->recordTransaction($dataRecord, $this->getUniqueReference(), false, true, false, false) : false;
+
+        return $status;
+    }
+
+    /**
+     * Record Data Topup
+     */
+    protected function storeTopup($dataPlan)
+    {
+        return Data::create([
+            'user_id' => Auth::user()->id, 'network' => $dataPlan->network, 'amount' => $dataPlan->amount,
+            'phone' => request()->phone, 'volume' => $dataPlan->volume, 'class' => 'App\Data', 'type' => 'Data Topup'
+        ]);
+    }
+
+
 }

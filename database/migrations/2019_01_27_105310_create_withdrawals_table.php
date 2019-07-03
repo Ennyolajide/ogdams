@@ -12,7 +12,7 @@ class CreateWithdrawalsTable extends Migration
     public function up()
     {
         Schema::create('withdrawals', function (Blueprint $table) {
-            $table->increments('id');
+            $table->bigIncrements('id');
             $table->unsignedInteger('user_id');
             $table->unsignedInteger('amount');
             $table->unsignedBigInteger('bank_id');

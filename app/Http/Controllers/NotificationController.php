@@ -3,13 +3,14 @@
 namespace App\Http\Controllers;
 
 use Twilio\Rest\Client;
+use Faker\Generator as Faker;
 
 class NotificationController extends HomeController
 {
-    protected function creditNotification($amount)
+    protected function creditNotification($amount, $method)
     {
         $notification['subject'] = 'Credit Notification';
-        $notification['content'] = 'Your wallet has been credited with ' . $this->naira($amount);
+        $notification['content'] = 'Your wallet has been credited with ' . $this->naira($amount). ' using '.$method;
 
         return $notification;
     }
@@ -50,6 +51,15 @@ class NotificationController extends HomeController
         return $notification;
     }
 
+    protected function dataTopupNotification($dataPlan)
+    {
+        $notification['subject'] = 'Debit Notification';
+        $notification['content'] = 'Your wallet has been debited with ';
+        $notification['content'] .= $this->naira($dataPlan->amount) . ' for data topup to ' . request()->phone;
+
+        return $notification;
+    }
+
     /**
      * notification for airtimeSwap
      */
@@ -75,9 +85,38 @@ class NotificationController extends HomeController
         return $notification;
     }
 
+    protected function tvTopupNotification($details)
+    {
+        $notification['subject'] = 'Debit Notification';
+        $notification['content'] = 'Your wallet has been debited with ';
+        $notification['content'] .= $this->naira($details['amount']) . ' for ' . $details['type'];
+        $notification['content'] .= ' Topup to ' . request()->owner . ' ' . $details['product'] . ' decoder';
+
+        return $notification;
+    }
+
+    protected function miscTopupNotification($details)
+    {
+        $notification['subject'] = 'Debit Notification';
+        $notification['content'] = 'Your wallet has been debited with '.$this->naira($details['amount']);
+        $notification['content'] .=' for ' . $details['product'] . '(' .$details['type']. ')';
+
+        return $notification;
+    }
 
 
-    public function sendSms($to, $content) //$to, $content)
+    protected function addBankDetailsNotification($charges)
+    {
+        $notification['subject'] = 'Debit Notification';
+        $notification['content'] = 'Your wallet has been debited with ';
+        $notification['content'] .= $this->naira($charges) . ' for adding a new bank account to your profile';
+
+        return $notification;
+    }
+
+
+
+    /* public function sendSms($to, $content) //$to, $content)
     {
         $client = new Client(env('TWILIO_SID'), env('TWILIO_TOKEN'));
         $message = $client->messages->create($to, [
@@ -86,7 +125,7 @@ class NotificationController extends HomeController
         ]);
 
         return $message;
-    }
+    } */
 
     public function clientNotify($message, $status = false)
     {
@@ -95,4 +134,41 @@ class NotificationController extends HomeController
             'status' => $status ? $status : false,
         ];
     }
+
+
+    /* Control Notification */
+
+    protected function controlWithdrawalNotification($amount)
+    {
+        $notification['subject'] = 'Withdral Notification';
+        $notification['content'] = 'Your withdral request of '.$this->naira($amount).' has been ';
+        $notification['content'].= request()->has('completed') ? 'proccessed' : 'canceled';
+
+        return $notification;
+    }
+
+    protected function adminDataNotification($dataPlan)
+    {
+        return request()->phone.' Aut adipisci voluptates odit neque. Nihil aut est aliquam expedita provident et ut velit. Laboriosam qui officia et veniam.';
+    }
+
+    protected function notifyAdminViaSms($message, $to)
+    {
+        $client = new \GuzzleHttp\Client();
+        $url = \config('constants.url.smartsmssolutions');
+        $client->post($url . '?json', ['form_params' => $this->notifyAdminViaSmsFormParamters($message, $to)]);
+
+    }
+
+    /**
+     * compose form parameters for sending sms
+     */
+    protected function notifyAdminViaSmsFormParamters($message, $to)
+    {
+        return [
+            'sender' => urlencode(env('DATA_SMS_SENDER_ID')), 'message' => $message, 'to' => $to, 'type' => '0',
+            'routing' => 3, 'ref_id' => $this->getUniqueReference(), 'token' => env('SMARTSMSSOLUTION_TOKEN'),
+        ];
+    }
+
 }

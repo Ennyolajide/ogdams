@@ -12,7 +12,7 @@ class CreateUsersTable extends Migration
     public function up()
     {
         Schema::create('users', function (Blueprint $table) {
-            $table->increments('id');
+            $table->bigIncrements('id');
             $table->string('name');
             $table->string('email', 40)->unique();
             $table->boolean('active')->default(false);
@@ -21,13 +21,15 @@ class CreateUsersTable extends Migration
             $table->string('number')->nullable();
             $table->string('referal')->nullable();
             $table->unsignedBigInteger('balance')->default(0);
-            $table->string('avatar')->default('user1-128x128.jpg');
+            $table->string('avatar')->default('default.jpg');
             $table->string('address')->nullable();
             $table->string('city')->nullable();
             $table->string('state')->nullable();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->string('pin')->nullable();
+            $table->string('referrer')->nullable();
+            $table->string('wallet_id')->unique();
             $table->rememberToken();
             $table->string('api_token');
             $table->timestamps();

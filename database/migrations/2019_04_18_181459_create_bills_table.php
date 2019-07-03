@@ -14,9 +14,11 @@ class CreateBillsTable extends Migration
     public function up()
     {
         Schema::create('bills', function (Blueprint $table) {
-            $table->increments('id');
+            $table->bigIncrements('id');
             $table->unsignedInteger('user_id');
             $table->unsignedInteger('amount');
+            $table->string('product');
+            $table->json('details')->nullable();
             $table->string('class')->default('App\Bills');
             $table->string('type');
             $table->unsignedTinyInteger('status')->default(1);

@@ -20,6 +20,7 @@ class CreateRingoSubProductListsTable extends Migration
             $table->integer('ringo_price');
             $table->integer('selling_price')->nullable();
             $table->integer('ringo_product_id');
+            $table->string('group')->nullable();
             $table->timestamps();
         });
     }

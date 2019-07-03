@@ -85,21 +85,21 @@
                                                 <div class="form-group">
                                                     <label class="col-sm-2 control-label">Amount</label>
                                                     <div class="col-sm-10 form-grouping">
-                                                        <input type="text" id="airtimeAmount" class="form-control" name="airtime_amount" value="" required>
+                                                        <input type="text" id="airtimeAmount" class="form-control" name="amount" value="" required>
                                                         <p class="help-block">Eneter amount you want to fund.</p>
                                                     </div>
                                                 </div>
                                                 <div id="wallet-amount" class="form-group" style="display:none;">
                                                     <label class="col-sm-2 control-label">Amount To Wallet</label>
                                                     <div class="col-sm-10 form-grouping">
-                                                        <input id="wallet_amount" type="text" class="form-control" name="wallet_amount" disabled>
+                                                        <input id="wallet_amount" type="text" class="form-control" name="wallet_amount"s disabled>
                                                         <p class="help-block">Eneter amount you want to fund.</p>
                                                     </div>
                                                 </div>
                                                 <div class="form-group">
                                                     <label class="col-sm-2 control-label">Phone Number</label>
                                                     <div class="col-sm-10 form-grouping">
-                                                        <input type="text" class="form-control" name="phone" required>
+                                                        <input type="text" class="form-control" name="swapFromPhone" required>
                                                         <p class="help-block">The phone number you want to transfer the airtime from.</p>
                                                     </div>
                                                 </div>
@@ -142,6 +142,66 @@
         </section>
 
     @endSection
+
+    @if(session('modal'))
+        <!-- Modal -->
+        @if(session('modal')->name == 'AirtimeFunding')
+            <!-- AirtimeToWallet-Modal -->
+            @php $imgSrc = "\images/networks/".session('modal')->swapFromNetwork.".png"; @endphp
+            <div id="response-modal" class="modal fade" role="dialog">
+                <div class="modal-dialog">
+                    <!-- Modal content-->
+                    <div class="modal-content">
+                        <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <h4 class="modal-title">Airtime To Wallet</h4>
+                        </div>
+                        <div class="modal-body">
+                            <p class="h3 text-center text-success"><i class="fa fa-check"></i>Airtime  Request Accepted</p>
+                            <section class="content">
+
+                                <h4 class="text-justify text-info">
+                                    To complete the Airtime wallet funding Send @naira(session('modal')->amount) airtime from
+                                    {{ session('modal')->swapFromPhone }} to any of the {{ ucfirst(session('modal')->swapFromNetwork) }}
+                                    numbers listed below  and then click the completed button
+                                </h4>
+                                <ul class="list-inline h3 text-center text-primary">
+                                    @foreach (session('modal')->recipients as $recipient)
+                                        <li>{{ $recipient }} </li>
+                                    @endforeach
+                                </ul>
+                                <p class="hidden-xs h4 text-center">
+                                    <img class="rounded icon-size" src="{{ $imgSrc }}"/> Transfer code
+                                    <i class="fa fa-arrow-right"></i>
+                                    <span class="text-primary text-bold">{{ session('modal')->transferCode }}</span>
+                                </p>
+                                <p class="visible-xs h4 text-center ">
+                                    <p class="visible-xs h4 text-center"> Transfer code</p>
+                                    <p class="text-center visible-xs"><i class="fa fa-arrow-down fa-2x"></i></p>
+                                    <p class="text-primary text-bold visible-xs">{{ session('modal')->transferCode }}</p>
+                                </p>
+                                <p class="h4 text-center text-danger">
+                                    You will receive @naira(session('modal')->walletAmount) in your wallet within {{ session('modal')->processTime }} minutes
+                                </p>
+                                <p class="h4 text-center text-danger">
+                                    Please use/click the Completed button only after you have transfered the airtime to avoid been baned
+                                </p>
+                            </section>
+                        </div>
+                        <div class="modal-footer">
+                            <form action="{{ route('airtime.cash.completed', ['airtimeRecord' => session('modal')->airtimeRecordId ]) }}" method="post">
+                                @csrf @method('patch')
+                                <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Close</button>
+                                <button type="submit" class="btn btn-primary">Completed</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- /AirtimeToWallet-Modal -->
+        @endif
+        <!-- /Modal -->
+    @endif
 
     @section('scripts')
         <script src="https://ajax.aspnetcdn.com/ajax/jquery.validate/1.16.0/jquery.validate.min.js"></script>

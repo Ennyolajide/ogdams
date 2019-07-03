@@ -5,7 +5,7 @@
       <!-- Sidebar user panel -->
       <div class="user-panel">
         <div class="pull-left image">
-          <img src="dist/img/user2-160x160.jpg" class="img-circle" alt="User Image">
+          <img src="/images/avatar/{{ Auth::user()->avatar }}" class="img-circle" alt="User Image">
         </div>
         <div class="pull-left info">
           <p>{{ Auth::user()->name }}</p>
@@ -34,7 +34,7 @@
         <li><a href="{{ route('airtime.cash') }}"><i class="fa fa-money text-red"></i> <span>Airtime To Cash</span></a></li>
         <li><a href="{{ route('airtime.swap') }}"><i class="fa fa-circle-o text-red"></i> <span>Airtime Swap</span></a></li>
         <li><a href="{{ route('coins') }}"><i class="glyphicon glyphicon-bitcoin"></i> <span>Buy | Sell Coins</span></a></li>
-        <li><a href="#"><i class="glyphicon glyphicon-envelope"></i> <span>Bulk Sms</span></a></li>
+        <li><a href="{{ route('sms.bulk') }}"><i class="glyphicon glyphicon-envelope"></i> <span>Bulk Sms</span></a></li>
         <li><a href="{{ route('bills') }} "><i class="fa fa-credit-card custom"></i> <span>Pay Bills</span></a></li>
         <li>
             <a href="{{ route('messages.inbox') }}">
@@ -46,7 +46,7 @@
               </span>
             </a>
         </li>
-        <li><a href="#"><i class="fa fa-wrench"></i> <span>Account Settings</span></a></li>
+        <li><a href="{{ route('user.profile') }}"><i class="fa fa-wrench"></i> <span>Account Settings</span></a></li>
         <li><a href="{{ route('user.transactions') }}"><i class="fa fa-gears"></i> <span>Transactions</span></a></li>
         <li><a href="{{ route('user.logout') }}"><i class="fa fa-power-off"></i> <span>Logout</span></a></li>
 

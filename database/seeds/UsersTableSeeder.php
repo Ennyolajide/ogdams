@@ -22,6 +22,7 @@ class UsersTableSeeder extends Seeder
             'address' => 'no 13 ifelodun',
             'city' => 'abeokuta',
             'state' => 'ogun',
+            'wallet_id' => 'A1b2C3D4xyz112',
             'created_at' => Carbon::now()->format('Y-m-d H:i:s'),
             'updated_at' => Carbon::now()->format('Y-m-d H:i:s'),
         ]);
@@ -32,9 +33,11 @@ class UsersTableSeeder extends Seeder
             'api_token' => Str::random(60),
             'active' => true,
             'number' => '08000000000',
-            'balance' => 0,
+            'balance' => 10000,
             'city' => 'Moon',
             'state' => 'Universe',
+            'referrer' => 'A1b2C3D4xyz112',
+            'wallet_id' => Str::random('8').rand(1,100).Str::random(2),
             'created_at' => Carbon::now()->format('Y-m-d H:i:s'),
             'updated_at' => Carbon::now()->format('Y-m-d H:i:s'),
         ]);

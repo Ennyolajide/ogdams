@@ -9,6 +9,6 @@ class RingoSubProductList extends Model
     //
     public function product()
     {
-        return $this->belongsTo(RingoProduct::class);
+        return $this->belongsTo(RingoProduct::class, 'ringo_product_id', 'id');
     }
 }

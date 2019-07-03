@@ -44,18 +44,14 @@
                                             <h3 class="text-center">{{ session('to') }}</h3>
                                         @endif
                                         <p class="text-center">How to transfer on {{ session('networkName') }} network</p>
-                                            <p class="text-center well well-sm no-shadow alert-info" style="margin-top: 10px;">
-                                                    MTN Share ’N’ Sell
-                                                    <br/>
-                                                    Dial: *600*07063637002‬*7056*PIN#
-                                                    <br/>
-                                                    If you don't have a PIN, to use 1234 as your PIN Dial: *600*0000*1234*1234#
-
-                                            </p>
-
+                                        <p class="text-center well well-sm no-shadow alert-info" style="margin-top: 10px;">
+                                            MTN Share ’N’ Sell
+                                            <br/>
+                                            Dial: *600*07063637002‬*7056*PIN#
+                                            <br/>
+                                            If you don't have a PIN, to use 1234 as your PIN Dial: *600*0000*1234*1234#
+                                        </p>
                                     </div>
-
-
                                 </div>
                             </section>
                         </div>
@@ -101,6 +97,51 @@
         </div>
 
     @endSection
+    @if(session('modal'))
+        <!-- /Modal -->
+        @php $imgSrc = "\images/networks/".session('modal')->swapFromNetwork.".png"; @endphp
+        <div id="response-modal" class="modal fade" role="dialog">
+            <div class="modal-dialog">
+                <!-- Modal content-->
+                <div class="modal-content">
+                    <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Airtime To Wallet</h4>
+                    </div>
+                    <div class="modal-body">
+                        <p class="h3 text-center text-success"><i class="fa fa-check"></i>Airtime  Request Accepted</p>
+                        <section class="content">
+
+                            <h4 class="text-justify text-info">
+                                To complete the Airtime wallet funding Send @naira(session('modal')->amount) airtime from
+                                {{ session('modal')->swapFromPhone }} to any of the {{ ucfirst(session('modal')->swapFromNetwork) }}
+                                numbers listed below within the next {{ session('modal')->timeOut / 60 }} hours
+                            </h4>
+                            <ul class="list-inline h3 text-center text-primary">
+                                @foreach (session('modal')->recipients as $recipient)
+                                    <li>{{ $recipient }} </li>
+                                @endforeach
+                            </ul>
+                            <p class="hidden-xs h4 text-center">
+                                <img class="rounded icon-size" src="{{ $imgSrc }}"/> Transfer code
+                                <i class="fa fa-arrow-right"></i>
+                                <span class="text-primary text-bold">{{ session('modal')->transferCode }}</span>
+                            </p>
+                            <p class="visible-xs h4 text-center ">
+                                <p class="visible-xs h4 text-center"> Transfer code</p>
+                                <p class="text-center visible-xs"><i class="fa fa-arrow-down fa-2x"></i></p>
+                                <p class="text-primary text-bold visible-xs">{{ session('modal')->transferCode }}</p>
+                            </p>
+                            <p class="h4 text-center text-danger">
+                                You will receive @naira(session('modal')->walletAmount) in your wallet within {{ session('modal')->processTime }} minutes
+                            </p>
+                        </section>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- /Modal -->
+        @endif
 
     @section('scripts')
         @if (session('response'))

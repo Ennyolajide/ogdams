@@ -34,7 +34,7 @@
                             <section class="container">
                                 <div class="row">
                                     <div class="col-xs-12 col-sm-7 col-md-7 col-lg-7">
-                                        <form id="airtime-swap-form" class="form-horizontal" method="post" action="">
+                                        <form id="airtime-swap-form" class="form-horizontal" method="post">
                                             <br/> @csrf
                                             <div class="form-group">
                                                 <label class="col-sm-2 control-label hidden-xs">&nbsp;</label>
@@ -47,7 +47,7 @@
                                                             <br/><br/>
                                                             <i class="fa fa-arrow-right fa-3x"></i>
                                                         </div>
-                                                        <div id="swapToNetworkImage" class="col-xs-4 col-sm-3 col-md-3 col-lg-3  pull-right" style="display:none;">
+                                                        <div class="swap-from-network-image col-xs-4 col-sm-3 col-md-3 col-lg-3  pull-right" style="display:none;">
                                                             <img class="img-responsive">
                                                         </div>
                                                     </div>
@@ -90,27 +90,29 @@
                                                     <input type="text" class="form-control" disabled="true">
                                                 </div>
                                             </div>
-                                            <div class="form-group">
-                                                <label class="col-sm-2 control-label">Network</label>
+                                            <div class="form-group bank" style="display:none;">
+                                                <label class="col-sm-2 control-label" >Bank</label>
                                                 <div class="col-sm-10">
-                                                    <div id="swap-to-network" >
-                                                        <select class="form-control" name="swapToNetwork" id="swapToNetwork">
-                                                            <option value="" disabled selected>Choose Network</option>
+                                                    <div id="swap-from-network" data-networks="{{ $networks }}">
+                                                        <select class="form-control" name="bankId">
+                                                            <option value="" disabled selected>Choose Bank</option>
+                                                            @foreach ($banks as $bank)
+                                                                <option value="{{ $bank->id }}">
+                                                                    {{ $bank->acc_name  }} {{ $bank->acc_no }} {{ $bank->bank_name }}
+                                                                </option>
+                                                            @endforeach
                                                         </select>
-                                                        <p class="help-block">Select the network you want to swap airtime to.</p>
+                                                        <p class="help-block">Select a bank account to receive your cash.  </p>
                                                     </div>
                                                 </div>
                                             </div>
                                             <div class="form-group">
-                                                <label class="col-sm-2 control-label">Phone Number</label>
-                                                <div class="col-sm-10 form-grouping">
-                                                    <input type="text" class="form-control" name="swapToPhone">
-                                                    <p class="help-block">The phone number you want to swap to</p>
-                                                </div>
-                                            </div>
-                                            <div class="form-group">
-                                                <div class="col-sm-offset-2 col-sm-3">
+                                                <div class="col-sm-offset-2 col-sm-10">
                                                     <button id="submit" class="btn bg-purple btn-flat">Swap</button>
+                                                    <button class="btn bg-maroon btn-flat bank add-bank pull-right" style="display:none;">
+                                                        <i class="fa fa-bank"></i>
+                                                        Add {{ $banks->count() > 0 ? 'More' : 'New' }} Bank Account
+                                                    </button>
                                                 </div>
                                             </div>
                                         </form>
@@ -138,22 +140,21 @@
                 <div class="modal-content">
                     <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal">&times;</button>
-                    <h4 class="modal-title">Airtime Swap</h4>
+                    <h4 class="modal-title">Airtime To Cash</h4>
                     </div>
                     <div class="modal-body">
-                        <p class="h3 text-center text-success"><i class="fa fa-check"></i>Airtime Swap Request Accepted</p>
+                        <p class="h3 text-center text-success"><i class="fa fa-check"></i>Airtime  Request Accepted</p>
                         <section class="content">
 
                             <h4 class="text-justify text-info">
-                                To complete the Airtime Swap Send @naira(session('modal')->amount) airtime from
+                                To complete the Airtime to Cash Send @naira(session('modal')->amount) airtime from
                                 {{ session('modal')->swapFromPhone }} to any of the {{ ucfirst(session('modal')->swapFromNetwork) }}
-                                numbers listed below within the next {{ session('modal')->timeOut / 60 }} hours
+                                numbers listed below and then click the completed button
                             </h4>
                             <ul class="list-inline h3 text-center text-primary">
-                                <li>{{ session('modal')->swapNumberOne }} </li>
-                                @if(session('modal')->swapNumberTwo)
-                                    <li>{{ session('modal')->swapNumberTwo }} </li>
-                                @endif
+                                @foreach (session('modal')->recipients as $recipient)
+                                    <li>{{ $recipient }} </li>
+                                @endforeach
                             </ul>
                             <p class="hidden-xs h4 text-center">
                                 <img class="rounded icon-size" src="{{ $imgSrc }}"/> Transfer code
@@ -166,10 +167,21 @@
                                 <p class="text-primary text-bold visible-xs">{{ session('modal')->transferCode }}</p>
                             </p>
                             <p class="h4 text-center text-danger">
-                                You will receive @naira(session('modal')->swapedAmount) on {{ session('modal')->swapToPhone}}
+                                You will receive @naira(session('modal')->walletAmount) on
+                                {{ session('modal')->bankDetails->acc_no.'( '.session('modal')->bankDetails->bank_name.' )' }}
                                 within {{ session('modal')->processTime }} minutes
                             </p>
+                            <p class="h4 text-center text-danger">
+                                Please use/click the Completed button only after you have transfered the airtime to avoid been baned
+                            </p>
                         </section>
+                    </div>
+                    <div class="modal-footer">
+                        <form action="{{ route('airtime.cash.completed', ['airtimeRecord' => session('modal')->airtimeRecordId ]) }}" method="post">
+                            @csrf @method('patch')
+                            <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Close</button>
+                            <button type="submit" class="btn btn-primary">Completed</button>
+                        </form>
                     </div>
                 </div>
             </div>
@@ -192,12 +204,17 @@
                     }
                 });
 
+                $('.add-bank').click(function(){
+                    document.location.href="{{ route('user.profile') }}";
+                });
+
                 $('#amount').keyup(function(){
                     let amount = $('#amount').val();
                     let networks = @json($networks);
                     let network = $('#network').val();
                     let returnAmount = networks[(network-1)].airtime_swap_percentage / 100 * amount;
                     amount.length > 2 ? $('#wallet-amount').show().find('input').val(returnAmount) : false;
+                    amount.length > 2 ? $('.bank').show() : false;
                 });
 
                 $('#network').change(function(){
@@ -207,15 +224,10 @@
                     let networks = @json($networks);
                     let fromNetwork = networks.splice((network-1),1)[0].network.toLowerCase();
                     $('.swap-from-network-image').show().find('img').attr('src', '/images/networks/'+fromNetwork+'.png');
-                    $.each(networks,function(i, val){
-                        $('#swapToNetwork').append('<option class="networkList">'+val.network+'</option>');
-                    })
+                    //$('#swapToNetworkImage').show().find('img').attr('src', '/images/networks/'+networkImage+'.png');
                 })
 
-                $('#swapToNetwork').change(function(){
-                    let networkImage = $(this).val().toLowerCase();
-                    $('#swapToNetworkImage').show().find('img').attr('src', '/images/networks/'+networkImage+'.png');
-                })
+
 
 
                 $('#airtime-swap-form').validate({
@@ -228,13 +240,6 @@
                         },
                         amount: {
                             required : true
-                        },
-                        swapToNetwork: {
-                            required : true
-                        },
-                        swapToPhone: {
-                            required: true,
-                            digit: true
                         }
                     },
                     messages: {
@@ -246,12 +251,6 @@
                         },
                         amount: {
                             required: "Pls enter swap amount",
-                        },
-                        swapToNetwork: {
-                            required: "Pls select a network to swap to",
-                        },
-                        swapToPhone: {
-                            required: "Pls enter phone number to swap airtime to.",
                         }
                     }
                 });

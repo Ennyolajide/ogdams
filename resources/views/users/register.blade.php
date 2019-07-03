@@ -27,6 +27,13 @@
 
           <form action="{{ route('user.register') }}" method="post">
             @csrf
+            @if($referrerId)
+                <div class="form-group has-feedback">
+                    <label class="text-center">Referrer Id</label>
+                    <input type="text" name="referrerId" value="{{ $referrerId }}" class="form-control" disabled="true">
+                    <span class="glyphicon glyphicon-user form-control-feedback"></span>
+                </div>
+            @endif
             <div class="form-group has-feedback">
               <input type="text" name="name" class="form-control" placeholder="Full name">
               <span class="glyphicon glyphicon-user form-control-feedback"></span>

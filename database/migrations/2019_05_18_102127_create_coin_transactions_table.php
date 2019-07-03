@@ -14,7 +14,7 @@ class CreateCoinTransactionsTable extends Migration
     public function up()
     {
         Schema::create('coin_transactions', function (Blueprint $table) {
-            $table->increments('id');
+            $table->bigIncrements('id');
             $table->string('coin');
             $table->string('type');
             $table->integer('rate');

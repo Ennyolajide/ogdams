@@ -17,7 +17,9 @@ class CreateBulkSmsConfigsTable extends Migration
             $table->increments('id');
             $table->string('route');
             $table->unsignedTinyInteger('routing');
+            $table->string('description')->nullable();
             $table->unsignedInteger('amount_per_unit'); // in kobo
+
             $table->timestamps();
         });
     }

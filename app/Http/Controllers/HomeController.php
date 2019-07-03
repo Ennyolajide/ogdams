@@ -22,7 +22,9 @@ class HomeController extends Controller
      */
     public function index()
     {
-        $transactions = Transaction::where('user_id', Auth::user()->id)->take(10)->latest()->get();
+        $transactions = Transaction::where('user_id', Auth::user()->id)
+                        ->whereStatus(!NULL)
+                        ->take(10)->latest()->get();
 
         return view('dashboard.index', compact('transactions'));
     }

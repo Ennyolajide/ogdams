@@ -31,7 +31,6 @@
                 </div>
                 <!-- /.box-header -->
                 <div class="box-body">
-                    @php $charges = 100; @endphp
                     <section class="container">
                         <div class="row">
                             <div class="col-xs-12 col-sm-7 col-md-6 col-lg-6">
@@ -46,20 +45,27 @@
                                     </div>
                                 </div>
                                 <div id="form1">
-                                    <form id="electricity-bill-form" class="form-horizontal">
+                                    <form id="electricity-bill-form" class="form-horizontal" action="{{ route('bills.electricity.topup') }}" method="POST">
                                         @csrf
                                         <br/>
+                                        <input type="hidden" name="packageId" value="{{ $product->id }}">
                                         <div class="form-group">
                                             <label class="col-sm-2 control-label">Meter id</label>
                                             <div class="col-sm-10 form-grouping">
-                                                <input type="text" id="meterId" class="form-control" name="meterId" value="23300065960" placeholder="Pls Eneter Meter ID">
+                                                <input type="text" id="cardNo" class="form-control" name="cardNo" value="23300065960" placeholder="Pls Eneter Meter ID">
+                                            </div>
+                                        </div>
+                                        <div class="form-group" id="nameDiv" style="display:none;">
+                                            <label class="col-sm-2 control-label">Name</label>
+                                            <div class="col-sm-10 form-grouping">
+                                                <input style="border: 1.5px solid green; color:blue;" type="text" id="name" class="form-control" name="owner">
                                             </div>
                                         </div>
                                         <br/>
                                         <div class="form-group">
                                             <label class="col-sm-2 control-label">Amount</label>
                                             <div class="col-sm-10 form-grouping">
-                                                <input type="text" id="amount" class="form-control" name="amount" value="10" placeholder="Pls Eneter Amount">
+                                                <input type="text" id="amount" class="form-control" name="amount" value="10" placeholder="Pls Eter Amount">
                                             </div>
                                         </div>
                                         <br/>
@@ -73,20 +79,15 @@
                                         <div class="form-group">
                                             <label class="col-sm-2 control-label">Phone Number</label>
                                             <div class="col-sm-10 form-grouping">
-                                                <input type="text" id="phone" class="form-control" name="phone" value="{{ Auth::user()->number }}"">
+                                                <input type="text" id="phone" class="form-control" name="phone" value="{{ Auth::user()->number }}">
                                             </div>
                                         </div>
                                         <br/>
                                         <div class="form-group">
                                             <div class="col-xs-12">
-                                                <button id="continue" class="btn bg-purple btn-flat pull-right">
-                                                Submit
-                                                </button>
+                                                <button id="continue" class="btn bg-purple btn-flat pull-right">Continue</button>
+                                                <button id="submit" type="submit" class="btn bg-purple btn-flat pull-right" style="display: none;">Submit</button>
                                             </div>
-                                            <div id="loader" style="display: none; text-align: center;">
-                                                <img src="../dist/img/ajax-loader.gif">
-                                            </div>
-                                            <div id="result"></div>
                                         </div>
                                     <form>
                                 </div>
@@ -97,11 +98,9 @@
                 </div>
             </div>
             <!-- /.box-body -->
-
-            <div class="box-footer clearfix">
-                <a href="invest" class="btn btn-sm bg-purple btn-flat pull-left">Invest Now</a>
-                <a href="javascript:void(0)" class="btn btn-sm btn-default btn-flat pull-right">View All Subscriptions</a>
-            </div>
+            @include('dashboard.layouts.errors')
+            <!-- .box-footer -->
+            @include('dashboard.layouts.box-footer')
             <!-- /.box-footer -->
         </div>
         <!-- /.box -->
@@ -142,7 +141,6 @@
     <script src="https://ajax.aspnetcdn.com/ajax/jquery.validate/1.16.0/jquery.validate.min.js"></script>
     <script>
         $(document).ready(function() {
-            $('#mtnImage,#airtelImage,#gloImage,#9mobileImage').hide();
 
             $.validator.setDefaults({
                 errorClass: 'help-block',
@@ -158,7 +156,6 @@
                 }
             });
 
-
             $('#electricity-bill-form').validate({
                 rules: {
                     meterId: {
@@ -169,8 +166,8 @@
                     },
                     amount: {
                         required: true,
-                        minlength: '{{ $product->min_amount }}',
-                        maxlength: '{{ $product->max_amount }}'
+                        minlength: '{{ strlen($product->min_amount) }}',
+                        maxlength: '{{ strlen($product->max_amount) }}'
 
                     },
                     email: {
@@ -208,39 +205,38 @@
 
                 }
             });
-        });
-    </script>
-    <script type="text/javascript">
-        $('#continue').click(function(e){
-            e.preventDefault();
-            $.ajaxSetup({
-                headers: { 'X-CSRF-TOKEN': $('meta[name="_token"]').attr('content') }
-            });
-            $('.overlay').show();
-            let timeOut = setTimeout(function(){ notifyError(); },10000);
-            $.ajax({
-               type:'POST',
-               url:'{{ route("bills.electricity.validate") }}',
-               data:{
-                   meterId : $('#meterId').val(), amount : $('#amount').val(), email : $('#email').val(),
-                   phone : $('#phone').val(), productId : '{{ $product->id  }}' },
-                success:function(data){
-                    console.log(data);
-                    clearTimeout(timeOut);
-                    data.response ? finalizeBill(data) : notifyError();
+
+            $('#continue').click(function(e){
+                e.preventDefault();
+                $.ajaxSetup({
+                    headers: { 'X-CSRF-TOKEN': $('meta[name="_token"]').attr('content') }
+                });
+                $('.overlay').show();
+                let timeOut = setTimeout(function(){ notifyError(); },10000);
+                $.ajax({
+                type:'POST',
+                url:'{{ route("bills.electricity.validate") }}',
+                data:{
+                    cardNo : $('#cardNo').val(), amount : $('#amount').val(), email : $('#email').val(),
+                    phone : $('#phone').val(), productId : '{{ $product->id  }}' },
+                    success:function(data){
+                        console.log(data);
+                        clearTimeout(timeOut);
+                        data.response ? finalizeBill(data) : notifyError();
+                    }
+                });
+
+                function finalizeBill(data){
+                    $('#name').val(data.name);
+                    $('#continue,.overlay').hide();
+                    $('#nameDiv,#submit').show();
+                }
+
+                function notifyError(){
+                    $('#error-modal').modal('show');
+                    $('.overlay').hide();
                 }
             });
-
-            function finalizeBill(data){
-                $('.overlay').hide();
-                alert(data.name);
-
-            }
-
-            function notifyError(){
-                $('#error-modal').modal('show');
-                $('.overlay').hide();
-            }
         });
     </script>
     @endSection

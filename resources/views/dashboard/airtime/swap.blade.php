@@ -131,7 +131,7 @@
     @endSection
     @if(session('modal'))
         <!-- /Modal -->
-        @php $imgSrc = "/images/networks/".session('modal')->swapFromNetwork.".png"; @endphp
+        @php $imgSrc = "\images/networks/".session('modal')->swapFromNetwork.".png"; @endphp
         <div id="response-modal" class="modal fade" role="dialog">
             <div class="modal-dialog">
                 <!-- Modal content-->
@@ -147,13 +147,12 @@
                             <h4 class="text-justify text-info">
                                 To complete the Airtime Swap Send @naira(session('modal')->amount) airtime from
                                 {{ session('modal')->swapFromPhone }} to any of the {{ ucfirst(session('modal')->swapFromNetwork) }}
-                                numbers listed below within the next {{ session('modal')->timeOut / 60 }} hours
+                                numbers listed below and then click the completed button
                             </h4>
                             <ul class="list-inline h3 text-center text-primary">
-                                <li>{{ session('modal')->swapNumberOne }} </li>
-                                @if(session('modal')->swapNumberTwo)
-                                    <li>{{ session('modal')->swapNumberTwo }} </li>
-                                @endif
+                                @foreach (session('modal')->recipients as $recipient)
+                                    <li>{{ $recipient }} </li>
+                                @endforeach
                             </ul>
                             <p class="hidden-xs h4 text-center">
                                 <img class="rounded icon-size" src="{{ $imgSrc }}"/> Transfer code
@@ -169,7 +168,17 @@
                                 You will receive @naira(session('modal')->swapedAmount) on {{ session('modal')->swapToPhone}}
                                 within {{ session('modal')->processTime }} minutes
                             </p>
+                            <p class="h4 text-center text-danger">
+                                Please use/click the Completed button only after you have transfered the airtime to avoid been baned
+                            </p>
                         </section>
+                    </div>
+                    <div class="modal-footer">
+                        <form action="{{ route('airtime.swap.completed', ['airtimeRecord' => session('modal')->airtimeRecordId ]) }}" method="post">
+                            @csrf @method('patch')
+                            <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Close</button>
+                            <button type="submit" class="btn btn-primary">Completed</button>
+                        </form>
                     </div>
                 </div>
             </div>

@@ -56,7 +56,7 @@
                                                     <option value="" disabled selected><strong>Choose Package/Plan</strong></option>
                                                     @foreach ($product->productList as $subProduct)
                                                         <option value="{{ $subProduct }}">
-                                                            {{ $subProduct->name }}
+                                                            {{ $subProduct->name }} = <span class="pull-right">@naira($subProduct->selling_price) </span>
                                                         </option>
                                                     @endforeach
                                                 </select>
@@ -73,7 +73,7 @@
                                         <div class="form-group" id="nameDiv" style="display:none;">
                                             <label class="col-sm-2 control-label">Name</label>
                                             <div class="col-sm-10 form-grouping">
-                                                <input style="border: 1.5px solid green; color:blue;" type="text" id="name" class="form-control" name="name">
+                                                <input style="border: 1.5px solid green; color:blue;" type="text" id="name" class="form-control" name="owner">
                                             </div>
                                         </div>
                                         <div id="amountDiv" class="form-group" style="display:none;">
@@ -102,10 +102,6 @@
                                                 <button id="continue" class="btn bg-purple btn-flat pull-right">Continue</button>
                                                 <button id="submit" type="submit" class="btn bg-purple btn-flat pull-right" style="display: none;">Submit</button>
                                             </div>
-                                            <div id="loader" style="display: none; text-align: center;">
-                                                <img src="../dist/img/ajax-loader.gif">
-                                            </div>
-                                            <div id="result"></div>
                                         </div>
                                     <form>
                                 </div>
@@ -114,10 +110,9 @@
                     </section>
                 </div>
                 <!-- /.box-body -->
-                <div class="box-footer clearfix">
-                    <a href="invest" class="btn btn-sm bg-purple btn-flat pull-left">Invest Now</a>
-                    <a href="javascript:void(0)" class="btn btn-sm btn-default btn-flat pull-right">View All Subscriptions</a>
-                </div>
+                @include('dashboard.layouts.errors')
+                <!-- .box-footer -->
+                @include('dashboard.layouts.box-footer')
                 <!-- /.box-footer -->
             </div>
             <!-- /.box -->
@@ -159,7 +154,6 @@
         <script src="https://ajax.aspnetcdn.com/ajax/jquery.validate/1.16.0/jquery.validate.min.js"></script>
         <script>
             $(document).ready(function() {
-                $('#mtnImage,#airtelImage,#gloImage,#9mobileImage').hide();
 
                 $.validator.setDefaults({
                     errorClass: 'help-block',
@@ -175,31 +169,29 @@
                     }
                 });
 
-
-                $('#continue').click(function() {
-                    $('#tv-bill-form').validate({
-                        rules: {
-                            package: { required: true },
-                            cardNo: { required: true },
-                            amount: { required: true },
-                            email: { required: true, email: true, minlength: 7, maxlength: 50 },
-                            phone: { required: true, minlength: 10, maxlength: 13 }
+                $('#tv-bill-form').validate({
+                    rules: {
+                        package: { required: true },
+                        cardNo: { required: true },
+                        amount: { required: true },
+                        email: { required: true, email: true, minlength: 7, maxlength: 50 },
+                        phone: { required: true, minlength: 10, maxlength: 13 }
+                    },
+                    messages: {
+                        package: { required: 'Pls choose your prefered package' },
+                        cardNo: { equired: 'Card number cannot be blank' },
+                        amount: { required: 'Bill amount cannot be blank' },
+                        email: {
+                            minlength: $.validator.format("Minimum of {0} characters required."),
+                            maxlength: $.validator.format("Maximum {0} characters.")
                         },
-                        messages: {
-                            package: { required: 'Pls choose your prefered package' },
-                            cardNo: { equired: 'Card number cannot be blank' },
-                            amount: { required: 'Bill amount cannot be blank' },
-                            email: {
-                                minlength: $.validator.format("Minimum of {0} characters required."),
-                                maxlength: $.validator.format("Maximum {0} characters.")
-                            },
-                            phone: {
-                                minlength: $.validator.format("Minimum of {0} characters required."),
-                                maxlength: $.validator.format("Maximum {0} characters.")
-                            }
+                        phone: {
+                            minlength: $.validator.format("Minimum of {0} characters required."),
+                            maxlength: $.validator.format("Maximum {0} characters.")
                         }
-                    });
+                    }
                 });
+
                 $('#package').change(function() {
                     let package = JSON.parse($(this).val());
                     $('#amountDiv').show().find('#amount').val(package.selling_price);
@@ -207,9 +199,7 @@
 
                 $('#continue').click(function(e){
                     e.preventDefault();
-                    $.ajaxSetup({
-                        headers: { 'X-CSRF-TOKEN': $('meta[name="_token"]').attr('content') }
-                    });
+                    $.ajaxSetup({ headers: { 'X-CSRF-TOKEN': $('meta[name="_token"]').attr('content') } });
                     $('.overlay').show();
                     let package = JSON.parse($('#package').val());
                     let timeOut = setTimeout(function(){ notifyError(); },10000);

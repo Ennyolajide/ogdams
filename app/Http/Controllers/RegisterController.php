@@ -3,11 +3,12 @@
 namespace App\Http\Controllers;
 
 
+use App\User;
 use App\Mail\Main;
+use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
-use App\User;
 
 class RegisterController extends Controller
 {
@@ -16,7 +17,14 @@ class RegisterController extends Controller
 
     public function index()
     {
-        return view('users/register');
+        $referrerId = false;
+        return view('users/register', compact('referrerId'));
+    }
+
+    public function show($wallet){
+        $referrerId = User::where('wallet_id',$wallet)->first()['wallet_id'] ?? false;
+
+        return view('users/register', compact('referrerId'));
     }
 
     public function register()
@@ -25,17 +33,23 @@ class RegisterController extends Controller
         $token = md5(uniqid());
 
         $this->validate(request(), [
+            'referrerId'  => 'sometimes',
             'name'      => 'required|string|max:50',
             'email'     => 'required|string|email|max:255|unique:users',
-            'password'  => 'required|string|min:5|confirmed'
+            'password'  => 'required|string|min:5|confirmed',
 
         ]);
+        return request()->all();
 
         User::create([
-            'name'       => ucwords(request()->name),
-            'email'      => request()->email,
-            'password'   => Hash::make(request()->password),
-            'token'      => $token
+            'token'         => $token,
+            'api_token' => Str::random(60),
+            'email'         => request()->email,
+            'name'          => ucwords(request()->name),
+            'referrer'      => request()->referrerId ?? null,
+            'password'      => Hash::make(request()->password),
+            'wallet_id'     => Str::random(8).rand(1,100).Str::random(2),
+
         ]);
 
         $link = url('users/verify/'.request()->email.'/'.$token);

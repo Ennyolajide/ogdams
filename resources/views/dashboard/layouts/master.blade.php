@@ -47,9 +47,11 @@
     <body class="hold-transition skin-blue sidebar-mini">
         <div class="wrapper">
 
+            @include('dashboard.layouts.sidebar')
+
             @include('dashboard.layouts.header')
 
-            @include('dashboard.layouts.sidebar')
+
 
             <!-- Content Wrapper. fContains page content -->
             <div class="content-wrapper">

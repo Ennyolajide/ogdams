@@ -121,11 +121,12 @@
                                         @php
                                             function getStatus($status){
                                                 $array = ['Declined','Pending','Success','Canceled'];
-                                                return $status ? $array[$status] : 'Decline';
+                                                return $array[$status];
                                             }
                                         @endphp
 
                                         @foreach ($transactions as $transaction)
+
                                             <tr>
                                                 <td>{{ str_limit($transaction->reference, 10, '...') }}</td>
                                                 <td class="text-right">@naira($transaction->amount)</td>
@@ -134,7 +135,7 @@
                                                 <td>{{ getStatus($transaction->status) }}</td>
                                                 <td>{{ $transaction->created_at }}</td>
                                                 <td>
-                                                <a href="#" data-toggle="modal" data-target="#{{ $transaction->id }}">
+                                                    <a href="#" data-toggle="modal" data-target="#{{ $transaction->id }}">
                                                         <i class="fa fa-eye"></i>view
                                                     </a>
                                                 </td>

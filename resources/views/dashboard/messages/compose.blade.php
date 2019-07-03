@@ -41,8 +41,7 @@
                                     <a href="#"><i class="fa fa-envelope-o"></i> Sent</a>
                                 </li>
                                 <li></li>
-                                <li>
-    </li>
+                                <li></li>
                                 <li></li>
                             </ul>
                         </div>

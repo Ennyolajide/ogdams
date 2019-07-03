@@ -14,7 +14,4 @@ class DataPlan extends Model
         return $this->hasMany(DataPlan::class, 'network_id', 'network_id');
     }
 
-
-
-
 }

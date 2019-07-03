@@ -3,45 +3,104 @@
 namespace App\Http\Controllers;
 
 use App\Airtime;
+use App\Transaction;
 use App\AirtimePercentage;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class AirtimeFundingController extends WalletController
 {
-    /* public function cash(){
-        $percentages = AirtimePercentage::where('airtime_to_cash_percentage_status',true)->get();
-        return view('dashboard.airtime.cash',compact('percentages'));
-    } */
 
+    protected $modalResponse;
+    protected $failureResponse = 'Airtime wallet funding failed';
+    protected $successResponse = 'Airtime wallet funding request successful <br/> Pls wait while your transaction is been processed';
+
+
+    /**
+     * Method to Initialize withdral
+     */
     public function store()
     {
+        //return request()->all();
+        //validation
         $this->validate(request(), [
-            'phone' => 'required|min:11|max:11',
-            'airtime_amount' => 'required|numeric|min:3|max:5'
-        ]);
-        $network = AirtimePercentage::find(request()->network);
-        Airtime::create([
-            'user_id' => Auth::user()->id,
-            'percentage' => $network->airtime_to_cash_percentage,
-            'amount' => request()->airtime_amount,
-            'network' => $network->network,
-            'from_phone' => request()->phone,
-            'to_phone' => '08033353290',
-            'transaction_type' => 5,
+            'amount'  => 'required|numeric',
+            'network' => 'required|numeric',
+            'swapFromPhone' => 'required|string|min:10|max:13',
         ]);
 
-        return redirect('dashboard/wallet/fund/airtime')
-                        ->withTo('0903344556677')
-                        ->withAmount(request()->amount)
-                        ->withNetwork(request()->network)
-                        ->withNetworkName($network->network);
+        $status = $this->processAirtimeFunding() ? true : false;
 
+        return $status ? back()->withModal($this->modalResponse) : back()->withNotification($this->clientNotify($this->failureResponse, $status));
     }
 
-    public function show()
+    /**
+     * Record Transaction
+     */
+    protected function processAirtimeFunding()
     {
-        return session()->has('to') ?
-            view('dashboard/wallet/airtime') : redirect(route('wallet.fund'));
+        $network = AirtimePercentage::find(request()->network);
+
+        $status = $network ? $this->airtimeFunding($network) : false;
+
+        return $status;
     }
+
+    /**
+     *  Execute AirtimeToCash
+     */
+    protected function airtimeFunding($network)
+    {
+        $transactionRecord = $this->storeAirtimeFunding($network);
+        $status = $transactionRecord ? true : false;
+        $this->modalResponse = $status ? $this->setModalResponse($transactionRecord->id,$network) : false;
+        $status ? $this->recordTransaction($transactionRecord, $this->getUniqueReference(), false, false, 'Airtime', false)->update(['status' => null]) : false;
+
+        return $status;
+    }
+
+    /**
+     * Store AirtimeToCash
+     */
+    protected function storeAirtimeFunding($network)
+    {
+        return Airtime::create([
+            'user_id' => Auth::user()->id, 'amount' => request()->amount, 'from_network' => $network->network, 'status' => null,
+            'percentage' => $network->airtime_swap_percentage, 'from_phone' => request()->swapFromPhone, 'class' => 'App\Airtime',
+            'type' => 'Airtime Funding', 'transaction_type' => 4, 'recipients' => $network->airtime_to_cash_phone_numbers
+        ]);
+    }
+
+    /**
+     * set success Response
+     */
+    protected function setModalResponse($transactionRecordId,$network)
+    {
+        return (object)[
+            'name' => 'AirtimeFunding',
+            'amount' => request()->amount,
+            'processTime' => $network->process_time,
+            'swapToPhone' => request()->swapToPhone,
+            'airtimeRecordId' => $transactionRecordId,
+            'transferCode' => $network->transfer_code,
+            'swapFromPhone' => request()->swapFromPhone,
+            'swapFromNetwork' => strtolower($network->network),
+            'recipients' => json_decode($network->airtime_to_cash_phone_numbers),
+            'walletAmount' => floor($network->airtime_swap_percentage / 100 * request()->amount)
+        ];
+    }
+
+    public function completed(Airtime $airtimeRecord){
+
+        $status = $airtimeRecord->update(['status' => 1 ]) ? true : false;
+
+        $status ? $airtimeRecord->transaction->first()->update(['status' => 1 ]) : false;
+
+        $message = $status ? $this->successResponse : $this->failureResponse;
+
+        return back()->withNotification($this->clientNotify($message, $status));
+
+    }
+
+
 }

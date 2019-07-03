@@ -14,11 +14,11 @@ class CreateDataPlansTable extends Migration
     public function up()
     {
         Schema::create('data_plans', function (Blueprint $table) {
-            $table->increments('id');
+            $table->bigIncrements('id');
             $table->unsignedTinyInteger('network_id');
             $table->string('network');
             $table->string('volume');
-            $table->string('notification_phone_number')->default('07063637002');
+            $table->string('notification_phone')->default('07063637002');
             $table->unsignedInteger('amount');
             $table->timestamps();
         });
