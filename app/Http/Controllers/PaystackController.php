@@ -67,15 +67,15 @@ class PaystackController extends PaymentController
      */
     protected function getPaystack($query)
     {
-        $endPoint = \config('constants.url.paystack') .$query;
+        $endPoint = \config('constants.url.paystack') . $query;
         $client = new \GuzzleHttp\Client(['http_errors' => false]);
         $request = $client->get($endPoint, ['headers' => $this->headers()]);
         $status = $request->getStatusCode() == '200' ? true : false;
         return $status ? $request->getBody()->getContents() : false;
     }
 
-    public function test(){
+    public function test()
+    {
         return $this->bankList();
     }
 }
-

@@ -16,9 +16,10 @@ class CreateBankTransfersTable extends Migration
             $table->unsignedInteger('user_id');
             $table->unsignedInteger('amount');
             $table->unsignedBigInteger('bank_id');
-            $table->string('class');
+            $table->json('details');
+            $table->string('class')->default('App\BankTransfer');
             $table->string('type')->default('Bank Transfer');
-            $table->unsignedTinyInteger('status')->default(1);
+            $table->unsignedTinyInteger('status')->nullable();
             $table->timestamps();
         });
     }

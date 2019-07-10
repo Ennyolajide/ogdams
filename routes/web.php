@@ -18,9 +18,9 @@ Route::get('/', function () {
 //Auth::routes();
 
 //Auth
-Route::get('users/login', 'LoginController@index')->name('user.login');
-Route::post('users/login', 'LoginController@login')->name('user.login');
-Route::get('users/logout', 'LoginController@logout')->name('user.logout');
+Route::get('/users/login', 'LoginController@index')->name('user.login');
+Route::post('/users/login', 'LoginController@login')->name('user.login');
+Route::get('/users/logout', 'LoginController@logout')->name('user.logout');
 Route::get('/register', 'RegisterController@index')->name('user.register');
 Route::post('/register', 'RegisterController@register')->name('user.register');
 Route::get('/register/referrer/{wallet}', 'RegisterController@show')->name('user.register.referrer');
@@ -74,8 +74,9 @@ Route::get('dashboard/wallet/fund/airtime', 'AirtimeFundingController@display')-
 Route::post('dashboard/wallet/fund/airtime', 'AirtimeFundingController@store')->name('wallet.fund.airtime');
 Route::patch('dashboard/wallet/fund/airtime/{airtimeRecord}', 'AirtimeFundingController@scompleted')->name('wallet.fund.airtime.completed');
 
-Route::post('dashboard/wallet/fund/bank', 'BankTransferController@create')->name('wallet.fund.bank');
-Route::post('dashboard/wallet/fund/bank/pay', 'BankTransferController@store')->name('wallet.fund.bank.action');
+Route::post('dashboard/wallet/fund/bank', 'BankTransferController@store')->name('wallet.fund.bank');
+Route::patch('dashboard/wallet/fund/bank/{bankTransferRecord}', 'BankTransferController@completed')->name('wallet.fund.bank.completed');
+
 
 Route::post('dashboard/wallet/fund/voucher', 'VoucherController@store')->name('wallet.fund.voucher');
 
@@ -151,13 +152,49 @@ Route::get('control/withdrawals', 'ModController@withdrawals')->name('admin.with
  */
 Route::namespace('Control')->group(function () {
     // Controllers Within The "App\Http\Controllers\Control" Namespace
-    Route::get('control/index', 'ModController@index')->name('admin.index');
-    Route::get('control/datas', 'DatasController@show')->name('admin.datas');
+    Route::get('control', 'ModController@index')->name('admin.index');
+
+    //Airtime Dashbaord
+    Route::patch('control/airtimes/funding/{trans}/edit', 'AirtimesController@funding')->name('admin.airtimes.fundings');
+    Route::patch('control/airtimes/{trans}/edit', 'AirtimesController@edit')->name('admin.airtimes.edit');
     Route::get('control/airtimes', 'AirtimesController@show')->name('admin.airtimes');
-    Route::get('control/fundings', 'FundingsController@show')->name('admin.airtimes');
-    Route::patch('control/datas/{trans}/edit', 'DatasController@edit')->name('admin.datas');
+
+
+    //Data Dashbaord
+    Route::patch('control/datas/{trans}/edit', 'DatasController@edit')->name('admin.datas.edit');
+    Route::get('control/datas', 'DatasController@show')->name('admin.datas');
+
+
+    //Fundings Dashboard
+    Route::patch('control/fundings/{trans}/edit', 'FundingsController@edit')->name('admin.fundings.edit');
+    Route::get('control/fundings', 'FundingsController@show')->name('admin.fundings');
+
+
+
+    //Withdrawal Dashbaord
+    Route::patch('control/withdrawals/{trans}/edit', 'WithdrawalsController@edit')->name('admin.withdrawals.edit');
     Route::get('control/withdrawals', 'WithdrawalsController@show')->name('admin.withdrawals');
-    Route::patch('control/airtimes/{trans}/edit', 'AirtimesController@edit')->name('admin.airtimes');
-    Route::patch('control/fundings/{trans}/edit', 'FundingsController@edit')->name('admin.fundings');
-    Route::patch('control/withdrawals/{trans}/edit', 'WithdrawalsController@edit')->name('admin.withdrawals');
+
+
+    //Configuaration index
+    Route::get('settings', 'SettingsController@index')->name('admin.settings');
+
+    //Data configurations
+    Route::patch('settings/data/{network}/edit', 'DatasController@editPhone')->name('admin.data.edit');
+    Route::get('settings/dataplan/{network}', 'DatasController@settings')->name('admin.dataplan');
+    Route::post('settings/dataplan/{network}', 'DatasController@newDataPlan')->name('admin.dataplan.new');
+    Route::patch('settings/dataplan/{network}/edit', 'DatasController@editDataPlan')->name('admin.dataplan.edit');
+
+    //airtime configurations
+    Route::get('settings/airtime/config', 'AirtimesController@settings')->name('admin.airtime.config');
+    Route::patch('settings/airtime/{network}/edit', 'AirtimesController@editConfig')->name('admin.airtime.config.edit');
+
+    //sms & service charges configurations
+    Route::get('settings/charges/config', 'SmsChargesController@show')->name('admin.charges.config');
+    Route::patch('settings/sms/{route}/edit', 'SmsChargesController@editSmsConfig')->name('admin.sms.config.edit');
+    Route::patch('settings/charges/{service}/edit', 'SmsChargesController@editChargesConfig')->name('admin.charges.config.edit');
+
+    //bills configurations
+    Route::get('settings/bills/{product}', 'BillsController@show')->name('admin.bills.config');
+    Route::patch('settings/bills/{subProduct}/edit', 'BillsController@edit')->name('admin.bill.config.edit');
 });

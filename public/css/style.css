@@ -69,3 +69,7 @@
     color:blue;
     border: 1.5px solid green;
 }
+
+.cursor{
+    cursor: pointer;
+}

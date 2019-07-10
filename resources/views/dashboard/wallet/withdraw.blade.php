@@ -43,7 +43,8 @@
                         <div class="box-body">
                             <section class="container">
                                 <div class="row">
-                                    <div class="col-xs-12 col-sm-6 col-md-5 col-lg-5">
+                                    <div class="col-xs-12 col-sm-7 col-md-7 col-lg-5">
+                                        <h3 class="text-bold text-danger col-sm-offset-2">Charges of @naira($charge) apply</h3>
                                         <form id="withdrawal-form" class="form-horizontal" method="post" action="{{ route('wallet.withdraw') }}">
                                             @csrf
                                             <br/>
@@ -59,25 +60,34 @@
                                                     <p id="amount-error" style="display:none;" class="help-block">Amount Exceed Withdrawable Balance</p>
                                                 </div>
                                             </div>
-                                            <div class="radio-group form-group" style="">
-                                                <label class="col-sm-2 control-label">Select Bank</label>
-                                                <div class="col-sm-10 form-grouping">
-                                                    @foreach ($banks as $bank)
-                                                        <div class="radio" data-value="{{ $bank->id }}" style="width:100%">
-                                                            <p class="text-center well no-shadow" style="margin-bottom:0px; margin-top:-6px">
-                                                                {{ $bank->bank_name }}<br/>
-                                                                <strong>{{ $bank->acc_no }}</strong><br/>
-                                                                {{ $bank->acc_name }}
-                                                            </p>
-                                                        </div>
-                                                        @if(!$loop->last) <br/> @endif
-                                                    @endforeach
+                                            <div class="form-group" id="chooseBank">
+                                                <label class="col-sm-2 control-label">Bank</label>
+                                                <div class="col-sm-10">
+                                                    <select class="form-control" id="bank" name="bankId">
+                                                        <option value="" disabled selected>Select Our Bank </option>
+                                                        @foreach ($banks as $item)
+                                                            <option value="{{ $item->id }}">
+                                                                {{ $item->bank_name }}
+                                                            </option>
+                                                        @endforeach
+                                                    </select>
+                                                    <p class="help-block text-olive">Bank to transfer to</p>
                                                 </div>
-                                                <input id="bank" type="hidden" name="bankId">
+                                                <div class="col-sm-10 col-sm-offset-2">
+                                                    <div class="radio" style="display:none; border: 2px solid #605ca8;">
+                                                        <p class="text-center well no-shadow" style="margin:-6px 0px 0px 0px; padding: 2px 7px;">
+                                                            <span class="bankName"></span><br/>
+                                                            <strong><span class="accNo"></span></strong><br/>
+                                                            <span class="accName"></span>
+                                                        </p>
+                                                    </div>
+                                                </div>
+                                                <br/>
+                                                <br/>
                                             </div>
                                             <div class="form-group">
-                                                <div class="col-sm-offset-2 col-sm-10 form-grouping">
-                                                    <button id="submit" class="btn bg-purple btn-flat form-control" disabled="true">Withdraw</button>
+                                                <div class="col-sm-offset-2 col-sm-3">
+                                                    <button id="submit" class="btn bg-purple btn-flat" disabled="true">Withdraw</button>
                                                 </div>
                                             </div>
                                         </form>
@@ -150,11 +160,14 @@
                     }
                 });
 
-                $('.radio-group .radio').click(function(){
-                    $('.radio').removeClass('selected');
-                    $(this).addClass('selected');
-                    $('#bank').val($(this).attr('data-value'));
-                    $(this).hasClass('selected') ? $('#submit').removeAttr('disabled') : false;
+                $('#chooseBank').change(function(){
+                    let banks = @json($banks);
+                    let bankDetails = banks[ $('#bank').val() - 1 ];
+                    $('.radio').find('.bankName').text(bankDetails.bank_name);
+                    $('.radio').find('.accNo').text(bankDetails.acc_no);
+                    $('.radio').find('.accName').text(bankDetails.acc_name);
+                    $('.radio').show();
+                    $('#submit').removeAttr('disabled');
                 });
             });
 

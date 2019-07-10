@@ -13,20 +13,19 @@ class FundingsController extends ModController
 
     public function show()
     {
-        $transactions = Transaction::where('class_type', 'App\Withdrawal')->whereStatus(1)->orderBy('id', 'desc')->paginate(20);
+        $transactions = Transaction::where('class_type', 'App\BankTransfer')->whereStatus(!NULL)->orderBy('id', 'desc')->paginate(20);
 
-        return view('control.withdrawals', compact('transactions'));
+        return view('control.fundings', compact('transactions'));
     }
 
     public function edit(Transaction $trans)
     {
-        $creditAmout = $trans->class->amount * $trans->class->percentage / 100;
         $status = request()->has('decline') || request()->has('completed') ? true : false;
         $transactionStatus = ['status' => request()->has('completed') ? 2 : 0];
         $status ? $trans->class->update($transactionStatus) : false;
-        $status = $status ? $this->creditWallet($creditAmout) : false;
+        $status = $status ? $this->creditWallet($trans->class->amount) : false;
         $status ? $trans->update($transactionStatus) : false;
-        $status ? $this->notify($this->creditNotification($creditAmout,$trans->method)) : false;
+        $status ? $this->notify($this->creditNotification($trans->class->amount, $trans->method)) : false;
         $message = $status ? $this->successResponse : $this->failureResponse;
 
         return back()->withNotification($this->clientNotify($message, $status));

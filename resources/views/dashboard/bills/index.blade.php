@@ -32,17 +32,7 @@
                     <!-- /.box-header -->
 
                     <div class="box-body">
-                        <section class="container">
-                            <div class="row">
 
-                            </div>
-                        </section>
-                    </div>
-
-                    <div class="box-body">
-                        <section class="container">
-
-                        </div>
                         <section class="container">
 
                                 @foreach ($products->chunk(5) as $chunk)
@@ -81,12 +71,11 @@
                         </div>
                     </div>
                     <!-- /.box-body -->
-
-                    <div class="box-footer clearfix">
-                        <a href="invest" class="btn btn-sm bg-purple btn-flat pull-left">Invest Now</a>
-                        <a href="javascript:void(0)" class="btn btn-sm btn-default btn-flat pull-right">View All Subscriptions</a>
-                    </div>
+                    @include('dashboard.layouts.errors')
+                    <!-- .box-footer -->
+                    @include('dashboard.layouts.box-footer')
                     <!-- /.box-footer -->
+                    <!-- /.box -->
                 </div>
                 <!-- /.box -->
             </div>

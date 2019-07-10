@@ -103,7 +103,8 @@
             <!-- /.box -->
         </div>
     </div>
-    @endSection
+</section>
+@endSection
 
     @section('scripts')
         <script src="https://ajax.aspnetcdn.com/ajax/jquery.validate/1.16.0/jquery.validate.min.js"></script>

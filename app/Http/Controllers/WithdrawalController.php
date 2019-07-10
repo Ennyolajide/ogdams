@@ -8,40 +8,11 @@ use App\Withdrawal;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
-class  WithdrawMethods extends TransactionController
+class  WithdrawalController extends TransactionController
 {
-
     protected $failureResponse = 'Insuffient balance, Pls fund your account';
     protected $successResponse = 'Withdraw request successful <br/> Please wait while your request is been proccess';
 
-
-    /**
-     * Store Withdrawals
-     */
-    protected function storeWithdrawals()
-    {
-        return Withdrawal::create([
-            'user_id' => Auth::user()->id, 'amount' => request()->amount,
-            'bank_id' => request()->bankId, 'class' => 'App\Withdrawal', 'type' => 'Withdrawal',
-        ]);
-    }
-
-    /**
-     *  Execute withdrawal
-     */
-    protected function withdraw()
-    {
-        $transactionRecord = $this->storeWithdrawals();
-        $status = $transactionRecord ? $this->debitWallet(request()->amount + $this->withdrawalCharges) : false;
-        $status ? $this->recordTransaction($transactionRecord, $this->getUniqueReference(), true) : false;
-
-        return $status;
-    }
-}
-
-
-class WithdrawalController extends WithdrawMethods
-{
     /**
      * Display Withdraw (if at least one bank account is connected )else( redirect to profile page)
      */
@@ -91,5 +62,28 @@ class WithdrawalController extends WithdrawMethods
 
             return $status;
         }
+    }
+
+    /**
+     * Store Withdrawals
+     */
+    protected function storeWithdrawals()
+    {
+        return Withdrawal::create([
+            'user_id' => Auth::user()->id, 'amount' => request()->amount,
+            'bank_id' => request()->bankId, 'class' => 'App\Withdrawal', 'type' => 'Withdrawal',
+        ]);
+    }
+
+    /**
+     *  Execute withdrawal
+     */
+    protected function withdraw()
+    {
+        $transactionRecord = $this->storeWithdrawals();
+        $status = $transactionRecord ? $this->debitWallet(request()->amount + $this->withdrawalCharges) : false;
+        $status ? $this->recordTransaction($transactionRecord, $this->getUniqueReference(), false, true) : false;
+
+        return $status;
     }
 }

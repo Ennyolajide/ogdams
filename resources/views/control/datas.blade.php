@@ -138,14 +138,14 @@
 
                         </div>
                     </div>
-                </div>
-                <div class="modal-footer">
-                    <form method="POST" action="{{ route('admin.datas',['trans' => $transaction->id] ) }}">
-                        @method('patch')
-                        @csrf
-                        <button type="submit" name="decline" class="btn btn-danger pull-left">Deline</button>
-                        <button type="submit" name="completed" class="btn btn-primary">Completed</button>
-                    </form>
+                    <div class="modal-footer">
+                        <form method="POST" action="{{ route('admin.datas.edit',['trans' => $transaction->id] ) }}">
+                            @method('patch')
+                            @csrf
+                            <button type="submit" name="decline" class="btn btn-danger pull-left">Deline</button>
+                            <button type="submit" name="completed" class="btn btn-primary">Completed</button>
+                        </form>
+                    </div>
                 </div>
             </div>
         </div>

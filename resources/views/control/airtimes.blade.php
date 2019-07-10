@@ -78,7 +78,7 @@
                                 </tr>
                             </tfoot>
                         </table>
-                    </div></div>
+                    </div>
                     <!-- /.box-body -->
                     @include('dashboard.layouts.errors')
                     <!-- .box-footer -->
@@ -207,9 +207,9 @@
                     </div>
                     <div class="modal-footer">
                         @if($transaction->class->transaction_type == 4)
-                            <form method="POST" action="{{ route('admin.fundings',['trans' => $transaction->id] ) }}">
+                            <form method="POST" action="{{ route('admin.airtimes.fundings',['trans' => $transaction->id] ) }}">
                         @else
-                            <form method="POST" action="{{ route('admin.airtimes',['trans' => $transaction->id] ) }}">
+                            <form method="POST" action="{{ route('admin.airtimes.edit',['trans' => $transaction->id] ) }}">
                         @endif
                             @method('patch') @csrf
                             <button type="submit" name="decline" class="btn btn-danger pull-left">Deline</button>

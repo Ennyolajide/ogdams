@@ -28,10 +28,8 @@ class ModController extends NotificationController
     {
         $users = User::all()->count();
         $totalTrans = Transaction::whereStatus('2')->count();
-        $transactions = Transaction::where('user_id', Auth::user()->id)->take(10)->latest()->get();
+        $transactions = Transaction::whereStatus(!NULL)->take(20)->latest()->get();
 
-        return view('control.index', compact('transactions','totalTrans','users'));
+        return view('control.index', compact('transactions', 'totalTrans', 'users'));
     }
-
-
 }

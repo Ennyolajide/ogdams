@@ -26,9 +26,9 @@ class LoginController extends Controller
     public function login()
     {
         $inactiveResponse = 'Account Inactive, please check your email inbox or email spam ';
-        $inactiveResponse.= 'folder to verify email and complete registration.';
+        $inactiveResponse .= 'folder to verify email and complete registration.';
 
-        $this->validate(request(),[
+        $this->validate(request(), [
             'email'     => 'required|exists:users|email|min:5|max:40',
             'password'  => 'required|min:5',
         ]);
@@ -42,15 +42,15 @@ class LoginController extends Controller
 
 
 
-        if (Auth::attempt($userData,request()->has('remember'))) {
-            return redirect('/dashboard');
+        if (Auth::attempt($userData, request()->has('remember'))) {
+            $route = Auth::user()->role == 'admin' ? '/control' : '/dashboard';
+            return redirect($route);
         } else {
-            $user = User::where('email',request()->email)->first();
+            $user = User::where('email', request()->email)->first();
 
             $response = $user->active ? 'Invalid Username/Password' : $inactiveResponse;
-            return back()->with('response',$response);
+            return back()->with('response', $response);
         }
-
     }
 
     public function logout()

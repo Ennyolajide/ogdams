@@ -133,8 +133,8 @@
         </div>
         <!-- /.modal -->
     </div>
-    </div>
-    @endSection
+</section>
+@endSection
 
     @section('scripts')
 

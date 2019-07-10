@@ -17,7 +17,7 @@ class Admin
     public function handle($request, Closure $next)
     {
         if (Auth::user()->role != 'admin') {
-            return redirect('/dashboard');
+            return redirect('/users/logout');
         }
         return $next($request);
     }

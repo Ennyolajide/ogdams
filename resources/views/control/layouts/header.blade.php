@@ -9,9 +9,9 @@ $unReadMessages = Auth::user()->messages->where('read',0)->sortByDesc('id');
     <!-- Logo -->
     <a href="{{ route('dashboard.index') }}" class="logo">
       <!-- mini logo for sidebar mini 50x50 pixels -->
-      <span class="logo-mini"><b>A</b>LT</span>
+      <span class="logo-mini"><b>A</b>min</span>
       <!-- logo for regular state and mobile devices -->
-      <span class="logo-lg"><b>Admin</b>LTE</span>
+      <span class="logo-lg"><b>Admin</b></span>
     </a>
 
     <!-- Header Navbar: style can be found in header.less -->
@@ -67,7 +67,7 @@ $unReadMessages = Auth::user()->messages->where('read',0)->sortByDesc('id');
           <!-- User Account: style can be found in dropdown.less -->
           <li class="dropdown user user-menu">
             <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-              <span class="hidden-xs">@naira(Auth::user()->balance)</span>
+              <span class="hidden-xs"></span>
             </a>
             <ul class="dropdown-menu">
               <!-- User image -->
@@ -75,7 +75,7 @@ $unReadMessages = Auth::user()->messages->where('read',0)->sortByDesc('id');
               <li class="user-body">
                 <div class="row">
                   <div class="col-xs-12 text-center">
-                    Balance : @naira(Auth::user()->balance)
+
                   </div>
                 </div>
                 <!-- /.row -->

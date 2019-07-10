@@ -12,7 +12,7 @@
           <a href="#"><i class="fa fa-circle text-success"></i> Online</a>
         </div>
       </div>
-{{--       <!-- search form -->
+    <!-- search form -->
       <form action="#" method="get" class="sidebar-form">
         <div class="input-group">
           <input type="text" name="q" class="form-control" placeholder="Search...">
@@ -23,10 +23,16 @@
               </span>
         </div>
       </form>
-      <!-- /.search form --> --}}
+      <!-- /.search form -->
       <!-- sidebar menu: : style can be found in sidebar.less -->
       <ul class="sidebar-menu" data-widget="tree">
         <li class="header">MAIN NAVIGATION</li>
+        <li><a href="{{ route('admin.settings') }}"><i class="fa fa-wrench"></i> <span>Settings</span></a></li>
+        <li><a href="{{ route('admin.airtimes') }}"><i class="fa fa-gear"></i> <span>Airtimes</span></a></li>
+        <li><a href="{{ route('admin.datas') }}"><i class="fa fa-gear"></i> <span>Data</span></a></li>
+        <li><a href="{{ route('admin.fundings') }}"><i class="fa fa-gear"></i> <span>Fundings</span></a></li>
+        <li><a href="{{ route('admin.withdrawals') }}"><i class="fa fa-gear"></i> <span>withdrawals</span></a></li>
+        <li><a href="{{ route('user.logout') }}"><i class="fa fa-power-off"></i> <span>Logout</span></a></li>
       </ul>
 
 

@@ -11,15 +11,16 @@ class WithdrawalsController extends ModController
     protected $failureResponse = 'Operation Failed';
     protected $successResponse = 'Operation Successful';
 
-    public function show(){
-        $transactions = Transaction::where('class_type','App\Withdrawal')->whereStatus(1)->orderBy('id', 'desc')->paginate(20);
-
-        return view('control.withdrawals',compact('transactions'));
+    public function show()
+    {
+        $transactions = Transaction::where('class_type', 'App\Withdrawal')->whereStatus(1)->orderBy('id', 'desc')->paginate(20);
+        return view('control.withdrawals', compact('transactions'));
     }
 
-    public function edit(Transaction $trans){
+    public function edit(Transaction $trans)
+    {
         $status = request()->has('decline') || request()->has('completed') ? true : false;
-        $transactionStatus = ['status' => request()->has('completed') ? 2 : 0 ];
+        $transactionStatus = ['status' => request()->has('completed') ? 2 : 0];
         $status ? $trans->class->update($transactionStatus) : false;
         $status ? $trans->update($transactionStatus) : false;
         //$status ? $this->notify($this->controlWithdrawalNotification($trans->amount)) : false;
@@ -27,5 +28,4 @@ class WithdrawalsController extends ModController
 
         return back()->withNotification($this->clientNotify($message, $status));
     }
-
 }

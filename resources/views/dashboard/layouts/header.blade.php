@@ -67,7 +67,7 @@ $unReadMessages = Auth::user()->messages->where('read',0)->sortByDesc('id');
           <!-- User Account: style can be found in dropdown.less -->
           <li class="dropdown user user-menu">
             <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-              <span class="hidden-xs">@naira(Auth::user()->balance)</span>
+              <span class="">@naira(Auth::user()->balance)</span>
             </a>
             <ul class="dropdown-menu">
               <!-- User image -->

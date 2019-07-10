@@ -10,7 +10,7 @@ class NotificationController extends HomeController
     protected function creditNotification($amount, $method)
     {
         $notification['subject'] = 'Credit Notification';
-        $notification['content'] = 'Your wallet has been credited with ' . $this->naira($amount). ' using '.$method;
+        $notification['content'] = 'Your wallet has been credited with ' . $this->naira($amount) . ' using ' . $method;
 
         return $notification;
     }
@@ -98,8 +98,8 @@ class NotificationController extends HomeController
     protected function miscTopupNotification($details)
     {
         $notification['subject'] = 'Debit Notification';
-        $notification['content'] = 'Your wallet has been debited with '.$this->naira($details['amount']);
-        $notification['content'] .=' for ' . $details['product'] . '(' .$details['type']. ')';
+        $notification['content'] = 'Your wallet has been debited with ' . $this->naira($details['amount']);
+        $notification['content'] .= ' for ' . $details['product'] . '(' . $details['type'] . ')';
 
         return $notification;
     }
@@ -129,7 +129,7 @@ class NotificationController extends HomeController
 
     public function clientNotify($message, $status = false)
     {
-        return (object)[
+        return (object) [
             'message' => $message,
             'status' => $status ? $status : false,
         ];
@@ -141,23 +141,27 @@ class NotificationController extends HomeController
     protected function controlWithdrawalNotification($amount)
     {
         $notification['subject'] = 'Withdral Notification';
-        $notification['content'] = 'Your withdral request of '.$this->naira($amount).' has been ';
-        $notification['content'].= request()->has('completed') ? 'proccessed' : 'canceled';
+        $notification['content'] = 'Your withdral request of ' . $this->naira($amount) . ' has been ';
+        $notification['content'] .= request()->has('completed') ? 'proccessed' : 'canceled';
 
         return $notification;
     }
 
     protected function adminDataNotification($dataPlan)
     {
-        return request()->phone.' Aut adipisci voluptates odit neque. Nihil aut est aliquam expedita provident et ut velit. Laboriosam qui officia et veniam.';
+        return request()->phone . ' ordered for ' . $dataPlan->network . ' ' . $dataPlan->volume;
+    }
+
+    protected function notifyAdminViaEmail(){
+        
     }
 
     protected function notifyAdminViaSms($message, $to)
     {
         $client = new \GuzzleHttp\Client();
         $url = \config('constants.url.smartsmssolutions');
-        $client->post($url . '?json', ['form_params' => $this->notifyAdminViaSmsFormParamters($message, $to)]);
-
+        $request = $client->post($url . '?json', ['form_params' => $this->notifyAdminViaSmsFormParamters($message, $to)]);
+        dd($request->getBody()->getContents());
     }
 
     /**
@@ -170,5 +174,4 @@ class NotificationController extends HomeController
             'routing' => 3, 'ref_id' => $this->getUniqueReference(), 'token' => env('SMARTSMSSOLUTION_TOKEN'),
         ];
     }
-
 }

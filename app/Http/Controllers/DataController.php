@@ -52,7 +52,6 @@ class DataController extends TransactionController
 
             return $status;
         }
-
     }
 
     /**
@@ -78,6 +77,4 @@ class DataController extends TransactionController
             'phone' => request()->phone, 'volume' => $dataPlan->volume, 'class' => 'App\Data', 'type' => 'Data Topup'
         ]);
     }
-
-
 }
