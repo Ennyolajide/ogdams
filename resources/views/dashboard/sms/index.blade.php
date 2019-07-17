@@ -1,44 +1,46 @@
 @extends('dashboard.layouts.master')
 
-@section('content-header')
-<section class="content-header">
-    <h1>Bulk Sms</h1>
-    <ol class="breadcrumb">
-        <li>
-            <a href="#"><i class="fa fa-dashboard"></i> Home</a>
-        </li>
-        <li class="active">Sms</li>
-    </ol>
-</section>
-@endsection
+    @section('content-header')
+        <div class="page-title">
+            <div class="title_left">
+                <h4>Bulk Sms</h4>
+            </div>
+            <div class="pull-right">
+                <ol class="breadcrumb">
+                    <li>
+                        <a href="#"><i class="fa fa-dashboard"></i> Home</a>
+                    </li>
+                    <li class="active">Sms</li>
+                </ol>
+            </div>
+        </div>
+        <div class="clearfix"></div>
+    @endsection
 
-@section('content')
-<!-- Main content -->
-<section class="content">
-    <!-- Info boxes -->
-    <div class="row">
-        <div class="col-md-12">
-            <!-- TABLE: LATEST ORDERS -->
-            <div class="box box-purple">
-                <div class="box-header with-border">
-                    <h3 class="box-title"><i class="fa fa-envelope"></i> Send Bulk Sms</h3>
-
-                    <div class="box-tools pull-right">
-                        <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
-                        <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
+    @section('content')
+        <!-- Main content -->
+        <div class="row">
+            <div class="col-md-12 col-sm-12 col-xs-12">
+                <div class="x_panel">
+                    <div class="x_title">
+                        <h2>Pay Bills</h2>
+                        <ul class="nav navbar-right panel_toolbox">
+                            <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                            </li>
+                            <li><a class="close-link"><i class="fa fa-close"></i></a>
+                            </li>
+                        </ul>
+                        <div class="clearfix"></div>
                     </div>
-                </div>
-                <!-- /.box-header -->
-                <div class="box-body">
-                    <section class="container">
+                    <div class="x_content">
                         <div class="row">
-                            <!--div class="col-md-12"-->
+                            <div class="col-xs-12 col-sm-12 col-md-12">
                                 <br/>
                                 <form id="send-bulk-sms-form" method="POST" action="">
                                     @csrf
                                     <div class="form-group row">
-                                        <label class="col-sm-1 control-label">Package</label>
-                                        <div class="col-sm-8 form-grouping text-bold">
+                                        <label class="col-sm-2 col-xs-12 control-label">Package</label>
+                                        <div class="col-sm-8 col-xs-12 form-grouping text-bold">
                                             <select style="height: 40px;" class="form-control" id="route" name="route">
                                                 <option value="" disabled selected><strong>Choose Sms Type</strong></option>
                                                 @foreach ($smsConfigs as $smsConfig)
@@ -55,7 +57,7 @@
                                                             @else
                                                                 @naira($smsConfig->amount_per_unit / 100)
                                                             @endif
-                                                             Per Page Per Sms
+                                                            Per Page Per Sms
                                                         </span>
                                                     </option>
                                                 @endforeach
@@ -64,15 +66,15 @@
                                     </div>
                                     <br/>
                                     <div class="form-group row">
-                                        <label class="col-sm-1 control-label">Sender Id</label>
-                                        <div class="col-sm-8 form-grouping">
+                                        <label class="col-sm-2 col-xs-12 control-label">Sender Id</label>
+                                        <div class="col-sm-8 col-xs-12 form-grouping">
                                             <input type="text" class="form-control" name="senderId" placeholder="Enter Sender Id" required>
                                         </div>
                                     </div>
 
                                     <div class="form-group row">
-                                        <label class="col-sm-1 control-label">Recepient</label>
-                                        <div class="col-sm-8 form-grouping">
+                                        <label class="col-sm-2 col-xs-12 control-label">Recepient</label>
+                                        <div class="col-sm-8 col-xs-12 form-grouping">
                                             <textarea placeholder="Enter recepient number seperate by space or comma" id="recepients" name="recepients" style="width: 100%; height: 100px; font-size: 14px; line-height: 18px; border: 2px solid #dddddd; padding: 10px;" disabled="true">07063637002</textarea>
                                             <div class="">
                                                 <p id="numbers" class="pull-left text-success" style="font-size:18px"></p>
@@ -80,8 +82,8 @@
                                         </div>
                                     </div>
                                     <div class="form-group row">
-                                        <label class="col-sm-1 control-label">Message</label>
-                                        <div class="col-sm-8 form-grouping">
+                                        <label class="col-sm-2 col-xs-12  control-label">Message</label>
+                                        <div class="col-sm-8 col-xs-12  form-grouping">
                                             <textarea placeholder="Enter message" id="message" name="message" style="width: 100%; height: 125px; font-size: 14px; line-height: 18px; border: 2px solid #dddddd; padding: 10px;" disabled="true">{{ $faker->paragraph(3) }}</textarea>
                                             <div class="count">
                                                 <p id="characters" class="pull-left text-success" style="font-size:18px"></p>
@@ -90,27 +92,31 @@
                                         </div>
                                     </div>
                                     <div class="form-group row">
-                                        <label class="col-sm-1 control-label"></label>
-                                        <div class="col-sm-4 form-grouping">
-                                            <button id="continue" class="btn bg-purple btn-flat" disabled="true" type="submit">Send
+                                        <label class="col-sm-2 col-xs-12 control-label"></label>
+                                        <div class="col-sm-8 col-xs-12 form-grouping">
+                                            <button id="continue" class="btn bg-purple btn-flat pull-right" disabled="true" type="submit">Send
                                                 <i class="fa fa-arrow-circle-right"></i>
                                             </button>
                                         </div>
                                     </div>
                                     <input type="hidden" id="smsPages">
                                     <input type="hidden" id="totalNumbersOfRecepient">
+                                    <br/>
                                 </form>
-                            <!--/div-->
+                                <!--/div-->
+                            </div>
                         </div>
-                    </section>
+                        @include('dashboard.layouts.errors')
+                    </div>
+
+                    <!-- /.box-body -->
+
+                    <!-- .box-footer -->
+                    @include('dashboard.layouts.box-footer')
+                    <!-- /.box-footer -->
+                    <!-- /.box -->
                 </div>
             </div>
-            <!-- /.box-body -->
-            @include('dashboard.layouts.errors')
-            <!-- .box-footer -->
-            @include('dashboard.layouts.box-footer')
-            <!-- /.box-footer -->
-            <!-- /.box -->
 
             <!--Modal-->
             <div id="confirm-modal" class="modal fade" role="dialog">

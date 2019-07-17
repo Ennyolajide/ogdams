@@ -8,73 +8,109 @@
 @section('content-header')
 
     <!-- Content Header (Page header) -->
-    <section class="content-header">
-        <h1>
-          Transactions
-          <small>My Transactions</small>
-        </h1>
-        <ol class="breadcrumb">
-          <li><a href="#"><i class="fa fa-dashboard"></i> Dashboard</a></li>
-          <li class="active">Transactions</li>
-        </ol>
-    </section>
+    @section('content-header')
+        <div class="page-title">
+            <div class="title_left">
+                <h4>Transaction</h4>
+            </div>
+            <div class="pull-right">
+                <ol class="breadcrumb">
+                    <li>
+                        <a href="#"><i class="fa fa-dashboard"></i> Dashboard</a>
+                    </li>
+                    <li class="active">Transactions</li>
+                </ol>
+            </div>
+        </div>
+        <div class="clearfix"></div>
+    @endsection
 
-@endSection
-
-@section('content')
-    <!-- Main content -->
-    <section class="content">
+    @section('content')
+        <!-- Main content -->
         <div class="row">
-            <div class="col-xs-12">
-                <div class="box">
-                    <div class="box-header">
-                        <h3 class="box-title">My Transactions</h3>
+            <div class="col-md-12 col-sm-12 col-xs-12">
+                <div class="x_panel">
+                    <div class="x_title">
+                        <h2>My Transcations</h2>
+                        <ul class="nav navbar-right panel_toolbox">
+                            <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                            </li>
+                            <li><a class="close-link"><i class="fa fa-close"></i></a>
+                            </li>
+                        </ul>
+                        <div class="clearfix"></div>
                     </div>
-                    <!-- /.box-header -->
-                    <div class="box-body">
-                        <table id="transactions-table" class="table table-bordered table-striped">
-                            <thead>
-                                <tr>
-                                    <th>Reference</th>
-                                    <th>Amount</th>
-                                    <th>Type</th>
-                                    <th>Status</th>
-                                    <th>Date</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @php
-                                    function getStatus($status){
-                                        $array = ['Success','Pending','Cancel'];
-                                        return $status ? $array[$status] : 'Decline';
-                                    }
-                                @endphp
+                    <div class="x_content">
+                        <div class="row">
+                            <div class="col-xs-12 col-sm-12 col-md-12">
+                                <table id="transactions-table" class="table table-bordered">
+                                    <thead>
+                                        <tr>
+                                            <th>#</th>
+                                            <th class="hidden-xs">Reference</th>
+                                            <th>Amount</th>
+                                            <th>Type</th>
+                                            <th>Status</th>
+                                            <th class="hidden-xs">Date</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @php
+                                            function getStatus($status){
+                                                $array = ['Declined','Pending','Success','Canceled'];
+                                                return $status ? $array[$status] : 'Decline';
+                                            }
+                                        @endphp
 
-                                @foreach ($transactions as $transaction)
-                                    <tr>
-                                        <td>{{ $transaction->id }}</td>
-                                        <td>{{ $transaction->amount }}</td>
-                                        <td>xxxx</td>
+                                        @foreach ($transactions as $transaction)
+                                            <tr>
+                                                <th scope="row">{{ $loop->iteration }}</th>
+                                                <td class="hidden-xs">{{ str_limit($transaction->reference, 10, '...') }}</td>
+                                                <td class="text-right">@naira($transaction->amount)</td>
+                                                <td>{{ $transaction->class->type }}</td>
 
-                                        <td>{{ getStatus($transaction->status) }}</td>
-                                        <td>{{ $transaction->created_at }}</td>
-                                        <td><a href="#"><i class="fa fa-eye"></i>view</a></td>
-                                    </tr>
-                                @endforeach
-                            </tbody>
-                            <tfoot>
-                                <tr>
-                                    <th>Reference</th>
-                                    <th>Amount</th>
-                                    <th>Type</th>
-                                    <th>Status</th>
-                                    <th>Date</th>
-                                </tr>
-                            </tfoot>
-                        </table>
+                                                <td>{{ getStatus($transaction->status) }}</td>
+                                                <td class="hidden-xs">{{ $transaction->created_at }}</td>
+                                                <td>
+                                                <a href="#" data-toggle="modal" data-target="#{{ $transaction->id }}">
+                                                        <i class="fa fa-eye"></i>view
+                                                    </a>
+                                                </td>
+                                            </tr>
+                                        @endforeach
+                                    </tbody>
+
+
+                                </table>
+                                <div class="col-md-12">
+                                    <div class="text-right">
+                                        @if ($transactions->hasPages())
+                                            {{ $transactions->firstItem() }} - {{ $transactions->lastItem() }}/{{ $transactions->total() }}
+                                            <div class="btn-group">
+                                                {{-- Previous Page Link --}}
+                                                @if (!$transactions->onFirstPage())
+                                                    <button type="button" class="previousPage btn btn-default btn-sm">
+                                                        <i class="fa fa-chevron-left"></i>
+                                                    </button>
+                                                @endif
+                                                {{-- Next Page Link --}}
+                                                @if ($transactions->hasMorePages())
+                                                    <button type="button" class="nextPage btn btn-default btn-sm">
+                                                        <i class="fa fa-chevron-right"></i>
+                                                    </button>
+                                                @endif
+
+                                            </div>
+                                            <!-- /.btn-group -->
+                                        @endif
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        @include('dashboard.layouts.errors')
                     </div>
                     <!-- /.box-body -->
-                    @include('dashboard.layouts.errors')
+
                     <!-- .box-footer -->
                     @include('dashboard.layouts.box-footer')
                     <!-- /.box-footer -->
@@ -84,7 +120,6 @@
             <!-- /.col -->
         </div>
         <!-- /.row -->
-    </section>
       <!-- /.content -->
       @foreach ($transactions as $transaction)
         <!-- Modal -->
@@ -155,4 +190,16 @@
               })
             })
           </script>
+
+        <script>
+            $(function() {
+                $('.previousPage').click( function(){
+                    window.location.href='{{ $transactions->previousPageUrl() }}';
+                });
+
+                $('.nextPage').click( function(){
+                    window.location.href='{{ $transactions->nextPageUrl() }}';
+                });
+            });
+        </script>
     @endSection

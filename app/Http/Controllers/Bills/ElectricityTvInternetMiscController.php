@@ -16,7 +16,7 @@ class ElectricityTvInternetMiscController extends RingoController
     public function tvInternetMiscTopup($subProduct)
     {
         return true;
-        $meterId = json_encode(['meter' => (string)request()->cardNo]);
+        $meterId = json_encode(['meter' => (string) request()->cardNo]);
 
         $endPoint = 'billpay/dstv/' . $subProduct->product->product_id . '/' . $subProduct->code;
 
@@ -35,8 +35,8 @@ class ElectricityTvInternetMiscController extends RingoController
         $body = json_encode([
             'prepaid' => request()->prepaid,
             'product_id' => $product->product_id,
-            'meter' => (string)request()->cardNo,
-            'denomination' => (string)request()->amount,
+            'meter' => (string) request()->cardNo,
+            'denomination' => (string) request()->amount,
         ]);
 
         $endPoint = 'billpay/electricity/' . request()->cardNo;

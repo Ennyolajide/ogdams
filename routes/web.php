@@ -38,7 +38,7 @@ Route::get('/home', 'HomeController@index')->name('home');
 Route::get('/dashboard', 'HomeController@index')->name('dashboard.index');
 
 //Profile
-Route::get('/dashboard/profile/index', 'ProfileController@index')->name('user.profile');
+Route::get('/dashboard/profile', 'ProfileController@index')->name('user.profile');
 Route::post('/bank/addBankDetails', 'BankController@addBankDetails')->name('user.addBankDetails');
 Route::post('/bank/bankDetails', 'BankController@resolveBankDetails')->name('paystack.bankDetails');
 
@@ -92,12 +92,11 @@ Route::get('dashboard/payments/callback', 'PaystackController@handleGatewayCallb
 /* Route::get('faq', 'HomePageController@faq')->name('faq');
 Route::get('contact', 'HomePageController@contact')->name('contact'); */
 
-//Coins
-Route::get('dashboard/coins', 'CoinsController@index')->name('coins');
-Route::get('dashboard/coins/buy/{coin}', 'CoinsController@buy')->name('coins.buy');
-Route::post('dashboard/coins/buy/', 'CoinTransactionController@purchase')->name('coins.buy');
-Route::get('dashboard/coins/sell/{coin}', 'CoinsController@sell')->name('coins.sell');
-Route::post('dashboard/coins/sell/', 'CoinsController@save')->name('coins.sell');
+//Bitcoin
+Route::get('dashboard/bitcoin/{action}', 'BitcoinController@show')->name('coins');
+
+//Gift Card
+Route::get('dashboard/giftcard', 'GiftCardController@show')->name('giftcard');
 
 //Sms
 Route::get('dashboard/sms/bulk', 'SmsController@display')->name('sms.bulk');
@@ -153,12 +152,12 @@ Route::get('control/withdrawals', 'ModController@withdrawals')->name('admin.with
 Route::namespace('Control')->group(function () {
     // Controllers Within The "App\Http\Controllers\Control" Namespace
     Route::get('control', 'ModController@index')->name('admin.index');
+    Route::get('control/transactions', 'TransactionsController@show')->name('admin.transactions');
 
     //Airtime Dashbaord
     Route::patch('control/airtimes/funding/{trans}/edit', 'AirtimesController@funding')->name('admin.airtimes.fundings');
     Route::patch('control/airtimes/{trans}/edit', 'AirtimesController@edit')->name('admin.airtimes.edit');
     Route::get('control/airtimes', 'AirtimesController@show')->name('admin.airtimes');
-
 
     //Data Dashbaord
     Route::patch('control/datas/{trans}/edit', 'DatasController@edit')->name('admin.datas.edit');
@@ -168,8 +167,6 @@ Route::namespace('Control')->group(function () {
     //Fundings Dashboard
     Route::patch('control/fundings/{trans}/edit', 'FundingsController@edit')->name('admin.fundings.edit');
     Route::get('control/fundings', 'FundingsController@show')->name('admin.fundings');
-
-
 
     //Withdrawal Dashbaord
     Route::patch('control/withdrawals/{trans}/edit', 'WithdrawalsController@edit')->name('admin.withdrawals.edit');

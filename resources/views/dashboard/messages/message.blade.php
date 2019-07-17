@@ -1,186 +1,168 @@
 @extends('dashboard.layouts.master')
 
     @section('content-header')
-        <section class="content-header">
-            <h1>
-                Messages<small>{{ $messages->where('read',0)->count() }} new messages</small></h1>
-            <ol class="breadcrumb">
-                <li>
-                    <a href="#"><i class="fa fa-dashboard"></i> Home</a>
-                </li>
-                <li class="active">Messages</li>
-            </ol>
-        </section>
-    @endSection
+        <div class="page-title">
+            <div class="title_left">
+                <h4>{{ $messages->where('read',0)->count() }} new messages</h4>
+            </div>
+            <div class="pull-right">
+                <ol class="breadcrumb">
+                    <li>
+                        <a href="#"><i class="fa fa-dashboard"></i> Home</a>
+                    </li>
+                    <li class="active">Message</li>
+                </ol>
+            </div>
+        </div>
+        <div class="clearfix"></div>
+    @endsection
+
 
     @section('content')
-
         <!-- Main content -->
-        <section class="content">
-            <div class="row">
-                <div class="col-md-3">
-                    <a href="{{ route('messages.compose') }}" class="btn btn-primary btn-block margin-bottom">Contact Support</a>
-                    <div class="box box-solid">
-                        <div class="box-header with-border">
-                            <h3 class="box-title">Folders</h3>
-                            <div class="box-tools">
-                                <button type="button" class="btn btn-box-tool" data-widget="collapse">
-                                    <i class="fa fa-minus"></i>
-                                </button>
-                            </div>
-                        </div>
-                        <div class="box-body no-padding">
-                            <ul class="nav nav-pills nav-stacked">
-                                <li class="active">
-                                    <a href="{{  route('messages.inbox') }}"><i class="fa fa-inbox"></i>              Inbox
-                                        <span class="label label-primary pull-right">
-                                            {{ $messages->where('read',0)->count() }}
-                                        </span>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="#"><i class="fa fa-envelope-o"></i> Sent</a>
-                                </li>
-                                <li></li>
-                                <li></li>
-                                <li></li>
-                            </ul>
-                        </div>
-                            <!-- /.box-body -->
-                        </div>
-                        <!-- /. box -->
-                        <div class="box box-solid">
-                            <div class="box-body no-padding">
-                                <ul class="nav nav-pills nav-stacked">
-                                    <li></li>
-                                    <li></li>
-                                </ul>
-                            </div>
-                            <!-- /.box-body -->
-                        </div>
-                        <!-- /.box -->
-                    </div>
-                    <!-- /.col -->
-                    {{--<div id="loader" style="text-align: center;">
-                            <img src="../dist/img/ajax-loader.gif">
-                    </div> --}}
-
-                <div class="col-md-9" id="read" display="none">
-                    <div class="box box-primary">
-                        <div class="box-header with-border">
-                            <h3 class="box-title">Read Messages</h3>
-
-                            <div class="box-tools pull-right">
-                                <a href="#" class="btn btn-box-tool" data-toggle="tooltip" title="Previous"><i class="fa fa-chevron-left"></i></a>
-                                <a href="#" class="btn btn-box-tool" data-toggle="tooltip" title="Next"><i class="fa fa-chevron-right"></i></a>
-                            </div>
-                        </div>
-                        <!-- /.box-header -->
-                        <div class="box-body no-padding">
-                            <div class="mailbox-read-info">
-                                <h3><strong>{{ $message->subject }}</strong></h3>
-                                <h5>From: {{ $message->sender->name }}
-                                <span class="mailbox-read-time pull-right">{{ $message->created_at->diffForHumans() }}</span></h5>
-                            </div>
-                            <!-- /.mailbox-read-info -->
-                            <!-- /.mailbox-controls -->
-                            <div class="mailbox-read-message text-primary" style="padding: 30px; line-height:2; font-size: 16px;">
-                                @if($message->repliedMessage)
-                                    To : me
-                                    <br/>
-                                    {{ $message->repliedMessage->content }}
-                                    <div class="mailbox-read-message">
-                                        To : {{ $message->sender->name }}
-                                        <br/>
-                                        {{ $message->content }}
-                                    </div>
-                                    <br/>
-                                @else
-                                    {{ $message->content }}
-                                @endif
-                            </div>
-                            <!-- /.mailbox-read-message -->
-                        </div>
-                        <!-- /.box-header -->
-
-                        <!-- /#replyBox -->
-                        <div id="replyBox" class="box-body" style="display: none">
-                            <form id="reply-form" method="POST" action="{{ route('messages.reply',$message->id) }}">
-                                @csrf
-                                <div class="form-group">
-                                    <input class="form-control" id="subject" name="subject" value="Re: {{ $message->subject }}">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="x_panel">
+                    <div class="x_content">
+                        <div class="row">
+                            <div class="col-sm-3 col-xs-12 mail_list_column">
+                                <a href="{{ route('messages.compose') }}" class="btn btn-success btn-block margin-bottom">COMPOSE</a>
+                                <h3 class="x_title">Folders</h3>
+                                <div class="box-body no-padding">
+                                    <ul class="nav nav-pills nav-stacked">
+                                        <li class="active">
+                                            <a href="{{ route('messages.inbox') }}">
+                                                <i class="fa fa-inbox"></i>
+                                                    Inbox
+                                                <span class="label label-primary pull-right text-bold">
+                                                    {{ $messages->where('read',0)->count() }}
+                                                </span>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="#"><i class="fa fa-envelope-o"></i> Sent</a>
+                                        </li>
+                                    </ul>
                                 </div>
-                                <div class="form-group">
-                                    <i class="fa fa-reply"></i> {{ $message->sender->name }}
-                                </div>
-                                <div class="form-group">
-                                    <textarea id="compose-textarea" name="content" class="form-control" style="height: 200px"></textarea>
-                                </div>
-                                <div class="form-group">
-                                    <div class="col-md-5">
-                                        <div class="btn btn-default btn-file">
-                                            <i class="fa fa-paperclip"></i> Attachment
-                                            <input type="file" name="attachment">
+                                <!-- /.box-body -->
+
+                            </div>
+
+                            <div class="col-sm-9 mail_view">
+                                <div class="inbox-body">
+                                    <div class="mail_heading row">
+
+                                        <div class="col-md-8">
+                                           <div class="btn-group">
+                                                <button class="btn btn-sm btn-primary" type="button"><i class="fa fa-reply"></i> Reply</button>
+                                                <button class="btn btn-sm btn-default" type="button" data-placement="top" data-toggle="tooltip" data-original-title="Forward"><i class="fa fa-share"></i></button>
+                                                <button class="btn btn-sm btn-default" type="button" data-placement="top" data-toggle="tooltip" data-original-title="Print"><i class="fa fa-print"></i></button>
+                                                <button class="btn btn-sm btn-default" type="button" data-placement="top" data-toggle="tooltip" data-original-title="Trash"><i class="fa fa-trash-o"></i></button>
+                                            </div>
                                         </div>
-
-                                        <p class="help-block">Max. 50KB</p>
+                                        <div class="col-md-4 text-right">
+                                            <p class="date">{{ $message->created_at->diffForHumans() }}</p>
+                                        </div>
+                                        <div class="col-md-12">
+                                            <h4 class="text-bold"> {{ $message->subject }}</h4>
+                                        </div>
                                     </div>
-                                    <div class="col-md-7">
+                                    <div class="sender-info">
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <strong>From: {{ $message->sender->name }}</strong>
+                                                <span>(<a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="69030607470d060c290e04080005470a0604">[email&#160;protected]</a>)</span> to
+                                                <strong>me</strong>
+                                                <a class="sender-dropdown"><i class="fa fa-chevron-down"></i></a>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="view-mail" style="padding: 30px; line-height:2; font-size: 16px;">
+                                        @if($message->repliedMessage)
+                                            To : me
+                                            <br/>
+                                            {{ $message->repliedMessage->content }}
+                                            <div class="mailbox-read-message">
+                                                To : {{ $message->sender->name }}
+                                                <br/>
+                                                {{ $message->content }}
+                                            </div>
+                                            <br/>
+                                        @else
+                                            {{ $message->content }}
+                                        @endif
+                                    </div>
+
+                                    <!-- /#replyBox -->
+                                    <div id="replyBox" class="box-body" style="display: none">
+                                        <form id="reply-form" method="POST" action="{{ route('messages.reply',$message->id) }}">
+                                            @csrf
+                                            <div class="form-group">
+                                                <input class="form-control" id="subject" name="subject" value="Re: {{ $message->subject }}">
+                                            </div>
+                                            <div class="form-group">
+                                                <i class="fa fa-reply"></i> {{ $message->sender->name }}
+                                            </div>
+                                            <div class="form-group">
+                                                <textarea id="compose-textarea" name="content" class="form-control" style="height: 200px"></textarea>
+                                            </div>
+                                            <div class="form-group">
+                                                <div class="col-md-12">
+                                                    <div class="pull-right">
+                                                        <button type="reset" class="btn btn-default">
+                                                            <i class="fa fa-pencil"></i> Discard
+                                                        </button>
+                                                        <button id="send" class="btn btn-primary btn-flat">
+                                                            <i class="fa fa-envelope-o"></i> Send
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </form>
+                                    </div>
+                                    <!-- /#replyBox -->
+
+                                    <br/>
+
+
+                                    <div class="col-xs-12 col-md-6">
+                                        <form method="POST" action="{{ route('messages.delete',$message->id) }}">
+                                            @method('DELETE') @csrf
+                                            <button type="submit" class="btn btn-default">
+                                                <i class="fa fa-trash-o"></i> Delete
+                                            </button>
+                                            <button type="button" class="btn btn-default">
+                                                <i class="fa fa-print"></i> Print
+                                            </button>
+                                        </form>
+                                    </div>
+                                    <div class="col-xs-12 col-md-6">
                                         <div class="pull-right">
-                                            <button type="reset" class="btn btn-default">
-                                                <i class="fa fa-pencil"></i> Discard
+                                            <button id="reply" type="button" class="btn btn-default">
+                                                <i class="fa fa-reply"></i> Reply
                                             </button>
-                                            <button id="send" class="btn btn-primary btn-flat">
-                                                <i class="fa fa-envelope-o"></i> Send
+                                            <button type="button" class="btn btn-default">
+                                                <i class="fa fa-share"></i> Forward
                                             </button>
                                         </div>
                                     </div>
                                 </div>
-                            </form>
-                        </div>
-                        <!-- /#replyBox -->
-
-                         <!-- /#actionFooterBox -->
-                        <div id="actionFooterBox" class="box-footer">
-                            <div class="col-xs-12 col-md-6">
-                                <form method="POST" action="{{ route('messages.delete',$message->id) }}">
-                                    @method('DELETE')
-                                    @csrf
-                                    <button type="submit" class="btn btn-default">
-                                        <i class="fa fa-trash-o"></i> Delete
-                                    </button>
-                                    <button type="button" class="btn btn-default">
-                                        <i class="fa fa-print"></i> Print
-                                    </button>
-                                </form>
+                                <!-- /#actionFooterBox -->
                             </div>
-                            <div class="col-xs-12 col-md-6">
-                                <div class="pull-right">
-                                    <button id="reply" type="button" class="btn btn-default">
-                                        <i class="fa fa-reply"></i> Reply
-                                    </button>
-                                    <button type="button" class="btn btn-default">
-                                        <i class="fa fa-share"></i> Forward
-                                    </button>
-                                </div>
-                            </div>
+                            <!-- /. box -->
                         </div>
-                        <!-- /#actionFooterBox -->
+                        <!-- /.col -->
                     </div>
-                    <!-- /. box -->
+                    <!-- /.row -->
                 </div>
-                <!-- /.col -->
             </div>
-            <!-- /.row -->
-        </section>
+        </div>
         <!-- /.content -->
 
     @endSection
 
     @section('scripts')
-        @if (session('response'))
-            <script>alert('{{ session('response') }}');</script>
-        @endif
 
         <script src="https://ajax.aspnetcdn.com/ajax/jquery.validate/1.16.0/jquery.validate.min.js"></script>
         <script>

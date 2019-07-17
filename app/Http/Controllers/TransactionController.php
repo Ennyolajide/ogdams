@@ -9,7 +9,7 @@ class TransactionController extends MessageController
 {
     public function index()
     {
-        $transactions = Transaction::where('user_id', Auth::user()->id)->get();
+        $transactions = Transaction::where('user_id', Auth::user()->id)->orderBy('id', 'desc')->paginate(2);
 
         return view('dashboard/transactions', compact('transactions'));
     }

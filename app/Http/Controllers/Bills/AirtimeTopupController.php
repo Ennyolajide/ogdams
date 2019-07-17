@@ -30,7 +30,6 @@ class AirtimeTopupController extends RingoController
      */
     public function store()
     {
-
         $this->validate(request(), [
             'amount' => 'required|numeric',
             'network' => 'required|numeric',
@@ -67,7 +66,7 @@ class AirtimeTopupController extends RingoController
     {
         $reference = $this->getUniqueReference();
         $response = $this->executeTopup($this->formatPhoneNumber(request()->phone), $reference);
-        $this->failureResponse = $response ? $this->failureResponse :  $this->apiErrorResponse;
+        $this->failureResponse = $response ? $this->failureResponse : $this->apiErrorResponse;
         $status = $response ? $this->debitWallet(request()->amount) : false;
         $airtimeRecord = $this->storeTopup($status);
         $this->recordTransaction($airtimeRecord, $reference, $status, $status, false, true);

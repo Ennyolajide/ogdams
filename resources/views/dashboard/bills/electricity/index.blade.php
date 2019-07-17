@@ -1,43 +1,48 @@
 @extends('dashboard.layouts.master')
 
-@section('content-header')
-<section class="content-header">
-    <h1>Pay Bills</h1>
-    <ol class="breadcrumb">
-        <li>
-            <a href="#"><i class="fa fa-dashboard"></i> Home</a>
-        </li>
-        <li class="active">Bills</li>
-    </ol>
-</section>
-@endsection
 
-@section('content')
-<!-- Main content -->
-<section class="content">
-    <!-- Info boxes -->
-    <div class="row">
-        <div class="col-md-12">
-            <!-- TABLE: LATEST ORDERS -->
-            <div class="box box-purple">
-                <div class="box-header with-border">
-                    <h3 class="box-title">Pay {{ $product->name }} Bills</h3>
+    @section('content-header')
+        <div class="page-title">
+            <div class="title_left">
+                <h4>Pay Bills</h4>
+            </div>
+            <div class="pull-right">
+                <ol class="breadcrumb">
+                    <li>
+                        <a href="#"><i class="fa fa-dashboard"></i> Dashboard</a>
+                    </li>
+                    <li class="active">Bills</li>
+                </ol>
+            </div>
+        </div>
+        <div class="clearfix"></div>
+    @endsection
 
-                    <div class="box-tools pull-right">
-                        <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
-                        </button>
-                        <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
+
+    @section('content')
+
+        <!-- Main content -->
+        <div class="row">
+            <div class="col-md-12 col-sm-12 col-xs-12">
+                <div class="x_panel">
+                    <div class="x_title">
+                        <h2>Pay {{ $product->name }} Bills</h2>
+                        <ul class="nav navbar-right panel_toolbox">
+                            <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                            </li>
+                            <li><a class="close-link"><i class="fa fa-close"></i></a>
+                            </li>
+                        </ul>
+                        <div class="clearfix"></div>
                     </div>
-                </div>
-                <!-- /.box-header -->
-                <div class="box-body">
-                    <section class="container">
+                    <div class="x_content">
                         <div class="row">
-                            <div class="col-xs-12 col-sm-7 col-md-6 col-lg-6">
+                            <div class="col-xs-12 col-sm-8 col-md-6 col-lg-6">
+
                                 <div class="row">
                                     <div class="col-xs-7 col-sm-7 col-md-7 col-lg-7">
                                         <h3 class="text-primary text-center"><strong> {{ $product->name }} </strong></h3>
-                                        <h4 class="text-danger text-center"><strong>Charges @naira(100) Apply </strong></h3>
+                                        <h4 class="text-danger text-center"><strong>Charges @naira(0) Apply </strong></h3>
                                     </div>
                                     <div class="col-xs-5 col-sm-5 col-md-4 col-lg-3  pull-right">
                                         <br/>
@@ -50,35 +55,35 @@
                                         <br/>
                                         <input type="hidden" name="packageId" value="{{ $product->id }}">
                                         <div class="form-group">
-                                            <label class="col-sm-2 control-label">Meter id</label>
-                                            <div class="col-sm-10 form-grouping">
+                                            <label class="col-sm-2 col-xs-12 control-label">Meter id</label>
+                                            <div class="col-sm-10 col-xs-12 form-grouping">
                                                 <input type="text" id="cardNo" class="form-control" name="cardNo" value="23300065960" placeholder="Pls Eneter Meter ID">
                                             </div>
                                         </div>
                                         <div class="form-group" id="nameDiv" style="display:none;">
-                                            <label class="col-sm-2 control-label">Name</label>
-                                            <div class="col-sm-10 form-grouping">
+                                            <label class="col-sm-2 col-xs-12 control-label">Name</label>
+                                            <div class="col-sm-10 col-xs-12 form-grouping">
                                                 <input style="border: 1.5px solid green; color:blue;" type="text" id="name" class="form-control" name="owner">
                                             </div>
                                         </div>
                                         <br/>
                                         <div class="form-group">
-                                            <label class="col-sm-2 control-label">Amount</label>
-                                            <div class="col-sm-10 form-grouping">
+                                            <label class="col-sm-2 col-xs-12 control-label">Amount</label>
+                                            <div class="col-sm-10 col-xs-12 form-grouping">
                                                 <input type="text" id="amount" class="form-control" name="amount" value="10" placeholder="Pls Eter Amount">
                                             </div>
                                         </div>
                                         <br/>
                                         <div class="form-group">
-                                            <label class="col-sm-2 control-label">Email</label>
-                                            <div class="col-sm-10 form-grouping">
+                                            <label class="col-sm-2 col-xs-12 control-label">Email</label>
+                                            <div class="col-sm-10 col-xs-12 form-grouping">
                                                 <input type="text" id="email" class="form-control" name="email" value="{{ Auth::user()->email }}">
                                             </div>
                                         </div>
                                         <br/>
                                         <div class="form-group">
-                                            <label class="col-sm-2 control-label">Phone Number</label>
-                                            <div class="col-sm-10 form-grouping">
+                                            <label class="col-sm-2 col-xs-12 control-label">Phone Number</label>
+                                            <div class="col-sm-10 col-xs-12 form-grouping">
                                                 <input type="text" id="phone" class="form-control" name="phone" value="{{ Auth::user()->number }}">
                                             </div>
                                         </div>
@@ -89,52 +94,50 @@
                                                 <button id="submit" type="submit" class="btn bg-purple btn-flat pull-right" style="display: none;">Submit</button>
                                             </div>
                                         </div>
+                                        <br/><br/>
                                     <form>
                                 </div>
-
                             </div>
                         </div>
-                    </section>
-                </div>
-            </div>
-            <!-- /.box-body -->
-            @include('dashboard.layouts.errors')
-            <!-- .box-footer -->
-            @include('dashboard.layouts.box-footer')
-            <!-- /.box-footer -->
-        </div>
-        <!-- /.box -->
-        <!-- .modal -->
-        <div class="modal fade" id="error-modal">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-body">
-                        <div class="row">
-                            <div class="col-md-9 col-sm-9 col-xs-10">
-                                <h4 class="text-center text-danger">
-                                    <i class="block-center fa fa-exclamation-triangle"></i>&nbsp;&nbsp;
-                                    <em>Invalid {{ ucfirst(strtolower($product->name)) }}  Meter Number</em>
-                                </h4>
-                            </div>
-                            <div class="col-md-3 col-sm-3 col-xs-2">
-                                <h4 class="text-right text-danger">
-                                    <button type="button" class="text-danger" data-dismiss="modal" aria-label="Close">
-                                        <i class="fa fa-close text-right"></i>
-                                    </button>
-                                </h4>
-                            </div>
-                        <div>
                     </div>
-
+                    <!-- /.box-body -->
+                    @include('dashboard.layouts.errors')
+                    <!-- .box-footer -->
+                    @include('dashboard.layouts.box-footer')
+                    <!-- /.box-footer -->
                 </div>
-                <!-- /.modal-content -->
+                <!-- /.box -->
+                <!-- .modal -->
+                <div class="modal fade" id="error-modal">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-body">
+                                <div class="row">
+                                    <div class="col-md-9 col-sm-9 col-xs-10">
+                                        <h4 class="text-center text-danger">
+                                            <i class="block-center fa fa-exclamation-triangle"></i>&nbsp;&nbsp;
+                                            <em>Invalid {{ ucfirst(strtolower($product->name)) }}  Meter Number</em>
+                                        </h4>
+                                    </div>
+                                    <div class="col-md-3 col-sm-3 col-xs-2">
+                                        <h4 class="text-right text-danger">
+                                            <button type="button" class="text-danger" data-dismiss="modal" aria-label="Close">
+                                                <i class="fa fa-close text-right"></i>
+                                            </button>
+                                        </h4>
+                                    </div>
+                                <div>
+                            </div>
+
+                        </div>
+                        <!-- /.modal-content -->
+                    </div>
+                        <!-- /.modal-dialog -->
+                </div>
+                <!-- /.modal -->
             </div>
-                <!-- /.modal-dialog -->
-        </div>
-        <!-- /.modal -->
-    </div>
-</section>
-@endSection
+        </section>
+    @endSection
 
     @section('scripts')
 

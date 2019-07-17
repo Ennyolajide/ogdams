@@ -15,12 +15,11 @@ class BankTransferController extends WalletController
 
     public function store()
     {
-
         $this->validate(request(), [
-            'remarks' => 'sometimes|string',
+            'remarks' => 'sometimes',
+            'reference' => 'sometimes',
             'amount' => 'required|numeric',
             'depositor' => 'required|string',
-            'reference' => 'sometimes|string',
             'bankId' => 'required|numeric|exists:banks,id',
         ]);
 

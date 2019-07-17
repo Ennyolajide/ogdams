@@ -21,7 +21,7 @@ class DatabaseSeeder extends Seeder
 
         $this->call(UsersTableSeeder::class);
         $this->call(BanksTableSeeder::class);
-        $this->call(CoinsTableSeeder::class); //First time Run
+        $this->call(BitcoinsTableSeeder::class); //First time Run
         $this->call(ChargesTableSeeder::class);
         $this->call(DataPlansTableSeeder::class); //First time Run
 

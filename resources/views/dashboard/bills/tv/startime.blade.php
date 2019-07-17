@@ -1,40 +1,40 @@
 @extends('dashboard.layouts.master')
 
-@section('content-header')
-<section class="content-header">
-    <h1>Pay Bills</h1>
-    <ol class="breadcrumb">
-        <li>
-            <a href="#"><i class="fa fa-dashboard"></i> Home</a>
-        </li>
-        <li class="active">Bills</li>
-    </ol>
-</section>
-@endsection
+    @section('content-header')
+        <div class="page-title">
+            <div class="title_left">
+                <h4>Pay Bills</h4>
+            </div>
+            <div class="pull-right">
+                <ol class="breadcrumb">
+                    <li>
+                        <a href="#"><i class="fa fa-dashboard"></i> Dashboard</a>
+                    </li>
+                    <li class="active">Bills</li>
+                </ol>
+            </div>
+        </div>
+        <div class="clearfix"></div>
+    @endsection
 
-@section('content')
-<!-- Main content -->
-<section class="content">
-    <!-- Info boxes -->
-    <div class="row">
-        <div class="col-md-12">
-            <!-- TABLE: LATEST ORDERS -->
-            <div class="box box-purple">
-                <div class="box-header with-border">
-                    <h3 class="box-title">Pay {{ $product->name }} Bills</h3>
-
-                    <div class="box-tools pull-right">
-                        <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
-                        </button>
-                        <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
+    @section('content')
+        <!-- Main content -->
+        <div class="row">
+            <div class="col-md-12 col-sm-12 col-xs-12">
+                <div class="x_panel">
+                    <div class="x_title">
+                        <h2>Pay {{ $product->name }} Bills</h2>
+                        <ul class="nav navbar-right panel_toolbox">
+                            <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                            </li>
+                            <li><a class="close-link"><i class="fa fa-close"></i></a>
+                            </li>
+                        </ul>
+                        <div class="clearfix"></div>
                     </div>
-                </div>
-                <!-- /.box-header -->
-                <div class="box-body">
-                    @php $charges = 100; @endphp
-                    <section class="container">
+                    <div class="x_content">
                         <div class="row">
-                            <div class="col-xs-12 col-sm-7 col-md-6 col-lg-6">
+                            <div class="col-xs-12 col-sm-8 col-md-6 col-lg-6">
                                 <div class="row">
                                     <div class="col-xs-7 col-sm-7 col-md-7 col-lg-7">
                                         <h3 class="text-primary text-center"><strong> {{ $product->name }} </strong></h3>
@@ -50,8 +50,8 @@
                                         @csrf
                                         <br/>
                                         <div class="form-group">
-                                            <label class="col-sm-2 control-label">Package</label>
-                                            <div class="col-sm-10 form-grouping text-bold">
+                                            <label class="col-sm-2 col-xs-12 control-label">Bouquet</label>
+                                            <div class="col-sm-10 col-xs-12 form-grouping text-bold">
                                                 <select style="height: 40px;" class="form-control" id="bonquet" name="bonquet">
                                                     <option value="" disabled selected><strong>Choose Package/Plan</strong></option>
                                                     @foreach ($groups as $group)
@@ -64,8 +64,8 @@
                                         </div>
                                         <br/>
                                         <div class="form-group">
-                                            <label class="col-sm-2 control-label">Package</label>
-                                            <div class="col-sm-10 form-grouping text-bold">
+                                            <label class="col-sm-2 col-xs-12 control-label">Package</label>
+                                            <div class="col-sm-10 col-xs-12 form-grouping text-bold">
                                                 <select style="height: 40px;" class="form-control" id="package" name="package">
                                                     <option value="" disabled selected><strong>Choose Package/Plan</strong></option>
                                                     {{-- @foreach ($product->productList as $subProduct)
@@ -81,59 +81,59 @@
                                         <br/>
 
                                         <div class="form-group">
-                                            <label class="col-sm-2 control-label">Smart Card No.</label>
-                                            <div class="col-sm-10 form-grouping">
+                                            <label class="col-sm-2 col-xs-12 control-label">Smart Card No.</label>
+                                            <div class="col-sm-10 col-xs-12 form-grouping">
                                                 <input type="text" id="cardNo" value="02027857407" class="form-control" name="cardNo" placeholder="Smart Card Number">
                                             </div>
                                         </div>
                                         <div class="form-group" id="nameDiv" style="display:none;">
-                                            <label class="col-sm-2 control-label">Name</label>
-                                            <div class="col-sm-10 form-grouping">
+                                            <label class="col-sm-2 col-xs-12 control-label">Name</label>
+                                            <div class="col-sm-10 col-xs-12 form-grouping">
                                                 <input style="border: 1.5px solid green; color:blue;" type="text" id="name" class="form-control" name="owner">
                                             </div>
                                         </div>
                                         <div id="amountDiv" class="form-group" style="display:none;">
-                                            <label class="col-sm-2 control-label">Amount</label>
-                                            <div class="col-sm-10 form-grouping">
+                                            <label class="col-sm-2 col-xs-12 control-label">Amount</label>
+                                            <div class="col-sm-10 col-xs-12 form-grouping">
                                                 <input type="text" id="amount" class="form-control" name="amount" disabled="{{ $product->product_list ? 'true' : 'false'  }}">
                                             </div>
                                         </div>
                                         <br/>
                                         <div class="form-group">
-                                            <label class="col-sm-2 control-label">Email</label>
-                                            <div class="col-sm-10 form-grouping">
+                                            <label class="col-sm-2 col-xs-12 control-label">Email</label>
+                                            <div class="col-sm-10 col-xs-12 form-grouping">
                                                 <input type="text" id="email" class="form-control" name="email" value="{{ Auth::user()->email }}">
                                             </div>
                                         </div>
                                         <br/>
                                         <div class="form-group">
-                                            <label class="col-sm-2 control-label">Phone Number</label>
-                                            <div class="col-sm-10 form-grouping">
+                                            <label class="col-sm-2 col-xs-12 control-label">Phone Number</label>
+                                            <div class="col-sm-10 col-xs-12 form-grouping">
                                                 <input type="text" id="phone" class="form-control" name="phone" value="{{ Auth::user()->number }}">
                                             </div>
                                         </div>
                                         <br/>
                                         <div class="form-group">
                                             <div class="col-xs-12">
-                                                <button id="continue" class="btn bg-purple btn-flat pull-right">Continue</button>
+                                                <button id="continue" class="btn bg-purple btn-flat pull-right" disabled="true">Continue</button>
                                                 <button id="submit" type="submit" class="btn bg-purple btn-flat pull-right" style="display: none;">Submit</button>
                                             </div>
                                         </div>
+                                        <br/><br/>
                                     <form>
                                 </div>
                             </div>
                         </div>
-                    </section>
+                    </div>
+                    <!-- /.box-body -->
+                    @include('dashboard.layouts.errors')
+                    <!-- .box-footer -->
+                    @include('dashboard.layouts.box-footer')
+                    <!-- /.box-footer -->
                 </div>
-                <!-- /.box-body -->
-                @include('dashboard.layouts.errors')
-                <!-- .box-footer -->
-                @include('dashboard.layouts.box-footer')
-                <!-- /.box-footer -->
+                <!-- /.box -->
             </div>
-            <!-- /.box -->
-
-             <!-- .modal -->
+            <!-- .modal -->
             <div class="modal fade" id="error-modal">
                 <div class="modal-dialog">
                     <div class="modal-content">
@@ -163,7 +163,6 @@
             <!-- /.modal -->
 
         </div>
-    </section>
     @endSection
 
     @section('scripts')
@@ -212,6 +211,7 @@
                     let prices = @json($prices);
                     let packages = @json($product->productList);
                     $('#amountDiv').show().find('#amount').val(prices[$(this).val()]);
+                    $('#continue').removeAttr('disabled');
                 });
 
                 $('#bonquet').change(function() {

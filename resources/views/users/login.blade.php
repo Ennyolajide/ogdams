@@ -9,71 +9,81 @@
 @endsection
 
 @section('content')
-    <div class="login-box">
-        <div class="login-logo">
-            <a href="../../index2.html"><b>Admin</b>LTE</a>
+    <div>
+        <a class="hiddenanchor" id="signup"></a>
+        <a class="hiddenanchor" id="signin"></a>
+
+        <div class="login_wrapper">
+            <div class="animate form login_form">
+                <section class="login_content">
+                    <form method="post" action="{{ route('user.login') }}">
+                        @csrf
+                        <h1>Login Form</h1>
+                        <div>
+                            <input type="email" name="email" class="form-control" placeholder="email" required="" />
+                        </div>
+                        <div>
+                            <input type="password" name="password" class="form-control" placeholder="Password" required="" />
+                        </div>
+                        <div>
+                            <button class="btn btn-default submit" type="submit">Log in</button>
+                            <a class="reset_pass" href="{{ route('user.passwordReset') }}">Lost your password?</a>
+                        </div>
+
+                        <div class="clearfix"></div>
+
+                        <div class="separator">
+                            <p class="change_link">New to site?
+                                <a href="#signup" class="to_register"> Create Account </a>
+                            </p>
+
+                            <div class="clearfix"></div>
+                            <br />
+                            <div>
+                                <h1><i class="fa fa-paw"></i> Gentelella Alela!</h1>
+                                <p>©2016 All Rights Reserved. Gentelella Alela! is a Bootstrap 3 template. Privacy and Terms</p>
+                            </div>
+                        </div>
+                    </form>
+                </section>
+            </div>
+
+            <div id="register" class="animate form registration_form">
+                <section class="login_content">
+                    <form method="POST" action="{{ route('user.register') }}" >
+                        <h1>Create Account</h1>
+                        <div>
+                            <input type="text" class="form-control" placeholder="Username" required="" />
+                        </div>
+                        <div>
+                            <input type="email" class="form-control" placeholder="Email" required="" />
+                        </div>
+                        <div>
+                            <input type="password" class="form-control" placeholder="Password" required="" />
+                        </div>
+                        <div>
+                            <button class="btn btn-default submit" type="submit" >Register</a>
+                        </div>
+
+                        <div class="clearfix"></div>
+
+                        <div class="separator">
+                            <p class="change_link">Already a member ?
+                            <a href="#signin" class="to_register"> Log in </a>
+                            </p>
+
+                            <div class="clearfix"></div>
+                            <br />
+
+                            <div>
+                                <h1><i class="fa fa-paw"></i> Gentelella Alela!</h1>
+                                <p>©2016 All Rights Reserved. Gentelella Alela! is a Bootstrap 3 template. Privacy and Terms</p>
+                            </div>
+                        </div>
+                    </form>
+                </section>
+            </div>
         </div>
-    <!-- /.login-logo -->
-        <div class="login-box-body">
-            @if (session('success'))
-                <div class="alert alert-success">
-                    {{ session('success') }}
-                </div>
-            @endif
-            @if (session('response'))
-                <div class="alert alert-danger">
-                    {{ session('response') }}
-                </div>
-            @else
-                <p class="login-box-msg">Sign in to start your session</p>
-            @endif
-
-            <form action="{{ route('user.login') }}" method="post">
-                @csrf
-            <div class="form-group has-feedback">
-                <input type="email" name="email" class="form-control" placeholder="Email">
-                <span class="glyphicon glyphicon-envelope form-control-feedback"></span>
-            </div>
-            <div class="form-group has-feedback">
-                <input type="password" name="password" class="form-control" placeholder="Password">
-                <span class="glyphicon glyphicon-lock form-control-feedback"></span>
-            </div>
-            <div class="row">
-                <div class="col-xs-8">
-                    <div class="checkbox icheck">
-                        <label>
-                            <input type="checkbox" name="remember"> Remember Me
-                        </label>
-                    </div>
-                </div>
-                <!-- /.col -->
-                <div class="col-xs-4">
-                    <button type="submit" class="btn btn-primary btn-block btn-flat">Sign In</button>
-                </div>
-                <!-- /.col -->
-            </div>
-            </form>
-
-            <div class="social-auth-links text-center">
-                <p>- OR -</p>
-                <a href="#" class="btn btn-block btn-social btn-facebook btn-flat">
-                    <i class="fa fa-facebook"></i> Sign in using Facebook
-                </a>
-                <a href="#" class="btn btn-block btn-social btn-google btn-flat">
-                    <i class="fa fa-google-plus"></i> Sign in using Google+
-                </a>
-            </div>
-            <!-- /.social-auth-links -->
-
-            <a href="{{ route('user.passwordReset') }}">I forgot my password</a><br>
-            <a href="{{ route('user.register') }}" class="text-center">Register a new membership</a>
-
-        </div>
-        <!-- /.login-box-body -->
     </div>
-    <!-- /.login-box -->
 @endSection
 
-@section('scripts')
-
-@endsection

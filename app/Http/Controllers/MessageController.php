@@ -13,7 +13,7 @@ class MessageController extends NotificationController
 
     public function index()
     {
-        $messages = Message::where('user_id', Auth::user()->id)->orderBy('id', 'desc')->paginate(5);
+        $messages = Message::where('user_id', Auth::user()->id)->orderBy('id', 'desc')->paginate(10);
 
         return view('dashboard.messages.inbox', compact('messages'));
     }
@@ -43,10 +43,10 @@ class MessageController extends NotificationController
         $validateData['sender_id'] = Auth::user()->id; //setting the sender as the logged in user
         $validateData['user_id'] = Auth::user()->role = 'customer' || 'reseller' ? 1 : 0;
 
-        Message::create($validateData);
-        $response = 'message sent successfully';
+        $status = Message::create($validateData);
+        $response = $status ? 'message sent successfully' : 'message sending failed';
 
-        return redirect(route('messages.inbox'))->with('response', $response);
+        return redirect(route('messages.inbox'))->withNotification($this->clientNotify($response, $status));
     }
 
     public function reply(Message $message)
@@ -57,18 +57,18 @@ class MessageController extends NotificationController
         $validateData['reply'] = $message->id; // id of the message to be replied
         $validateData['user_id'] = $message->sender_id; //sender
         $validateData['sender_id'] = $message->user_id;
-        Message::create($validateData);
-        $response = 'message sent successfully';
+        $status = Message::create($validateData);
+        $response = $status ? 'message sent successfully' : 'message sending failed';
 
-        return redirect(route('messages.inbox'))->with('response', $response);
+        return redirect(route('messages.inbox'))->withNotification($this->clientNotify($response, $status));
     }
 
     public function delete(Message $message)
     {
-        $message->delete();
+        $status = $message->delete();
 
         $response = 'message deleted succesfully';
 
-        return redirect(route('messages.inbox'))->with('response', $response);
+        return redirect(route('messages.inbox'))->withNotification($this->clientNotify($response, $status));
     }
 }

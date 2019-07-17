@@ -5,5 +5,5 @@
       Anything you want
     </div>
     <!-- Default to the left -->
-    <strong>Copyright &copy; 2016 <a href="#">Company</a>.</strong> All rights reserved.
+    <strong>Copyright &copy; 2016 <a href="#">Gent</a>.</strong>. | <strong><span class="text-right">Site by : <a href="https://facebook.com/9jaloads"><span class="text-primary">RedHoster</span></a></span></strong>
   </footer>

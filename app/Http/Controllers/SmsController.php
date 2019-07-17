@@ -122,7 +122,7 @@ class SmsController extends TransactionController
         $request = $client->post($url . '?json', ['form_params' => $body]);
         $status = ($request->getStatusCode() == '200' || $request->getStatusCode() == '201') ? true : false;
 
-        return $status ? json_decode(str_replace('1002||','',str_replace('1000||','',$request->getBody()->getContents()))) : false;
+        return $status ? json_decode(str_replace('1002||', '', str_replace('1000||', '', $request->getBody()->getContents()))) : false;
     }
 
     protected function setModalResponse($status)

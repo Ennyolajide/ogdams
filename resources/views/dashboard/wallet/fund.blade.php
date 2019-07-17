@@ -1,189 +1,182 @@
 @extends('dashboard.layouts.master')
 
     @section('content-header')
-        <section class="content-header">
-            <h1>Fund Wallet</h1>
-            <ol class="breadcrumb">
-                <li>
-                    <a href="#"><i class="fa fa-dashboard"></i> Home</a>
-                </li>
-                <li class="active">Fund Wallet</li>
-            </ol>
-        </section>
+        <div class="page-title">
+            <div class="title_left">
+                <h4>Fund Wallet</h4>
+            </div>
+            <div class="pull-right">
+                <ol class="breadcrumb">
+                    <li>
+                        <a href="#"><i class="fa fa-dashboard"></i> Dashboard</a>
+                    </li>
+                    <li class="active">Wallet</li>
+                </ol>
+            </div>
+        </div>
+        <div class="clearfix"></div>
     @endsection
 
     @section('content')
         <!-- Main content -->
-        <section class="content">
-            <!-- Info boxes -->
-            <div class="row">
-                <div class="col-md-12">
-                    <!-- TABLE: LATEST ORDERS -->
-                    <div class="box box-purple">
-                        <div class="box-header with-border">
-                            <h3 class="box-title">Fund Wallet</h3>
-
-                            <div class="box-tools pull-right">
-                                <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
-                                </button>
-                                <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
-                            </div>
-                        </div>
-                        <!-- /.box-header -->
-
-                        <div class="box-body">
-                            <section class="container">
-                                <div class="row">
-                                    <div class="col-xs-12 col-sm-7 col-md-7 col-lg-7">
-                                        <form id="fund-wallet-form" class="form-horizontal" method="post">
-                                            @csrf
-                                            <br/>
-                                            <div id="atmBankBitcoin-form">
-                                                <div class="form-group" id="gateway-type">
-                                                    <label for="inputWallet" class="col-sm-3 control-label">Payment Method</label>
-                                                    <div class="col-sm-9">
-                                                        <select class="form-control" id="gateway" name="gateway" required>
-                                                            <option value="" disabled selected>Select gateway Method</option>
-                                                            @foreach ($gateways as $gateway)
-                                                                <option value="{{ $gateway->id }}">
-                                                                    {{ $gateway->name }}
-                                                                </option>
-                                                            @endforeach
-                                                        </select>
-                                                    </div>
-
-                                                </div>
-                                                <input type="hidden" name="email" value="{{ Auth::user()->email }}">
-                                            </div>
-                                            <div id="amount-field" style="display:none;">
-                                                <div class="form-group">
-                                                    <label class="col-sm-3 control-label">Amount</label>
-                                                    <div class="col-sm-9 form-grouping">
-                                                        <input type="text" class="form-control" name="amount" required>
-                                                        <p class="help-block text-olive">Enter amount you want to fund.</p>
-                                                    </div>
-                                                </div>
+        <div class="row">
+            <div class="col-md-12 col-sm-12 col-xs-12">
+                <div class="x_panel">
+                    <div class="x_title">
+                        <h2>Fund Wallet</h2>
+                        <ul class="nav navbar-right panel_toolbox">
+                            <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                            </li>
+                            <li><a class="close-link"><i class="fa fa-close"></i></a>
+                            </li>
+                        </ul>
+                        <div class="clearfix"></div>
+                    </div>
+                    <div class="x_content">
+                        <div class="row">
+                            <div class="col-xs-12 col-sm-8 col-md-6 col-lg-6">
+                                <form id="fund-wallet-form" class="form-horizontal" method="post">
+                                    @csrf
+                                    <br/>
+                                    <div id="atmBankBitcoin-form">
+                                        <div class="form-group" id="gateway-type">
+                                            <label for="inputWallet" class="col-sm-3 col-xs-12 control-label">Payment Method</label>
+                                            <div class="col-sm-9 col-xs-12 ">
+                                                <select class="form-control" id="gateway" name="gateway" required>
+                                                    <option value="" disabled selected>Select gateway Method</option>
+                                                    @foreach ($gateways as $gateway)
+                                                        <option value="{{ $gateway->id }}">
+                                                            {{ $gateway->name }}
+                                                        </option>
+                                                    @endforeach
+                                                </select>
                                             </div>
 
-                                            <div id="bank-transfer" style="display:none;">
-                                                <div class="form-group">
-                                                    <label class="col-sm-3 control-label">Depositor</label>
-                                                    <div class="col-sm-9 form-grouping">
-                                                        <input type="text" class="form-control" name="depositor" value="" required>
-                                                        <p class="help-block text-olive">Enter depositor name or account name.</p>
-                                                    </div>
-                                                </div>
-                                                <div class="form-group" id="chooseBank">
-                                                    <label class="col-sm-3 control-label">Bank</label>
-                                                    <div class="col-sm-9">
-                                                        <select class="form-control" id="bank" name="bankId">
-                                                            <option value="" disabled selected>Select Our Bank </option>
-                                                            @foreach ($banks as $item)
-                                                                <option value="{{ $item->id }}">
-                                                                    {{ $item->bank_name }}
-                                                                </option>
-                                                            @endforeach
-                                                        </select>
-                                                        <p class="help-block text-olive">Bank to transfer to</p>
-                                                    </div>
-                                                    <div class="col-sm-9 col-sm-offset-3">
-                                                        <div class="radio" style="display:none; border: 2px solid #605ca8;">
-                                                            <p class="text-center well no-shadow" style="margin:-6px 0px 0px 0px; padding: 2px 7px;">
-                                                                <span class="bankName"></span><br/>
-                                                                <strong><span class="accNo"></span></strong><br/>
-                                                                <span class="accName"></span>
-                                                            </p>
-                                                        </div>
-                                                    </div>
-                                                    <br/>
-                                                </div>
-                                                <div class="form-group">
-                                                    <label class="col-sm-3 control-label">Reference (optional)</label>
-                                                    <div class="col-sm-9 form-grouping">
-                                                        <input type="text" class="form-control" name="reference" value="" required>
-                                                        <p class="help-block text-olive">Enter reference / teller</p>
-                                                    </div>
-                                                </div>
-                                                <div class="form-group">
-                                                    <label class="col-sm-3 control-label">Remarks (optional)</label>
-                                                    <div class="col-sm-9 form-grouping">
-                                                        <textarea name="remarks" class="form-control" style="height: 80px"></textarea>
-                                                    </div>
-                                                </div>
+                                        </div>
+                                        <input type="hidden" name="email" value="{{ Auth::user()->email }}">
+                                    </div>
+                                    <div id="amount-field" style="display:none;">
+                                        <div class="form-group">
+                                            <label class="col-sm-3 col-xs-12 control-label">Amount</label>
+                                            <div class="col-sm-9 col-xs-12 form-grouping">
+                                                <input type="text" class="form-control" name="amount" required>
+                                                <p class="help-block text-olive">Enter amount you want to fund.</p>
                                             </div>
-
-                                            <div id="airtime-form" style="display:none;">
-                                                <div class="form-group">
-                                                    <label class="col-sm-3 control-label" >Network</label>
-                                                    <div class="col-sm-9">
-                                                        <div id="percentages" data-networks="{{ $networks }}">
-                                                            <select class="form-control" name="network" id="network">
-                                                                <option value="" disabled selected>Choose Network</option>
-                                                                @foreach ($networks as $network)
-                                                                    <option value="{{ $network->id }}">
-                                                                        {{ $network->network }}
-                                                                    </option>
-                                                                @endforeach
-                                                            </select>
-                                                            <p class="help-block text-olive">Select the network you want to fund with.</p>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="form-group">
-                                                    <label class="col-sm-3 control-label">Amount</label>
-                                                    <div class="col-sm-9 form-grouping">
-                                                        <input type="text" id="airtimeAmount" class="form-control" name="airtimeAmount" value="" required>
-                                                        <p class="help-block text-olive">Enter amount you want to fund.</p>
-                                                    </div>
-                                                </div>
-                                                <div id="wallet-amount" class="form-group" style="display:none;">
-                                                    <label class="col-sm-3 control-label">Amount To Wallet</label>
-                                                    <div class="col-sm-9 form-grouping">
-                                                        <input id="wallet_amount" type="text" class="form-control" name="wallet_amount" disabled>
-                                                        <p class="help-block text-olive">Enter amount you want to fund.</p>
-                                                    </div>
-                                                </div>
-                                                <div class="form-group">
-                                                    <label class="col-sm-3 control-label">Phone Number</label>
-                                                    <div class="col-sm-9 form-grouping">
-                                                        <input type="text" class="form-control" name="swapFromPhone" required>
-                                                        <p class="help-block text-olive">The phone number you want to transfer the airtime from.</p>
-                                                    </div>
-                                                </div>
-                                            </div>
-
-                                            <div id="ecard-form" style="display:none;">
-                                                <div class="form-group">
-                                                    <label class="col-sm-3 control-label">Voucher Pin</label>
-                                                    <div class="col-sm-9 form-grouping">
-                                                        <input type="text" class="form-control" name="voucher">
-                                                        {{-- <p class="help-block text-olive">Enter the Voucher Pin</p> --}}
-                                                    </div>
-                                                </div>
-                                            </div>
-
-                                            <div class="form-group">
-                                                <div class="col-sm-offset-3 col-sm-3">
-                                                    <button id="submit" class="btn bg-purple btn-flat">Continue</button>
-                                                </div>
-                                            </div>
-                                        </form>
+                                        </div>
                                     </div>
 
-                                </div>
-                            </section>
-                        </div>
-                    </div>
-                    <!-- /.box-body -->
-                    @include('dashboard.layouts.errors')
-                    <!-- .box-footer -->
-                    @include('dashboard.layouts.box-footer')
-                    <!-- /.box-footer -->
-                </div>
-                <!-- /.box -->
-            </div>
-        </section>
+                                    <div id="bank-transfer" style="display:none;">
+                                        <div class="form-group">
+                                            <label class="col-sm-3 col-xs-12 control-label">Depositor</label>
+                                            <div class="col-sm-9 col-xs-12 form-grouping">
+                                                <input type="text" class="form-control" name="depositor" value="" required>
+                                                <p class="help-block text-olive">Enter depositor name or account name.</p>
+                                            </div>
+                                        </div>
+                                        <div class="form-group" id="chooseBank">
+                                            <label class="col-sm-3 col-xs-12 control-label">Bank</label>
+                                            <div class="col-sm-9 col-xs-12 ">
+                                                <select class="form-control" id="bank" name="bankId" required>
+                                                    <option value="" disabled selected>Select Our Bank </option>
+                                                    @foreach ($banks as $item)
+                                                        <option value="{{ $item->id }}">
+                                                            {{ $item->bank_name }}
+                                                        </option>
+                                                    @endforeach
+                                                </select>
+                                                <p class="help-block text-olive">Bank to transfer to</p>
+                                            </div>
+                                            <div class="col-sm-9 col-sm-offset-3 col-xs-12 ">
+                                                <div class="radio" style="display:none; border: 2px solid #605ca8;">
+                                                    <p class="text-center well no-shadow" style="margin:-6px 0px 0px 0px; padding: 2px 7px;">
+                                                        <span class="bankName"></span><br/>
+                                                        <strong><span class="accNo"></span></strong><br/>
+                                                        <span class="accName"></span>
+                                                    </p>
+                                                </div>
+                                            </div>
+                                            <br/>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-sm-3 col-xs-12 control-label">Reference (optional)</label>
+                                            <div class="col-sm-9 col-xs-12 form-grouping">
+                                                <input type="text" class="form-control" name="reference" value="">
+                                                <p class="help-block text-olive">Enter reference / teller</p>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-sm-3 col-xs-12 control-label">Remarks (optional)</label>
+                                            <div class="col-sm-9 col-xs-12 form-grouping">
+                                                <textarea name="remarks" class="form-control" style="height: 80px"></textarea>
+                                            </div>
+                                        </div>
+                                    </div>
 
+                                    <div id="airtime-form" style="display:none;">
+                                        <div class="form-group">
+                                            <label class="col-sm-3 col-xs-12 control-label" >Network</label>
+                                            <div class="col-sm-9 col-xs-12">
+                                                <div id="percentages" data-networks="{{ $networks }}">
+                                                    <select class="form-control" name="network" id="network">
+                                                        <option value="" disabled selected>Choose Network</option>
+                                                        @foreach ($networks as $network)
+                                                            <option value="{{ $network->id }}">
+                                                                {{ $network->network }}
+                                                            </option>
+                                                        @endforeach
+                                                    </select>
+                                                    <p class="help-block text-olive">Select the network you want to fund with.</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-sm-3 col-xs-12 control-label">Amount</label>
+                                            <div class="col-sm-9 col-xs-12 form-grouping">
+                                                <input type="text" id="airtimeAmount" class="form-control" name="airtimeAmount" value="" required>
+                                                <p class="help-block text-olive">Enter amount you want to fund.</p>
+                                            </div>
+                                        </div>
+                                        <div id="wallet-amount" class="form-group" style="display:none;">
+                                            <label class="col-sm-3 col-xs-12 control-label">Amount To Wallet</label>
+                                            <div class="col-sm-9 col-xs-12 form-grouping">
+                                                <input id="wallet_amount" type="text" class="form-control" name="wallet_amount" disabled>
+                                                <p class="help-block text-olive">Enter amount you want to fund.</p>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-sm-3 col-xs-12 control-label">Phone Number</label>
+                                            <div class="col-sm-9 col-xs-12 form-grouping">
+                                                <input type="text" class="form-control" name="swapFromPhone" required>
+                                                <p class="help-block text-olive">The phone number you want to transfer the airtime from.</p>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div id="ecard-form" style="display:none;">
+                                        <div class="form-group">
+                                            <label class="col-sm-3 col-xs-12 control-label">Voucher Pin</label>
+                                            <div class="col-sm-9 col-xs-12 form-grouping">
+                                                <input type="text" class="form-control" name="voucher">
+                                                {{-- <p class="help-block text-olive">Enter the Voucher Pin</p> --}}
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <br/>
+                                    <div class="form-group">
+                                        <div class="col-sm-3">
+                                            <button id="submit" class="btn bg-purple pull-right">Continue</button>
+                                        </div>
+                                    </div>
+                                    <br/><br/>
+                                </form>
+                            </div>
+                        </div>
+                        @include('dashboard.layouts.errors')
+                    </div>
+                    @include('dashboard.layouts.box-footer')
+                </div>
+            </div>
+        </div>
     @endSection
 
     @if(session('modal'))
@@ -221,13 +214,10 @@
                                 <p class="visible-xs h4 text-center ">
                                     <p class="visible-xs h4 text-center"> Transfer code</p>
                                     <p class="text-center visible-xs"><i class="fa fa-arrow-down fa-2x"></i></p>
-                                    <p class="text-primary text-bold visible-xs">{{ session('modal')->transferCode }}</p>
+                                    <p class="text-primary text-center text-bold visible-xs h4">{{ session('modal')->transferCode }}</p>
                                 </p>
                                 <p class="h4 text-center text-danger">
-                                    You will receive @naira(session('modal')->walletAmount) in your wallet within {{ session('modal')->processTime }} minutes
-                                </p>
-                                <p class="h4 text-center text-danger">
-                                    Please use/click the Completed button only after you have transfered the airtime to avoid been baned
+                                    You will receive @naira(session('modal')->walletAmount) in your wallet within 5 - 15mins
                                 </p>
                             </section>
                         </div>
@@ -282,10 +272,7 @@
                                 </div>
 
                                 <p class="h4 text-center text-danger">
-                                    You will receive @naira(session('modal')->amount) in your wallet within 5 minutes
-                                </p>
-                                <p class="h4 text-center text-danger">
-                                    Please use/click the Completed button only after you have transfered the airtime to avoid been baned
+                                    You will receive @naira(session('modal')->amount) in your wallet within 5 - 15mins
                                 </p>
                             </section>
                         </div>
@@ -328,7 +315,7 @@
                     console.log(gateway);
                     if(gateway == 1){//airtime
                         $('#fund-wallet-form').attr('action',"{{ route('wallet.fund.airtime')}}");
-                        $('#amount-field,#ecard-form').hide();
+                        $('#amount-field,#ecard-form,#bank-transfer').hide();
                         $('#airtime-form').show();
                         $('#airtimeAmount').keyup(function(){
                             let amount = $('#airtimeAmount').val();
@@ -342,7 +329,7 @@
                         });
 
                     }else if(gateway == 2){
-                        $('#ecard-form,#airtime-form').hide();
+                        $('#ecard-form,#airtime-form,#bank-transfer').hide();
                         $('#atmBankBitcoin-form,#amount-field').show();
                         $('#fund-wallet-form').attr('action','{{ route("paystack.pay") }}');
                     }else if(gateway == 3){
