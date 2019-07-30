@@ -1,163 +1,91 @@
-@extends('control.layouts.master')
+@extends('dashboard.layouts.master')
+    @section('css')
+        <!-- DataTables -->
+        <link rel="stylesheet" href="\bower_components/datatables.net-bs/css/dataTables.bootstrap.min.css">
+    @endsection
 
-@section('content-header')
-
-    <!-- Content Header (Page header) -->
-    <section class="content-header">
-        <h1>
-          Dashboard
-          <small>Version 2.0</small>
-        </h1>
-        <ol class="breadcrumb">
-          <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
-          <li class="active">Dashboard</li>
-        </ol>
-    </section>
-
-@endSection
-
-@section('content')
-    <!-- Main content -->
-    <section class="content">
-        <!-- Info boxes -->
-        <div class="row">
-          <div class="col-md-3 col-sm-6 col-xs-12">
-            <div class="info-box">
-              <span class="info-box-icon bg-aqua"><i class="ion ion-ios-gear-outline"></i></span>
-
-              <div class="info-box-content">
-                <span class="info-box-text">CPU Traffic</span>
-                <span class="info-box-number">90<small>%</small></span>
-              </div>
-              <!-- /.info-box-content -->
+    @section('content-header')
+        <div class="page-title">
+            <div class="title_left">
+                <h3>Control Panel</h3>
             </div>
-            <!-- /.info-box -->
-          </div>
-          <!-- /.col -->
-          <div class="col-md-3 col-sm-6 col-xs-12">
-            <div class="info-box">
-              <span class="info-box-icon bg-red"><i class="fa fa-google-plus"></i></span>
-
-              <div class="info-box-content">
-                <span class="info-box-text">Likes</span>
-                <span class="info-box-number">41,410</span>
-              </div>
-              <!-- /.info-box-content -->
+            <div class="pull-right">
+                <ol class="breadcrumb">
+                    <li>
+                        <a href="#"><i class="fa fa-dashboard"></i> Panel</a>
+                    </li>
+                    <li class="active">Control</li>
+                </ol>
             </div>
-            <!-- /.info-box -->
-          </div>
-          <!-- /.col -->
-
-          <!-- fix for small devices only -->
-          <div class="clearfix visible-sm-block"></div>
-
-          <div class="col-md-3 col-sm-6 col-xs-12">
-            <div class="info-box">
-              <span class="info-box-icon bg-green"><i class="ion ion-ios-cart-outline"></i></span>
-
-              <div class="info-box-content">
-                <span class="info-box-text">Sales</span>
-                <span class="info-box-number">{{ $totalTrans }}</span>
-              </div>
-              <!-- /.info-box-content -->
-            </div>
-            <!-- /.info-box -->
-          </div>
-          <!-- /.col -->
-          <div class="col-md-3 col-sm-6 col-xs-12">
-            <div class="info-box">
-              <span class="info-box-icon bg-yellow"><i class="ion ion-ios-people-outline"></i></span>
-
-              <div class="info-box-content">
-                <span class="info-box-text">Users</span>
-                <span class="info-box-number">{{ $users }}</span>
-              </div>
-              <!-- /.info-box-content -->
-            </div>
-            <!-- /.info-box -->
-          </div>
-          <!-- /.col -->
         </div>
-        <!-- /.row -->
+        <div class="clearfix"></div>
+    @endsection
 
+    @section('content')
+        <!-- Main content -->
         <div class="row">
-            <div class="col-md-12">
-                <div class="box">
-                    <div class="box-header with-border">
-                        <h3 class="box-title">Monthly Recap Report</h3>
-                        <div class="box-tools pull-right">
-                            <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
-                            </button>
-                            <div class="btn-group">
-                                <button type="button" class="btn btn-box-tool dropdown-toggle" data-toggle="dropdown">
-                                    <i class="fa fa-wrench"></i>
-                                </button>
-                                <ul class="dropdown-menu" role="menu">
-                                    <li><a href="#">Action</a></li>
-                                    <li><a href="#">Another action</a></li>
-                                    <li><a href="#">Something else here</a></li>
-                                    <li class="divider"></li>
-                                    <li><a href="#">Separated link</a></li>
-                                </ul>
-                            </div>
-                            <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
-                        </div>
+            <div class="col-md-12 col-sm-12 col-xs-12">
+                <div class="x_panel">
+                    <div class="x_title">
+                        <h2>Withdrawals</h2>
+                        <ul class="nav navbar-right panel_toolbox">
+                            <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                            </li>
+                            <li><a class="close-link"><i class="fa fa-close"></i></a>
+                            </li>
+                        </ul>
+                        <div class="clearfix"></div>
                     </div>
                     <!-- /.box-header -->
-                    <div class="box-body">
-                        <div class="row">
-                            <div class="col-md-12">
-                                <table id="example2" class="table table-bordered table-hover">
-                                    <thead>
-                                        <tr>
-                                            <th class="hidden-xs">Reference</th>
-                                            <th>Amount</th>
-                                            <th>Type</th>
-                                            <th>Status</th>
-                                            <th class="hidden-xs">Date</th>
-                                            <th>Action</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        @php
-                                            function getStatus($status){
-                                                $array = ['Declined','Pending','Success','Canceled'];
-                                                return $array[$status];
-                                            }
-                                        @endphp
+                    <div class="x_content">
+                        <div class="col-md-12 col-sm-12 col-xs-12">
+                            <table id="transactions-table" class="table table-bordered table-hover">
+                                <thead>
+                                    <tr>
+                                        <th class="hidden-xs">Reference</th>
+                                        <th>Amount</th>
+                                        <th>Type</th>
+                                        <th>Status</th>
+                                        <th class="hidden-xs">Date</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @php
+                                        function getStatus($status){
+                                            $array = ['Declined','Pending','Success','Canceled'];
+                                            return $array[$status];
+                                        }
+                                    @endphp
 
-                                        @foreach ($transactions as $transaction)
-                                            <tr>
-                                                <td class="hidden-xs">{{ str_limit($transaction->reference, 10, '...') }}</td>
-                                                <td class="text-right">@naira($transaction->amount)</td>
-                                                <td>{{ $transaction->class->type }}</td>
-
-                                                <td>{{ getStatus($transaction->status) }}</td>
-                                                <td class="hidden-xs">{{ $transaction->created_at }}</td>
-                                                <td>
-                                                <a href="#" data-toggle="modal" data-target="#{{ $transaction->id }}">
-                                                        <i class="fa fa-eye"></i>view
-                                                    </a>
-                                                </td>
-                                            </tr>
-                                        @endforeach
-                                    </tbody>
-                                    <tfoot>
+                                    @foreach ($transactions as $transaction)
                                         <tr>
-                                            <th class="hidden-xs">Reference</th>
-                                            <th>Amount</th>
-                                            <th>Type</th>
-                                            <th>Status</th>
-                                            <th class="hidden-xs">Date</th>
+                                            <td class="hidden-xs">{{ str_limit($transaction->reference, 10, '...') }}</td>
+                                            <td class="text-right">@naira($transaction->amount)</td>
+                                            <td>{{ $transaction->class->type }}</td>
+
+                                            <td>{{ getStatus($transaction->status) }}</td>
+                                            <td class="hidden-xs">{{ $transaction->created_at }}</td>
+                                            <td>
+                                            <a href="#" data-toggle="modal" data-target="#{{ $transaction->id }}">
+                                                    <i class="fa fa-eye"></i>view
+                                                </a>
+                                            </td>
                                         </tr>
-                                    </tfoot>
-                                </table>
-                            </div>
-                            <!--/.col -->
+                                    @endforeach
+                                </tbody>
+                                <tfoot>
+                                    <tr>
+                                        <th class="hidden-xs">Reference</th>
+                                        <th>Amount</th>
+                                        <th>Type</th>
+                                        <th>Status</th>
+                                        <th class="hidden-xs">Date</th>
+                                    </tr>
+                                </tfoot>
+                            </table>
                         </div>
-                        <!-- /.row -->
                     </div>
-                    <!-- /.box-body -->
 
                     <div class="box-footer">
                         <div class="row">
@@ -201,13 +129,9 @@
                     </div>
                     <!-- /.box-footer -->
                 </div>
-                <!-- /.box -->
             </div>
-            <!-- /.col -->
         </div>
-        <!-- /.row -->
-      </section>
-      <!-- /.content -->
+        <!-- /.content -->
 
       @foreach ($transactions as $transaction)
         <!-- Modal -->
@@ -261,4 +185,22 @@
         <!-- /Modal -->
         @endforeach
 
+    @endSection
+
+    @section('scripts')
+        <!-- DataTables -->
+        <script src="\bower_components/datatables.net/js/jquery.dataTables.min.js"></script>
+        <script src="\bower_components/datatables.net-bs/js/dataTables.bootstrap.min.js"></script>
+        <script>
+            $(function () {
+              $('#transactions-table').DataTable({
+                'paging'      : true,
+                'lengthChange': false,
+                'searching'   : false,
+                'ordering'    : true,
+                'info'        : true,
+                'autoWidth'   : false
+              })
+            })
+          </script>
     @endSection

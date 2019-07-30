@@ -20,7 +20,7 @@ class AirtimeSwapController extends TransactionController
 
     public function index()
     {
-        $networks = AirtimePercentage::where('airtime_to_cash_percentage_status', true)->get();
+        $networks = AirtimePercentage::where('airtime_swap_percentage_status', true)->get();
 
         return view('dashboard.airtime.swap', compact('networks'));
     }
@@ -63,7 +63,7 @@ class AirtimeSwapController extends TransactionController
     {
         $transactionRecord = $this->storeAirtimeSwap($network);
         $status = $transactionRecord ? true : false;
-        $this->modalResponse = $status ? $this->setModalResponse($transactionRecord->id,$network) : false;
+        $this->modalResponse = $status ? $this->setModalResponse($transactionRecord->id, $network) : false;
         $status ? $this->recordTransaction($transactionRecord, $this->getUniqueReference(), false, false, 'Airtime', true)->update(['status' => null]) : false;
 
         return $status;
@@ -77,7 +77,7 @@ class AirtimeSwapController extends TransactionController
         return Airtime::create([
             'user_id' => Auth::user()->id, 'amount' => request()->amount, 'percentage' => $network->airtime_swap_percentage,
             'from_network' => $network->network, 'from_phone' => request()->swapFromPhone, 'to_network' => request()->swapToNetwork,
-            'to_phone' => request()->swapToPhone,'class' => 'App\Airtime', 'type' => 'Airtime Swap', 'transaction_type' => 3,'status' => null,
+            'to_phone' => request()->swapToPhone, 'class' => 'App\Airtime', 'type' => 'Airtime Swap', 'transaction_type' => 3, 'status' => null,
             'recipients' => $network->airtime_to_cash_phone_numbers
         ]);
     }
@@ -85,9 +85,9 @@ class AirtimeSwapController extends TransactionController
     /**
      * set success Response
      */
-    protected function setModalResponse($transactionRecordId,$network)
+    protected function setModalResponse($transactionRecordId, $network)
     {
-        return (object)[
+        return (object) [
             'name' => 'airtimeSwap',
             'amount' => request()->amount,
             'processTime' => $network->process_time,
@@ -101,16 +101,15 @@ class AirtimeSwapController extends TransactionController
         ];
     }
 
-    public function completed(Airtime $airtimeRecord){
+    public function completed(Airtime $airtimeRecord)
+    {
 
-        $status = $airtimeRecord->update(['status' => 1 ]) ? true : false;
+        $status = $airtimeRecord->update(['status' => 1]) ? true : false;
 
-        $status ? $airtimeRecord->transaction->first()->update(['status' => 1 ]) : false;
+        $status ? $airtimeRecord->transaction->first()->update(['status' => 1]) : false;
 
         $message = $status ? $this->successResponse : $this->failureResponse;
 
         return back()->withNotification($this->clientNotify($message, $status));
-
     }
-
 }

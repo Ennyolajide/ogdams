@@ -17,6 +17,7 @@ class UsersTableSeeder extends Seeder
             'password' => bcrypt('secret'),
             'api_token' => Str::random(60),
             'role' => 'admin',
+            'permission' => true,
             'active' => true,
             'number' => '07063637002',
             'address' => 'no 13 ifelodun',
@@ -37,7 +38,7 @@ class UsersTableSeeder extends Seeder
             'city' => 'Moon',
             'state' => 'Universe',
             'referrer' => 'A1b2C3D4xyz112',
-            'wallet_id' => Str::random('8').rand(1,100).Str::random(2),
+            'wallet_id' => Str::random('8') . rand(1, 100) . Str::random(2),
             'created_at' => Carbon::now()->format('Y-m-d H:i:s'),
             'updated_at' => Carbon::now()->format('Y-m-d H:i:s'),
         ]);

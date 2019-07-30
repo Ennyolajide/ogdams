@@ -10,14 +10,6 @@ use Illuminate\Support\Facades\Auth;
 
 class TransactionsController extends ModController
 {
-    /**
-     * Create a new controller instance.
-     */
-    public function __construct()
-    {
-        $this->middleware('auth');
-        $this->middleware('admin');
-    }
 
     /**
      * Show the application dashboard.
@@ -28,7 +20,7 @@ class TransactionsController extends ModController
     {
         $users = User::all()->count();
         $totalTrans = Transaction::whereStatus('2')->count();
-        $transactions = Transaction::whereStatus(!NULL)->take(20)->latest()->get();
+        $transactions = Transaction::whereStatus(!NULL)->take(50)->latest()->get();
 
         return view('control.transactions', compact('transactions', 'totalTrans', 'users'));
     }

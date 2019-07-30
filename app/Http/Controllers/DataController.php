@@ -28,10 +28,8 @@ class DataController extends TransactionController
 
     public function store()
     {
-        $this->validate(request(), [
-            'plan' => 'required|numeric|',
-            'phone' => 'required'
-        ]);
+        //validate request
+        $this->validate(request(), ['plan' => 'required|numeric|', 'phone' => 'required']);
 
         $dataPlan = DataPlan::find(request()->plan)->first();
 
@@ -61,10 +59,23 @@ class DataController extends TransactionController
     {
         $dataRecord = $this->storeTopup($dataPlan);
         $status = $dataRecord ? $this->debitWallet($dataPlan->amount) : false;
-        $status ? $this->notifyAdminViaSms($this->adminDataNotification($dataPlan), $dataPlan->notification_phone) : false;
+        $status ? $this->notifyAdmin($dataPlan) : false;
         $dataRecord ? $this->recordTransaction($dataRecord, $this->getUniqueReference(), false, true, false, false) : false;
 
         return $status;
+    }
+
+    /**
+     * This notify the admin Either by mail or Sms or Both depending on the admin settings
+     */
+    protected function notifyAdmin($dataPlan)
+    {
+        $subject = 'Data Order Notification';
+        $toEmail = $dataPlan->notification_email;
+        $toPhone = $dataPlan->notification_phone;
+        $content = $this->adminDataOrderNotification($dataPlan);
+        $dataPlan->phone_notification_status ? $this->notifyAdminViaSms($toPhone, $content) : false;
+        $dataPlan->email_notification_status ? $this->notifyAdminViaEmail($subject, $content, $toEmail) : false;
     }
 
     /**

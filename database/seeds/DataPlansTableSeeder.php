@@ -10,7 +10,6 @@ class DataPlansTableSeeder extends Seeder
     public function run()
     {
         //data_plans Seeds
-
         //Mtn
         DB::table('data_plans')->insert([
             'network_id' => 1,

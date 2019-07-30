@@ -20,11 +20,11 @@ class HomeController extends Controller
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
-    public function index()
+    public function dashboardIndex()
     {
         $transactions = Transaction::where('user_id', Auth::user()->id)
-                        ->whereStatus(!NULL)
-                        ->take(10)->latest()->get();
+            ->whereStatus(!NULL)
+            ->take(10)->latest()->get();
 
         return view('dashboard.index', compact('transactions'));
     }

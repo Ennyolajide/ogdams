@@ -35,9 +35,12 @@ $unReadMessages = Auth::user()->messages->where('read',0)->sortByDesc('id');
                                     <span class="time"> {{ $unReadMessage->created_at->diffForHumans() }}</span>
                                 </span>
                                 <span class="message">
-                                {{ $unReadMessage->content }}
+                                {{ str_limit($unReadMessage->content, 12, '...') }}
                                 </span>
                             </a>
+                            @if($loop->iteration >= 5)
+                                @break;
+                            @endif
                         </li>
                         <!-- end message -->
                         @endForeach

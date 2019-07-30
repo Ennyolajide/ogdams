@@ -49,9 +49,9 @@ class AirtimeTopupController extends RingoController
     {
         if (Auth::user()->balance >= request()->amount) {
 
-            $network = AirtimePercentage::find(request()->network)->network;
+            $network = AirtimePercentage::find(request()->network);
 
-            $status = $this->topup();
+            $status = $network ? $this->topup($network) : false;
 
             $status ? $this->notify($this->airtimeTopupNotification()) : false;
 
@@ -62,12 +62,13 @@ class AirtimeTopupController extends RingoController
     /**
      *  Execute Airtime Top
      */
-    public function topup()
+    public function topup($network)
     {
-        $reference = $this->getUniqueReference();
+        $reference = $this->getUniqueReference(); // generate a unique reference number
+        $discount = $network->airtime_topup_percentage / 100; // get the percentage discount
         $response = $this->executeTopup($this->formatPhoneNumber(request()->phone), $reference);
         $this->failureResponse = $response ? $this->failureResponse : $this->apiErrorResponse;
-        $status = $response ? $this->debitWallet(request()->amount) : false;
+        $status = $response ? $this->debitWallet(request()->amount * $discount) : false;
         $airtimeRecord = $this->storeTopup($status);
         $this->recordTransaction($airtimeRecord, $reference, $status, $status, false, true);
 

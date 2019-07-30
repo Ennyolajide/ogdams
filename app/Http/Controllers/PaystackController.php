@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use Paystack;
-
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 
@@ -72,10 +71,5 @@ class PaystackController extends PaymentController
         $request = $client->get($endPoint, ['headers' => $this->headers()]);
         $status = $request->getStatusCode() == '200' ? true : false;
         return $status ? $request->getBody()->getContents() : false;
-    }
-
-    public function test()
-    {
-        return $this->bankList();
     }
 }

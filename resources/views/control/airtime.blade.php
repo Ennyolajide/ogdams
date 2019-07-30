@@ -1,75 +1,83 @@
-@extends('control.layouts.master')
+@extends('dashboard.layouts.master')
 
-@section('css')
-    <!-- iCheck -->
-    <link rel="stylesheet" href="\plugins/iCheck/square/blue.css">
-    <!-- DataTables -->
-    <link rel="stylesheet" href="\bower_components/datatables.net-bs/css/dataTables.bootstrap.min.css">
-@endsection
+    @section('css')
+        <!-- iCheck -->
+        <link rel="stylesheet" href="\plugins/iCheck/square/blue.css">
+        <!-- switchery -->
+        <link href="\plugins/switchery/dist/switchery.min.css" rel="stylesheet">
+        <!-- DataTables -->
+        <link rel="stylesheet" href="\bower_components/datatables.net-bs/css/dataTables.bootstrap.min.css">
+    @endsection
 
-@section('content-header')
+    @section('content-header')
+        <div class="page-title">
+            <div class="title_left">
+                <h3>Airtime Settings</h3>
+            </div>
+            <div class="pull-right">
+                <ol class="breadcrumb">
+                    <li>
+                        <a href="#"><i class="fa fa-dashboard"></i> Configuration</a>
+                    </li>
+                    <li class="active">Settings</li>
+                </ol>
+            </div>
+        </div>
+        <div class="clearfix"></div>
+    @endsection
 
-    <!-- Content Header (Page header) -->
-    <section class="content-header">
-        <h1>
-            Configuration
-
-          <small>Settings</small>
-        </h1>
-        <ol class="breadcrumb">
-          <li><a href="#"><i class="fa fa-dashboard"></i> Configuration</a></li>
-          <li class="active">Settings</li>
-        </ol>
-    </section>
-
-@endSection
-
-@section('content')
-    <!-- Main content -->
-    <section class="content">
+    @section('content')
+        <!-- Main content -->
         <div class="row">
-            <div class="col-xs-12">
-                <div class="box">
-                    <div class="box-header">
-                        <h3 class="box-title">Airtime Setings</h3>
+            <div class="col-md-12 col-sm-12 col-xs-12">
+                <div class="x_panel">
+                    <div class="x_title">
+                        <h2>Airtime Setings</h2>
+                        <ul class="nav navbar-right panel_toolbox">
+                            <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                            </li>
+                            <li><a class="close-link"><i class="fa fa-close"></i></a>
+                            </li>
+                        </ul>
+                        <div class="clearfix"></div>
                     </div>
                     <!-- /.box-header -->
-                    <div class="box-body">
-                        <table class="table table-striped table-hover table-bordered table-responsive">
-                            <thead class="bg-green">
-                                <tr>
-                                    <th>id</th>
-                                    <th>Network</th>
-                                    <th>Swap %</th>
-                                    <th>Transfer Code</th>
-                                    <th>Action</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @foreach ($networks as $item)
+                    <div class="x_content">
+                        <div class="col-md-12 col-sm-12 col-xs-12">
+                            @include('dashboard.layouts.errors')
+                            <table id="transactons-table" class="table table-striped table-hover table-bordered table-responsive">
+                                <thead class="bg-green">
                                     <tr>
-                                        <td>{{ $item->id }}</td>
-                                        <td><img src="\images/networks/{{ strtolower($item->network).'.png'  }}" style="max-height: 50px; display:inline-block;"></td>
-                                        <td>{{ $item->airtime_swap_percentage }}%</td>
-                                        <td class="text-primary">{{ $item->transfer_code }}</td>
-                                        <td><a href="" data-toggle="modal" data-target="#{{ $item->id }}" class="btn btn-info btn-xs"><i class="fa fa-edit"></i> Edit</a></td>
+                                        <th class="hidden-xs">id</th>
+                                        <th>Network</th>
+                                        <th>Swap %</th>
+                                        <th>Topup %</th>
+                                        <th class="hidden-xs">Transfer Code</th>
+                                        <th>Action</th>
                                     </tr>
-                                @endforeach
-                            </tbody>
-                        </table>
+                                </thead>
+                                <tbody>
+                                    @foreach ($networks as $item)
+                                        <tr>
+                                            <td class="hidden-xs">{{ $item->id }}</td>
+                                            <td><img src="\images/networks/{{ strtolower($item->network).'.png'  }}" style="max-height: 50px; display:inline-block;"></td>
+                                            <td>{{ $item->airtime_swap_percentage }}%</td>
+                                            <td>{{ $item->airtime_topup_percentage }}%</td>
+                                            <td class="hidden-xs text-primary">{{ $item->transfer_code }}</td>
+                                            <td><a href="" data-toggle="modal" data-target="#{{ $item->id }}" class="btn btn-info btn-xs"><i class="fa fa-edit"></i> Edit</a></td>
+                                        </tr>
+                                    @endforeach
+                                </tbody>
+                            </table>
+                            <!-- /.box-body -->
+                        </div>
                     </div>
-                    <!-- /.box-body -->
-                    @include('dashboard.layouts.errors')
-                    <!-- .box-footer -->
-                    <!-- /.box-footer -->
                 </div>
-                <!-- /.box -->
+                <!-- /.col -->
             </div>
-            <!-- /.col -->
+            <!-- /.row -->
         </div>
-        <!-- /.row -->
-    </section>
-      <!-- /.content -->
+        <!-- /.content -->
     @endSection
 
     @foreach ($networks as $item)
@@ -88,69 +96,77 @@
                     <form method="POST" action="{{ route('admin.airtime.config.edit',['network' => $item->id ] ) }}">
                         @method('patch') @csrf
                         <div class="modal-body">
-                            <section>
+                            <div class="row">
                                 <div class="col-md-6 col-sm-6 col-xs-6">
-                                    <div class="checkbox icheck">
-                                        <label class="">
-                                            <div class="icheckbox_square-blue" aria-checked="false" aria-disabled="false" style="position: relative;">
-                                                <input type="checkbox" name="swapStatus" style="position: absolute; top: -20%; left: -20%; display: block; width: 140%; height: 140%; margin: 0px; padding: 0px; background: rgb(255, 255, 255); border: 0px; opacity: 0;" {{ $item->airtime_swap_percentage_status ? 'checked' : '' }}>
-                                                <ins class="iCheck-helper" style="position: absolute; top: -20%; left: -20%; display: block; width: 140%; height: 140%; margin: 0px; padding: 0px; background: rgb(255, 255, 255); border: 0px; opacity: 0;"></ins>
-                                            </div> Airtime Swap
-                                        </label>
-                                    </div>
-                                    <br/>
+                                    <label>
+                                        Swap
+                                        <input type="checkbox" name="swapStatus" class="js-switch" {{ $item->airtime_swap_percentage_status ? 'checked' : '' }} data-switchery="true" style="display: none;">
+                                    </label>
                                 </div>
                                 <div class="col-md-5 col-sm-6 col-xs-6">
-                                    <div class="checkbox icheck">
-                                        <label class="">
-                                            <div class="icheckbox_square-blue" aria-checked="false" aria-disabled="false" style="position: relative;">
-                                                <input type="checkbox" name="cashStatus" style="position: absolute; top: -20%; left: -20%; display: block; width: 140%; height: 140%; margin: 0px; padding: 0px; background: rgb(255, 255, 255); border: 0px; opacity: 0;" {{ $item->airtime_to_cash_percentage_status ? 'checked' : '' }}>
-                                                <ins class="iCheck-helper" style="position: absolute; top: -20%; left: -20%; display: block; width: 140%; height: 140%; margin: 0px; padding: 0px; background: rgb(255, 255, 255); border: 0px; opacity: 0;"></ins>
-                                            </div> Airtime 2 Cash
-                                        </label>
+                                    <label>
+                                        Cash
+                                        <input type="checkbox" name="cashStatus" class="js-switch" {{ $item->airtime_to_cash_percentage_status ? 'checked' : '' }} data-switchery="true" style="display: none;">
+                                    </label>
+                                </div>
+                            </div>
+                            <br/>
+
+                            <div class="row">
+                                <div class="col-sm-6 col-xs-6">
+                                    <div class="form-group">
+                                        <label class="col-sm-4 control-label" style="vertical-align: middle;">Swap %</label>
+                                        <div class="col-sm-6 form-grouping">
+                                            <input type="text" class="form-control" name="percentage" value="{{ $item->airtime_swap_percentage }}" required>
+                                        </div>
                                     </div>
-                                    <br/>
                                 </div>
 
-                                <div class="row">
-                                    <br/>
-                                    <div class="col-sm-6 col-xs-6">
+                                <div class="col-sm-6 col-xs-6">
+                                    <div class="form-group">
+                                        <label class="col-sm-4 control-label">Process Time(mins)</label>
+                                        <div class="col-sm-6 form-grouping">
+                                            <input type="text" class="form-control" name="processTime" value="{{ $item->process_time }}" required>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <br/>
+                            <div class="row">
+                                <div class="col-sm-12 col-xs-12">
+                                    <div class="form-group">
+                                        <label class="col-sm-3 col-xs-10 control-label">Airtime Topup %</label>
+                                        <div class="col-sm-8 col-xs-12 form-grouping">
+                                            <input type="text" class="form-control" name="topupPercentage" value="{{ $item->airtime_topup_percentage }}" required>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <br/>
+                            <div class="row">
+                                @foreach (json_decode($item->airtime_to_cash_phone_numbers) as $swapNumber)
+                                    <div class="col-sm-6 col-xs-12">
                                         <div class="form-group">
-                                            <label class="col-sm-4 control-label" style="vertical-align: middle;">Swap %</label>
-                                            <div class="col-sm-6 form-grouping">
-                                                <input type="text" class="form-control" name="percentage" value="{{ $item->airtime_swap_percentage }}" required>
+                                            <label class="col-sm-4 col-xs-12 control-label">Swap Number {{ $loop->iteration }}</label>
+                                            <div class="col-sm-6 col-xs-12 form-grouping">
+                                                <input type="text" class="form-control" name="swapNumber{{ $loop->iteration }}" value="{{ $swapNumber }}" {{ $loop->first ? 'required' : '' }}">
                                             </div>
                                         </div>
                                     </div>
-
-                                    <div class="col-sm-6 col-xs-6">
-                                        <div class="form-group">
-                                            <label class="col-sm-5 control-label">Process Time(minutes)</label>
-                                            <div class="col-sm-4 form-grouping">
-                                                <input type="text" class="form-control" name="processTime" value="{{ $item->process_time }}" required>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <br/>
-                                <div class="row">
+                                @endforeach
+                            </div>
+                            <br/>
+                            <div class="row">
+                                <div class="col-sm-12 col-xs-12">
                                     <div class="form-group">
-                                        <label class="col-sm-3 control-label">Swap Numbers</label>
-                                        <div class="col-sm-8 form-grouping">
-                                            <input type="text" class="form-control" name="swapNumbers" value="{{ $item->airtime_to_cash_phone_numbers }}" required>
-                                        </div>
-                                    </div>
-                                </div>
-                                <br/>
-                                <div class="row">
-                                    <div class="form-group">
-                                        <label class="col-sm-3 control-label">Transfer Code </label>
-                                        <div class="col-sm-8 form-grouping">
+                                        <label class="col-sm-3 col-xs-12 control-label">Transfer Code </label>
+                                        <div class="col-sm-8 col-xs-12 form-grouping">
                                             <input type="text" class="form-control" name="transferCode" value="{{ $item->transfer_code }}" required>
                                         </div>
                                     </div>
-                                 </div>
-                            </section>
+                                </div>
+                            </div>
+                            <br/>
                         </div>
                         <div class="modal-footer">
                             <button type="button"  data-dismiss="modal" class="btn btn-danger pull-left">Deline</button>
@@ -167,9 +183,7 @@
 
 
     @section('scripts')
-        <!-- DataTables -->
-        <script src="\bower_components/datatables.net/js/jquery.dataTables.min.js"></script>
-        <script src="\bower_components/datatables.net-bs/js/dataTables.bootstrap.min.js"></script>
+        <script src="\plugins/switchery/dist/switchery.min.js"></script>
         <script>
             $(function () {
               $('#transactions-table').DataTable({

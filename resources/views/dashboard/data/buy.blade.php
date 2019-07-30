@@ -96,7 +96,7 @@
                                     <div class="row">
                                         @foreach ($networks as $network)
                                             <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
-                                                <a href="#"><img src="/images/networks/{{ strtolower($network->network) }}.png" class="img-responsive"></a>
+                                                <img src="/images/networks/{{ strtolower($network->network) }}.png" class="img-responsive">
                                             </div>
                                         @endforeach
                                     </div>

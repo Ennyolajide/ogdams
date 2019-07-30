@@ -3,11 +3,12 @@
 namespace App\Http\Controllers\Control;
 
 use App\Charge;
+use App\RingoProduct;
 use App\BulkSmsConfig;
 use App\RingoSubProductList;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Controller;
-use App\RingoProduct;
+
 
 class BillsController extends ModController
 {

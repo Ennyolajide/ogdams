@@ -100,10 +100,9 @@
                                 </div>
                             </div>
                         </div>
+                        @include('dashboard.layouts.errors')
                     </div>
                     <!-- /.box-body -->
-                    @include('dashboard.layouts.errors')
-                    <!-- .box-footer -->
                     @include('dashboard.layouts.box-footer')
                     <!-- /.box-footer -->
                 </div>

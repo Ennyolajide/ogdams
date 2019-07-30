@@ -40,15 +40,20 @@ class AirtimesController extends ModController
     public function editConfig(AirtimePercentage $network)
     {
         //validate request
-        $this->validate(request(), ['processTime' => 'required|numeric', 'transferCode' => 'required|string', 'percentage' => 'required|numeric']);
+        $this->validate(request(), [
+            'percentage' => 'required|numeric', 'swapNumber1' => 'required|string', 'swapNumber2' => 'sometimes|nullable',
+            'processTime' => 'required|numeric', 'transferCode' => 'required|string', 'topupPercentage' => 'required|numeric'
+        ]);
+        //save confif to DB
         $status = $network->update([
             'process_time' => request()->processTime,
             'transfer_code' => request()->transferCode,
             'airtime_swap_percentage' => request()->percentage,
             'airtime_to_cash_percentage' => request()->percentage,
+            'airtime_topup_percentage' => request()->topupPercentage,
             'airtime_swap_percentage_status' => request()->has('swapStatus'),
             'airtime_to_cash_percentage_status' => request()->has('cashStatus'),
-            //'airtime_to_cash_phone_numbers' => request()->swapNumbers,
+            'airtime_to_cash_phone_numbers' => json_encode([request()->swapNumber1, request()->swapNumber2])
         ]);
 
         $message = $status ? $this->successResponse : $this->failureResponse;

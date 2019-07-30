@@ -5,13 +5,13 @@ namespace App\Http\Controllers;
 use App\Transaction;
 use Illuminate\Support\Facades\Auth;
 
-class TransactionController extends MessageController
+class TransactionController extends NotificationController
 {
-    public function index()
+    public function transactionIndex()
     {
         $transactions = Transaction::where('user_id', Auth::user()->id)->orderBy('id', 'desc')->paginate(2);
 
-        return view('dashboard/transactions', compact('transactions'));
+        return view('dashboard/transactions/index', compact('transactions'));
     }
 
 

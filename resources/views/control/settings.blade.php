@@ -1,40 +1,41 @@
-@extends('control.layouts.master')
+@extends('dashboard.layouts.master')
 
-@section('css')
-      <!-- DataTables -->
-  <link rel="stylesheet" href="\bower_components/datatables.net-bs/css/dataTables.bootstrap.min.css">
-@endsection
+    @section('content-header')
+        <div class="page-title">
+            <div class="title_left">
+                <h3>Configuration</h3>
+            </div>
+            <div class="pull-right">
+                <ol class="breadcrumb">
+                    <li>
+                        <a href="#"><i class="fa fa-dashboard"></i> Settings</a>
+                    </li>
+                    <li class="active">Settings</li>
+                </ol>
+            </div>
+        </div>
+        <div class="clearfix"></div>
+    @endsection
 
-@section('content-header')
 
-    <!-- Content Header (Page header) -->
-    <section class="content-header">
-        <h1>
-            Configuration
-
-          <small>Settings</small>
-        </h1>
-        <ol class="breadcrumb">
-          <li><a href="#"><i class="fa fa-dashboard"></i> Configuration</a></li>
-          <li class="active">Settings</li>
-        </ol>
-    </section>
-
-@endSection
-
-@section('content')
-    <!-- Main content -->
-    <section class="content">
+    @section('content')
+        <!-- Main content -->
         <div class="row">
-            <div class="col-xs-12">
-                <div class="box">
-                    <div class="box-header">
-                        <h3 class="box-title">Site Setings</h3>
+            <div class="col-md-12 col-sm-12 col-xs-12">
+                <div class="x_panel">
+                    <div class="x_title">
+                        <h2>Settings</h2>
+                        <ul class="nav navbar-right panel_toolbox">
+                            <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                            </li>
+                            <li><a class="close-link"><i class="fa fa-close"></i></a>
+                            </li>
+                        </ul>
+                        <div class="clearfix"></div>
                     </div>
-                    <!-- /.box-header -->
-                    <div class="box-body">
+                    <div class="x_content">
                         <div class="row">
-                            <div class="col-sm-6">
+                            <div class="col-md-6 col-sm-6 col-xs-12">
                                 <fieldset>
                                     <legend>
                                         Data Plans
@@ -52,7 +53,7 @@
                                 </fieldset>
                                 <hr>
                             </div>
-                            <div class="col-sm-6">
+                            <div class="col-md-6 col-sm-6 col-xs-12">
                                 <fieldset>
                                     <legend>
                                         Bills
@@ -72,7 +73,7 @@
                             </div>
                         </div>
                         <div class="row">
-                            <div class="col-sm-6">
+                            <div class="col-md-6 col-sm-6 col-xs-12">
                                 <fieldset>
                                     <legend>
                                         Airtime
@@ -91,19 +92,23 @@
                                 <hr>
                                 <br/>
                             </div>
-                            <div class="col-sm-6">
+                            <div class="col-md-6 col-sm-6 col-xs-12">
                                 <fieldset>
                                     <legend>
                                         Others
                                     </legend>
                                     <div class="row">
-                                        <div class="col-sm-6 col-xs-6 text-center">
+                                        <div class="col-sm-4 col-xs-4 text-center">
                                             <a href="{{ route('admin.charges.config') }}"><i class="fa fa-envelope fa-3x"></i></a>
                                             <p class="">SMS</p>
                                         </div>
-                                        <div class="col-sm-6 col-xs-6 text-center">
+                                        <div class="col-sm-4 col-xs-4 text-center">
                                             <a href="{{ route('admin.charges.config') }}"><i class="fa fa-money fa-3x"></i></a>
                                             <p class="">Charges</p>
+                                        </div>
+                                        <div class="col-sm-4 col-xs-4 text-center">
+                                            <a href="{{ route('admin.charges.config') }}"><i class="fa fa-bank fa-3x"></i></a>
+                                            <p class="">Banks</p>
                                         </div>
                                     </div>
 
@@ -113,39 +118,19 @@
                             </div>
                         </div>
 
-
+                        <!-- /.box-body -->
+                        @include('dashboard.layouts.errors')
 
                     </div>
-                    <!-- /.box-body -->
-                    @include('dashboard.layouts.errors')
-                    <!-- .box-footer -->
-                    @include('dashboard.layouts.box-footer')
                     <!-- /.box-footer -->
+                    <!-- /.box -->
                 </div>
-                <!-- /.box -->
+                <!-- /.col -->
             </div>
-            <!-- /.col -->
+            <!-- /.row -->
         </div>
-        <!-- /.row -->
-    </section>
-      <!-- /.content -->
+        <!-- /.content -->
 
     @endSection
 
-    @section('scripts')
-        <!-- DataTables -->
-        <script src="\bower_components/datatables.net/js/jquery.dataTables.min.js"></script>
-        <script src="\bower_components/datatables.net-bs/js/dataTables.bootstrap.min.js"></script>
-        <script>
-            $(function () {
-              $('#transactions-table').DataTable({
-                'paging'      : true,
-                'lengthChange': false,
-                'searching'   : false,
-                'ordering'    : true,
-                'info'        : true,
-                'autoWidth'   : false
-              })
-            })
-          </script>
-    @endSection
+

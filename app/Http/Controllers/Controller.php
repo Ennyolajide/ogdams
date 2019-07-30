@@ -36,17 +36,36 @@ class Controller extends BaseController
         return true;
     }
 
+    public function creditUserWallet($userId, $amount)
+    {
+        $user = User::find($userId);
+        $user->balance = $user->balance + $amount;
+        $user->save();
+
+        return true;
+    }
+
     public function debitWallet($amount)
     {
         $user = User::find(Auth::user()->id);
-        $user->balance = Auth::user()->balance - $amount;
-        $user->save();
-        return true;
+        $newBalance = $user->balance - $amount;
+        $status = $user->update(['balance' => $newBalance >= 0 ? $newBalance : 0]);
+
+        return $status;
+    }
+
+    public function debitUserWallet($userId, $amount)
+    {
+        $user = User::find($userId);
+        $newBalance = $user->balance - $amount;
+        $status = $user->update(['balance' => $newBalance >= 0 ? $newBalance : 0]);
+
+        return $status;
     }
 
     protected function formatPhoneNumber($msisdn)
     {
-        return preg_replace('/^0/', '234', '0' . (int)$msisdn);
+        return preg_replace('/^0/', '234', '0' . (int) $msisdn);
     }
 
     /**

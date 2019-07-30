@@ -4,6 +4,11 @@ namespace App\Http\Controllers;
 
 use Twilio\Rest\Client;
 use Faker\Generator as Faker;
+use App\Mail\OrderNotification;
+use Illuminate\Support\Facades\Mail;
+//use Illuminate\Mail\Mailable;
+
+
 
 class NotificationController extends HomeController
 {
@@ -127,6 +132,9 @@ class NotificationController extends HomeController
         return $message;
     } */
 
+    /**
+     * Notify Client of something that happend
+     */
     public function clientNotify($message, $status = false)
     {
         return (object) [
@@ -147,31 +155,33 @@ class NotificationController extends HomeController
         return $notification;
     }
 
-    protected function adminDataNotification($dataPlan)
+    /**
+     * Admin Data Order Notification
+     */
+    protected function adminDataOrderNotification($dataPlan)
     {
         return request()->phone . ' ordered for ' . $dataPlan->network . ' ' . $dataPlan->volume;
     }
 
-    protected function notifyAdminViaEmail(){
-        
-    }
-
-    protected function notifyAdminViaSms($message, $to)
+    /**
+     * Notify Admin Via Email
+     */
+    protected function notifyAdminViaEmail($subject, $content, $toEmail)
     {
-        $client = new \GuzzleHttp\Client();
-        $url = \config('constants.url.smartsmssolutions');
-        $request = $client->post($url . '?json', ['form_params' => $this->notifyAdminViaSmsFormParamters($message, $to)]);
-        dd($request->getBody()->getContents());
+        Mail::to($toEmail)->send(new OrderNotification($subject, $content));
     }
 
     /**
-     * compose form parameters for sending sms
+     * Notify Admin Via Sms
      */
-    protected function notifyAdminViaSmsFormParamters($message, $to)
+    protected function notifyAdminViaSms($message, $to)
     {
-        return [
-            'sender' => urlencode(env('DATA_SMS_SENDER_ID')), 'message' => $message, 'to' => $to, 'type' => '0',
-            'routing' => 3, 'ref_id' => $this->getUniqueReference(), 'token' => env('SMARTSMSSOLUTION_TOKEN'),
-        ];
+        $client = new \GuzzleHttp\Client();
+        $client->post(\config('constants.url.smartsmssolutions') . '?json', [
+            'form_params' => [
+                'sender' => env('SITE_SMS_SENDER_ID'), 'message' => $message, 'to' => $to,
+                'type' => '0', 'routing' => 3, 'token' => env('SMARTSMSSOLUTION_TOKEN')
+            ]
+        ]);
     }
 }

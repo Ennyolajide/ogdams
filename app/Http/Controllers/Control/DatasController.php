@@ -68,12 +68,22 @@ class DatasController extends ModController
         return back()->withNotification($this->clientNotify($message, $status));
     }
 
-    public function editPhone(Dataplan $network)
+    public function editDataPlanNotification(Dataplan $network)
     {
         //validate request
-        $this->validate(request(), ['phone' => 'required|string']);
-
-        $status = DataPlan::where('network_id', $network->network_id)->update(['notification_phone' => request()->phone]);
+        $this->validate(request(), [
+            'email' => 'sometimes|email', 'emailNotificationStatus' => 'sometimes|string',
+            'phone' => 'sometimes|string', 'phoneNotificationStatus' => 'sometimes|string',
+        ]);
+        // get and instance of the data plan
+        $dataPlan = DataPlan::where('network_id', $network->network_id);
+        //update the instance of the dataplan
+        $status = $dataPlan->update([
+            'phone_notification_status' => request()->has('phoneNotificationStatus'),
+            'email_notification_status' => request()->has('emailNotificationStatus'),
+            'notification_phone' => request()->phone ?? $dataPlan->first()->notification_phone,
+            'notification_email' => request()->email ?? $dataPlan->first()->notification_email,
+        ]);
 
         $message = $status ? $this->successResponse : $this->failureResponse;
 

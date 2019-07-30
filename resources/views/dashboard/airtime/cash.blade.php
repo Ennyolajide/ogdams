@@ -1,136 +1,137 @@
 @extends('dashboard.layouts.master')
 
     @section('content-header')
-        <section class="content-header">
-            <h1>Airtime To Cash</h1>
-            <ol class="breadcrumb">
-                <li>
-                    <a href="#"><i class="fa fa-dashboard"></i> Airtime</a>
-                </li>
-                <li class="active">Airtime To Cash</li>
-            </ol>
-        </section>
+        <div class="page-title">
+            <div class="title_left">
+                <h3>Airtime To Cash</h3>
+            </div>
+            <div class="pull-right">
+                <ol class="breadcrumb">
+                    <li>
+                        <a href="#"><i class="fa fa-dashboard"></i> Home</a>
+                    </li>
+                    <li class="active">Airtime To Cash</li>
+                </ol>
+            </div>
+        </div>
+        <div class="clearfix"></div>
     @endsection
 
     @section('content')
         <!-- Main content -->
-        <section class="content">
-            <!-- Info boxes -->
-            <div class="row">
-                <div class="col-md-12">
-                    <!-- TABLE: LATEST ORDERS -->
-                    <div class="box box-purple">
-                        <div class="box-header with-border">
-                            <h3 class="box-title">Airtime To Cash</h3>
+        <div class="row">
+            <div class="col-md-12 col-sm-12 col-xs-12">
+                <div class="x_panel">
+                    <div class="x_title">
+                        <h2>Airtime To Cash</h2>
+                        <ul class="nav navbar-right panel_toolbox">
+                            <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                            </li>
+                            <li><a class="close-link"><i class="fa fa-close"></i></a>
+                            </li>
+                        </ul>
+                        <div class="clearfix"></div>
+                    </div>
+                    <div class="x_content">
+                        <div class="row">
+                            <div class="col-xs-12 col-sm-7 col-md-7 col-lg-7">
+                                <form id="airtime-swap-form" class="form-horizontal" method="post">
+                                    <br/> @csrf
+                                    <div class="form-group">
+                                        <label class="col-sm-2 control-label hidden-xs">&nbsp;</label>
+                                        <div class="col-sm-10 form-grouping">
+                                            <div class="row">
+                                                <div class="swap-from-network-image col-xs-4 col-sm-3 col-md-3 col-lg-3" style="display:none;">
+                                                    <img class="img-responsive">
+                                                </div>
+                                                <div class="swap-from-network-image col-xs-4 col-sm-6 col-md-6 col-lg-6 text-center" style="display:none;">
+                                                    <br/><br/>
+                                                    <i class="fa fa-arrow-right fa-3x"></i>
+                                                </div>
+                                                <div class="swap-from-network-image col-xs-4 col-sm-3 col-md-3 col-lg-3  pull-right" style="display:none;">
+                                                    <img class="img-responsive">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
 
-                            <div class="box-tools pull-right">
-                                <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
-                                </button>
-                                <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
+                                    <div class="form-group">
+                                        <label class="col-sm-2 col-xs-12 control-label" >Network</label>
+                                        <div class="col-sm-10 col-xs-12">
+                                            <div id="swap-from-network" data-networks="{{ $networks }}">
+                                                <select class="form-control" name="network" id="network">
+                                                    <option value="" disabled selected>Choose Network</option>
+                                                    @foreach ($networks as $network)
+                                                        <option value="{{ $network->id }}">
+                                                            {{ $network->network }}
+                                                        </option>
+                                                    @endforeach
+                                                </select>
+                                                <p class="help-block">Select the network you want to swap airtime from.</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-sm-2 col-xs-12 control-label">Phone Number</label>
+                                        <div class="col-sm-10 col-xs-12 form-grouping">
+                                            <input type="text" class="form-control" name="swapFromPhone">
+                                            <p class="help-block">The phone number you want to swap airtime from</p>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-sm-2 col-xs-12 control-label">Amount</label>
+                                        <div class="col-sm-10 col-xs-12 form-grouping">
+                                            <input type="text" id="amount" class="form-control" name="amount" disabled="true">
+                                            <p class="help-block">Enter amount you want to fund.</p>
+                                        </div>
+                                    </div>
+                                    <div id="wallet-amount" class="form-group" style="display:none;">
+                                        <label class="col-sm-2 col-xs-12 control-label">Amount To Wallet</label>
+                                        <div class="col-sm-10 col-xs-12 form-grouping">
+                                            <input type="text" class="form-control" disabled="true">
+                                        </div>
+                                    </div>
+                                    <br/>
+                                    <div class="form-group bank" style="display:none;">
+                                        <label class="col-sm-2 col-xs-12 control-label" >Bank</label>
+                                        <div class="col-sm-10 col-xs-12">
+                                            <div id="swap-from-network" data-networks="{{ $networks }}">
+                                                <select class="form-control" name="bankId">
+                                                    <option value="" disabled selected>Choose Bank</option>
+                                                    @foreach ($banks as $bank)
+                                                        <option value="{{ $bank->id }}">
+                                                            {{ $bank->acc_name  }} {{ $bank->acc_no }} {{ $bank->bank_name }}
+                                                        </option>
+                                                    @endforeach
+                                                </select>
+                                                <p class="help-block">Select a bank account to receive your cash.  </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <div class="col-sm-12">
+                                            <a href="{{ route('user.profile') }}" class="btn bg-red btn-flat bank add-bank" style="display:none;">
+                                                <i class="fa fa-bank"></i>
+                                                Add {{ $banks->count() > 0 ? 'More' : 'New' }} Bank Account
+                                            </a>
+                                            <button id="submit" class="btn bg-purple btn-flat pull-right">Cash</button>
+                                        </div>
+                                    </div>
+                                </form>
                             </div>
                         </div>
-                        <!-- /.box-header -->
-                        <div class="box-body">
-                            <section class="container">
-                                <div class="row">
-                                    <div class="col-xs-12 col-sm-7 col-md-7 col-lg-7">
-                                        <form id="airtime-swap-form" class="form-horizontal" method="post">
-                                            <br/> @csrf
-                                            <div class="form-group">
-                                                <label class="col-sm-2 control-label hidden-xs">&nbsp;</label>
-                                                <div class="col-sm-10 form-grouping">
-                                                    <div class="row">
-                                                        <div class="swap-from-network-image col-xs-4 col-sm-3 col-md-3 col-lg-3" style="display:none;">
-                                                            <img class="img-responsive">
-                                                        </div>
-                                                        <div class="swap-from-network-image col-xs-4 col-sm-6 col-md-6 col-lg-6 text-center" style="display:none;">
-                                                            <br/><br/>
-                                                            <i class="fa fa-arrow-right fa-3x"></i>
-                                                        </div>
-                                                        <div class="swap-from-network-image col-xs-4 col-sm-3 col-md-3 col-lg-3  pull-right" style="display:none;">
-                                                            <img class="img-responsive">
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-
-                                            <div class="form-group">
-                                                <label class="col-sm-2 control-label" >Network</label>
-                                                <div class="col-sm-10">
-                                                    <div id="swap-from-network" data-networks="{{ $networks }}">
-                                                        <select class="form-control" name="network" id="network">
-                                                            <option value="" disabled selected>Choose Network</option>
-                                                            @foreach ($networks as $network)
-                                                                <option value="{{ $network->id }}">
-                                                                    {{ $network->network }}
-                                                                </option>
-                                                            @endforeach
-                                                        </select>
-                                                        <p class="help-block">Select the network you want to swap airtime from.</p>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="form-group">
-                                                <label class="col-sm-2 control-label">Phone Number</label>
-                                                <div class="col-sm-10 form-grouping">
-                                                    <input type="text" class="form-control" name="swapFromPhone">
-                                                    <p class="help-block">The phone number you want to swap airtime from</p>
-                                                </div>
-                                            </div>
-                                            <div class="form-group">
-                                                <label class="col-sm-2 control-label">Amount</label>
-                                                <div class="col-sm-10 form-grouping">
-                                                    <input type="text" id="amount" class="form-control" name="amount" disabled="true">
-                                                    <p class="help-block">Enter amount you want to fund.</p>
-                                                </div>
-                                            </div>
-                                            <div id="wallet-amount" class="form-group" style="display:none;">
-                                                <label class="col-sm-2 control-label">Amount To Wallet</label>
-                                                <div class="col-sm-10 form-grouping">
-                                                    <input type="text" class="form-control" disabled="true">
-                                                </div>
-                                            </div>
-                                            <div class="form-group bank" style="display:none;">
-                                                <label class="col-sm-2 control-label" >Bank</label>
-                                                <div class="col-sm-10">
-                                                    <div id="swap-from-network" data-networks="{{ $networks }}">
-                                                        <select class="form-control" name="bankId">
-                                                            <option value="" disabled selected>Choose Bank</option>
-                                                            @foreach ($banks as $bank)
-                                                                <option value="{{ $bank->id }}">
-                                                                    {{ $bank->acc_name  }} {{ $bank->acc_no }} {{ $bank->bank_name }}
-                                                                </option>
-                                                            @endforeach
-                                                        </select>
-                                                        <p class="help-block">Select a bank account to receive your cash.  </p>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="form-group">
-                                                <div class="col-sm-offset-2 col-sm-10">
-                                                    <button id="submit" class="btn bg-purple btn-flat">Swap</button>
-                                                    <button class="btn bg-maroon btn-flat bank add-bank pull-right" style="display:none;">
-                                                        <i class="fa fa-bank"></i>
-                                                        Add {{ $banks->count() > 0 ? 'More' : 'New' }} Bank Account
-                                                    </button>
-                                                </div>
-                                            </div>
-                                        </form>
-                                    </div>
-                                </div>
-                            </section>
-                        </div>
+                        @include('dashboard.layouts.errors')
+                        <br/><br/>
                     </div>
                     <!-- /.box-body -->
-                    @include('dashboard.layouts.errors')
-                    <!-- .box-footer -->
                     @include('dashboard.layouts.box-footer')
                     <!-- /.box-footer -->
                 </div>
                 <!-- /.box -->
             </div>
-        </section>
+        </div>
     @endSection
+
     @if(session('modal'))
         <!-- /Modal -->
         @php $imgSrc = "/images/networks/".session('modal')->swapFromNetwork.".png"; @endphp

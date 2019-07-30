@@ -13,5 +13,10 @@ class ChargesTableSeeder extends Seeder
             'service' => 'withdrawals',
             'amount' => 100,
         ]);
+
+        DB::table('charges')->insert([
+            'service' => 'addbank',
+            'amount' => 100,
+        ]);
     }
 }

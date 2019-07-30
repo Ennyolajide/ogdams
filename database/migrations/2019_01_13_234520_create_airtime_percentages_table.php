@@ -23,6 +23,7 @@ class CreateAirtimePercentagesTable extends Migration
             $table->unsignedTinyInteger('airtime_to_cash_percentage');
             $table->boolean('airtime_swap_percentage_status')->default(true);
             $table->boolean('airtime_to_cash_percentage_status')->default(true);
+            $table->unsignedTinyInteger('airtime_topup_percentage')->default(100);
             $table->timestamps();
 
 

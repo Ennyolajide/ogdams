@@ -16,9 +16,10 @@ class Admin
      */
     public function handle($request, Closure $next)
     {
-        if (Auth::user()->role != 'admin') {
+        /*  $roles = ['developer', 'owner', 'admin', 'moderators'];
+        if (in_array(Auth::user()->role, $roles)) { } else {
             return redirect('/users/logout');
-        }
+        } */
         return $next($request);
     }
 }

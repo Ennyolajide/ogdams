@@ -16,7 +16,7 @@ class RingoController extends RingoTokenController
      */
     public function tvInternetMiscTopup($subProduct)
     {
-        $meterId = json_encode(['meter' => (string)request()->cardNo]);
+        $meterId = json_encode(['meter' => (string) request()->cardNo]);
 
         $endPoint = 'billpay/dstv/' . $subProduct->product->product_id . '/' . $subProduct->code;
 
@@ -35,8 +35,8 @@ class RingoController extends RingoTokenController
         $body = json_encode([
             'prepaid' => request()->prepaid,
             'product_id' => $product->product_id,
-            'meter' => (string)request()->cardNo,
-            'denomination' => (string)request()->amount,
+            'meter' => (string) request()->cardNo,
+            'denomination' => (string) request()->amount,
         ]);
 
         $enPoint = 'billpay/electricity/' . request()->cardNo;
@@ -54,7 +54,7 @@ class RingoController extends RingoTokenController
      */
     public function billValidation($productId, $meterId)
     {
-        $body = json_encode(['meter' => (string)$meterId]);
+        $body = json_encode(['meter' => (string) $meterId]);
 
         $productId = is_numeric($productId) && is_numeric($meterId) ? $productId : false;
 

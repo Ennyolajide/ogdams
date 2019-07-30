@@ -23,9 +23,7 @@ class VoucherController extends WalletController
     public function store()
     {
         //validate post data
-        $this->validate(request(), [
-            'voucher' => 'required|min:16|max:20'
-        ]);
+        $this->validate(request(), ['voucher' => 'required|min:16|max:20']);
 
         // get voucher pin
         $voucher = Voucher::whereVoucher(request()->voucher)->first();

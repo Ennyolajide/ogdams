@@ -26,28 +26,28 @@ class BankController extends PaystackController
         ]);
         $query = request()->accountNumber . '&bank_code=' . request()->bankCode;
 
-        return json_decode($this->getPaystack('bank/resolve?account_number='.$query),true);
+        return json_decode($this->getPaystack('bank/resolve?account_number=' . $query), true);
     }
 
     /**
      * Add a new Bank Account
      */
-    public function addBankDetails()
+    public function storeBank()
     {
-        $charges = $this->addBankDetailsCharges();
+        $charges = Charge::whereService('addbank')->first()->amount;
 
         $bankDetails = $this->resolveBankDetails()['data'] ?? false;
 
-        if(!$this->accountExist()){
+        if (!$this->accountExist()) {
             if ($bankDetails && Auth::user()->balance >= $charges) {
                 $status = $this->addBank($bankDetails) ? $this->debitWallet($charges) : false;
                 $status ? $this->notify($this->addBankDetailsNotification($charges)) : false;
                 $message = $status ? $this->successResponse : $this->errorResponse;
-            }else{
+            } else {
                 $status = false;
                 $message = $this->failureResponse;
             }
-        }else{
+        } else {
             $status = false;
             $message = $this->existResponse;
         }
@@ -56,18 +56,31 @@ class BankController extends PaystackController
     }
 
     /**
+     * Delete a bank account form DB
+     */
+    public function deleteBank(Bank $bank)
+    {
+        $status = $bank->delete();
+        $message = $status ? 'Operation successful' : 'Operation failed';
+
+        return back()->withNotification($this->clientNotify($message, $status));
+    }
+
+    /**
      * Check if account Exist
      */
-    public function accountExist(){
-        return Bank::where('acc_no',request()->accountNumber)
-            ->where('user_id',Auth::user()->id)
+    protected function accountExist()
+    {
+        return Bank::where('acc_no', request()->accountNumber)
+            ->where('user_id', Auth::user()->id)
             ->first();
     }
 
     /**
      * Add the bank Details to DB
      */
-    protected function addBank($bankDetails){
+    protected function addBank($bankDetails)
+    {
         return Bank::create([
             'user_id' => Auth::user()->id,
             'bank_name' => request()->bankName,
@@ -79,7 +92,8 @@ class BankController extends PaystackController
     /**
      * Get the charges for the Adding a new Bank Account
      */
-    protected function addBankDetailsCharges(){
+    protected function addBankDetailsCharges()
+    {
         return 100;
     }
 }

@@ -40,8 +40,8 @@
                             <div class="clearfix"></div>
                             <br />
                             <div>
-                                <h1><i class="fa fa-paw"></i> Gentelella Alela!</h1>
-                                <p>©2016 All Rights Reserved. Gentelella Alela! is a Bootstrap 3 template. Privacy and Terms</p>
+                                <h1><i class="fa fa-paw"></i> Ogdam</h1>
+                                <p>©2019 All Rights Reserved. Ogdam is a business solution website. Privacy and Terms</p>
                             </div>
                         </div>
                     </form>
@@ -76,8 +76,8 @@
                             <br />
 
                             <div>
-                                <h1><i class="fa fa-paw"></i> Gentelella Alela!</h1>
-                                <p>©2016 All Rights Reserved. Gentelella Alela! is a Bootstrap 3 template. Privacy and Terms</p>
+                                <h1><i class="fa fa-paw"></i> Ogdam</h1>
+                                <p>©2019 All Rights Reserved. Ogdam is a business solution website. Privacy and Terms</p>
                             </div>
                         </div>
                     </form>

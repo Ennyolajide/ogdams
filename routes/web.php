@@ -29,26 +29,25 @@ Route::get('users/verify/{email}/{token}', 'VerificationController@verify');
 Route::get('users/reset', 'PasswordResetController@index')->name('user.passwordReset');
 Route::post('users/reset', 'PasswordResetController@reset')->name('user.passwordReset');
 
-//user
-
-
-
 //
-Route::get('/home', 'HomeController@index')->name('home');
-Route::get('/dashboard', 'HomeController@index')->name('dashboard.index');
+//Route::get('/home', 'HomeController@index')->name('home');
+Route::get('/dashboard', 'HomeController@dashboardIndex')->name('dashboard.index');
 
 //Profile
-Route::get('/dashboard/profile', 'ProfileController@index')->name('user.profile');
-Route::post('/bank/addBankDetails', 'BankController@addBankDetails')->name('user.addBankDetails');
-Route::post('/bank/bankDetails', 'BankController@resolveBankDetails')->name('paystack.bankDetails');
+Route::get('/dashboard/profile', 'ProfileController@profileIndex')->name('user.profile');
+Route::post('/dashboard/bank/add', 'BankController@storeBank')->name('user.bank.store');
+Route::patch('/dashboard/bank/{bank}/delete', 'BankController@deleteBank')->name('user.bank.delete');
+Route::post('/dashboard/bank/details', 'BankController@resolveBankDetails')->name('paystack.bankDetails');
+Route::post('/dashboard/profile/password/edit', 'ProfileController@editPassword')->name('user.password.edit');
+
 
 //Message
-Route::get('/dashboard/inbox', 'MessageController@index')->name('messages.inbox');
-Route::get('/dashboard/inbox/compose', 'MessageController@create')->name('messages.compose');
-Route::post('/dashboard/inbox/compose', 'MessageController@store')->name('messages.compose');
-Route::get('/dashboard/inbox/{message}', 'MessageController@show')->name('messages.message');
-Route::post('/dashboard/inbox/{message}/reply', 'MessageController@reply')->name('messages.reply');
-Route::delete('/dashboard/inbox/{message}/delete', 'MessageController@delete')->name('messages.delete');
+Route::get('/dashboard/inbox', 'MessageController@messageIndex')->name('messages.inbox');
+Route::get('/dashboard/inbox/compose', 'MessageController@createMessage')->name('messages.compose');
+Route::post('/dashboard/inbox/compose', 'MessageController@storeMessage')->name('messages.compose');
+Route::get('/dashboard/inbox/{message}', 'MessageController@showMessage')->name('messages.message');
+Route::post('/dashboard/inbox/{message}/reply', 'MessageController@replyMessage')->name('messages.reply');
+Route::delete('/dashboard/inbox/{message}/delete', 'MessageController@deleteMessage')->name('messages.delete');
 
 //Data
 Route::get('/dashboard/data/prices', 'DataController@index')->name('data.prices');
@@ -86,17 +85,8 @@ Route::post('dashboard/wallet/withdraw', 'WithdrawalController@store')->name('wa
 
 //Paystack
 Route::post('dashboard/payments/card', 'PaystackController@redirectToGateway')->name('paystack.pay');
-
 Route::get('dashboard/payments/callback', 'PaystackController@handleGatewayCallback')->name('paystack.callback');
-
-/* Route::get('faq', 'HomePageController@faq')->name('faq');
-Route::get('contact', 'HomePageController@contact')->name('contact'); */
-
-//Bitcoin
-Route::get('dashboard/bitcoin/{action}', 'BitcoinController@show')->name('coins');
-
-//Gift Card
-Route::get('dashboard/giftcard', 'GiftCardController@show')->name('giftcard');
+Route::get('dashboard/paystack/webhook', 'WebhookController@paystack')->name('paystack.webhook');
 
 //Sms
 Route::get('dashboard/sms/bulk', 'SmsController@display')->name('sms.bulk');
@@ -107,11 +97,7 @@ Route::post('dashboard/sms/bulk', 'SmsController@test')->name('sms.bulk');
  * Bill Payments
  */
 Route::namespace('Bills')->group(function () {
-    // Controllers Within The "App\Http\Controllers\Bills" Namespace
 
-    //get startimes bonquet
-    //Route::get('dashboard', 'Bill');
-    //get
     //Route::get('test', 'RingoController@test');
     Route::get('dashboard/bills/', 'RouteController@index')->name('bills');
     Route::get('dashboard/bills/tv/{product}', 'RouteController@tv')->name('bills.tv');
@@ -131,20 +117,7 @@ Route::namespace('Bills')->group(function () {
 });
 
 
-
-
-
-
-
-
-Route::get('sms', 'SmsController@test');
-Route::get('dashboard/transactions', 'TransactionController@index')->name('user.transactions');
-Route::get('test', 'TestController@index');
-
-
-//Admin
-Route::get('control/index', 'ModController@index')->name('admin.index');
-Route::get('control/withdrawals', 'ModController@withdrawals')->name('admin.withdrawals');
+Route::get('dashboard/transactions', 'TransactionController@transactionIndex')->name('user.transactions');
 
 /**
  * Bill Payments
@@ -177,7 +150,7 @@ Route::namespace('Control')->group(function () {
     Route::get('settings', 'SettingsController@index')->name('admin.settings');
 
     //Data configurations
-    Route::patch('settings/data/{network}/edit', 'DatasController@editPhone')->name('admin.data.edit');
+    Route::patch('settings/data/{network}/edit', 'DatasController@editDataPlanNotification')->name('admin.data.edit');
     Route::get('settings/dataplan/{network}', 'DatasController@settings')->name('admin.dataplan');
     Route::post('settings/dataplan/{network}', 'DatasController@newDataPlan')->name('admin.dataplan.new');
     Route::patch('settings/dataplan/{network}/edit', 'DatasController@editDataPlan')->name('admin.dataplan.edit');
@@ -194,4 +167,14 @@ Route::namespace('Control')->group(function () {
     //bills configurations
     Route::get('settings/bills/{product}', 'BillsController@show')->name('admin.bills.config');
     Route::patch('settings/bills/{subProduct}/edit', 'BillsController@edit')->name('admin.bill.config.edit');
+
+    //Banks
+    Route::get('settings/banks', 'BanksController@bankSettings')->name('admin.banks');
+
+    //Users
+    Route::get('control/users', 'UsersController@usersIndex')->name('admin.users');
+    Route::post('control/users', 'UsersController@searchUsers')->name('admin.users.search');
+    Route::get('control/user/{user}', 'UsersController@viewUser')->name('admin.user.view');
+    Route::patch('control/user/{user}', 'UsersController@setUserStatus')->name('admin.toggle.user.status');
+    Route::patch('control/user/balance/{user}/alter', 'UsersController@alterUserBalance')->name('admin.alter.user.balance');
 });

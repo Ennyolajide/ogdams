@@ -15,16 +15,10 @@ class SettingsController extends ModController
 
     public function index()
     {
-        $bills = RingoProduct::where('product_list', true)->limit(4)->get();
+        $bills = RingoProduct::where('product_list', true)->get();
 
         $networks = AirtimePercentage::all();
 
         return view('control.settings', compact('bills', 'networks'));
     }
-
-    public function editData(DataPlans $dataPlans)
-    { }
-
-    public function airtime()
-    { }
 }

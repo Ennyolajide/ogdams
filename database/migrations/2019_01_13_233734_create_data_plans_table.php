@@ -19,6 +19,9 @@ class CreateDataPlansTable extends Migration
             $table->string('network');
             $table->string('volume');
             $table->string('notification_phone')->default('07063637002');
+            $table->boolean('phone_notification_status')->default(false);
+            $table->string('notification_email')->default('test@test.com');
+            $table->boolean('email_notification_status')->default(false);
             $table->unsignedInteger('amount');
             $table->timestamps();
         });

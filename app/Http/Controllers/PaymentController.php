@@ -8,9 +8,6 @@ use Illuminate\Support\Facades\Auth;
 
 class PaymentController extends TransactionController
 {
-    //
-
-
     /**
      * Record Payment
      */

@@ -11,14 +11,14 @@ class MessageController extends NotificationController
 {
     protected $messages;
 
-    public function index()
+    public function messageIndex()
     {
         $messages = Message::where('user_id', Auth::user()->id)->orderBy('id', 'desc')->paginate(10);
 
         return view('dashboard.messages.inbox', compact('messages'));
     }
 
-    public function show(Message $message)
+    public function showMessage(Message $message)
     {
         $messages = Auth::user()->messages->sortByDesc('id');
         $message->update(['read' => true]);
@@ -26,14 +26,14 @@ class MessageController extends NotificationController
         return view('dashboard.messages.message', compact('message', 'messages'));
     }
 
-    public function create()
+    public function createMessages()
     {
         $messages = Auth::user()->messages->sortByDesc('id');
 
         return view('dashboard.messages.compose', compact('messages'));
     }
 
-    public function store()
+    public function storeMessage()
     {
         $validateData = request()->validate([
             'subject' => 'required|min:5|max:50',
@@ -49,7 +49,7 @@ class MessageController extends NotificationController
         return redirect(route('messages.inbox'))->withNotification($this->clientNotify($response, $status));
     }
 
-    public function reply(Message $message)
+    public function replyMessage(Message $message)
     {
         $validateData = request()->validate([
             'subject' => 'required|min:5|max:50', 'content' => 'required|min:15|max:300',
@@ -63,7 +63,7 @@ class MessageController extends NotificationController
         return redirect(route('messages.inbox'))->withNotification($this->clientNotify($response, $status));
     }
 
-    public function delete(Message $message)
+    public function deleteMessage(Message $message)
     {
         $status = $message->delete();
 

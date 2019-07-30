@@ -55,6 +55,7 @@
                                         </div>
                                         <input type="hidden" name="email" value="{{ Auth::user()->email }}">
                                     </div>
+                                    <br/>
                                     <div id="amount-field" style="display:none;">
                                         <div class="form-group">
                                             <label class="col-sm-3 col-xs-12 control-label">Amount</label>
@@ -163,7 +164,7 @@
                                     </div>
                                     <br/>
                                     <div class="form-group">
-                                        <div class="col-sm-3">
+                                        <div class="col-sm-12">
                                             <button id="submit" class="btn bg-purple pull-right">Continue</button>
                                         </div>
                                     </div>

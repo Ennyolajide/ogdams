@@ -18,6 +18,7 @@ class CreateUsersTable extends Migration
             $table->boolean('active')->default(false);
             $table->string('token')->nullable();
             $table->string('role')->default('customer');
+            $table->boolean('permission')->default(false);
             $table->string('number')->nullable();
             $table->string('referal')->nullable();
             $table->unsignedBigInteger('balance')->default(0);
