@@ -6,11 +6,8 @@ use Twilio\Rest\Client;
 use Faker\Generator as Faker;
 use App\Mail\OrderNotification;
 use Illuminate\Support\Facades\Mail;
-//use Illuminate\Mail\Mailable;
 
-
-
-class NotificationController extends HomeController
+class NotificationController extends DashboardController
 {
     protected function creditNotification($amount, $method)
     {

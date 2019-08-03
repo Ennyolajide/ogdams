@@ -19,7 +19,6 @@ class LoginController extends Controller
 
     public function index()
     {
-
         return view('users/login');
     }
 
@@ -39,8 +38,6 @@ class LoginController extends Controller
             'password'  => request()->password,
             'active'    => true
         ];
-
-
 
         if (Auth::attempt($userData, request()->has('remember'))) {
             $route = Auth::user()->role == 'admin' ? '/control' : '/dashboard';

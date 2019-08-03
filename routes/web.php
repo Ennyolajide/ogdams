@@ -11,9 +11,7 @@
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('/', 'HomeController@index')->name('index');
 
 //Auth::routes();
 
@@ -21,7 +19,7 @@ Route::get('/', function () {
 Route::get('/users/login', 'LoginController@index')->name('user.login');
 Route::post('/users/login', 'LoginController@login')->name('user.login');
 Route::get('/users/logout', 'LoginController@logout')->name('user.logout');
-Route::get('/register', 'RegisterController@index')->name('user.register');
+Route::get('/register', 'LoginController@login')->name('user.register');
 Route::post('/register', 'RegisterController@register')->name('user.register');
 Route::get('/register/referrer/{wallet}', 'RegisterController@show')->name('user.register.referrer');
 
@@ -29,9 +27,8 @@ Route::get('users/verify/{email}/{token}', 'VerificationController@verify');
 Route::get('users/reset', 'PasswordResetController@index')->name('user.passwordReset');
 Route::post('users/reset', 'PasswordResetController@reset')->name('user.passwordReset');
 
-//
-//Route::get('/home', 'HomeController@index')->name('home');
-Route::get('/dashboard', 'HomeController@dashboardIndex')->name('dashboard.index');
+
+Route::get('/dashboard', 'DashboardController@dashboardIndex')->name('dashboard.index');
 
 //Profile
 Route::get('/dashboard/profile', 'ProfileController@profileIndex')->name('user.profile');

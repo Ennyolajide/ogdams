@@ -1,7 +1,7 @@
 @extends('users.layouts.master')
 
 @section('title')
-    | Login
+    Ogdam | Login
 @endsection
 
 @section('bodyClass')
@@ -26,8 +26,8 @@
                             <input type="password" name="password" class="form-control" placeholder="Password" required="" />
                         </div>
                         <div>
-                            <button class="btn btn-default submit" type="submit">Log in</button>
                             <a class="reset_pass" href="{{ route('user.passwordReset') }}">Lost your password?</a>
+                            <button class="btn btn-default submit pull-right" type="submit">Log in</button>
                         </div>
 
                         <div class="clearfix"></div>
@@ -50,21 +50,23 @@
 
             <div id="register" class="animate form registration_form">
                 <section class="login_content">
-                    <form method="POST" action="{{ route('user.register') }}" >
+                    <form action="{{ route('user.register') }}" method="post">
                         <h1>Create Account</h1>
                         <div>
-                            <input type="text" class="form-control" placeholder="Username" required="" />
+                            <input type="text" name="name" class="form-control" placeholder="Fullname" required="" />
                         </div>
                         <div>
-                            <input type="email" class="form-control" placeholder="Email" required="" />
+                            <input type="email" name="email" class="form-control" placeholder="Email" required="" />
                         </div>
                         <div>
                             <input type="password" class="form-control" placeholder="Password" required="" />
                         </div>
                         <div>
+                            <input type="password" name="password_confirmation" class="form-control" placeholder="Retype password" required="" />
+                        </div>
+                        <div>
                             <button class="btn btn-default submit" type="submit" >Register</a>
                         </div>
-
                         <div class="clearfix"></div>
 
                         <div class="separator">
