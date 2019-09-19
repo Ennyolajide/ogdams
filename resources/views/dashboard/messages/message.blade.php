@@ -90,7 +90,7 @@
                                             </div>
                                             <br/>
                                         @else
-                                            {{ $message->content }}
+                                        {!! $message->content !!}
                                         @endif
                                     </div>
 

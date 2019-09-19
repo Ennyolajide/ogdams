@@ -41,7 +41,7 @@
                                         <div class="col-md-2 col-lg-2" style="margin-left: 10px; margin-right: 10px;">
                                             <div class="biller img-rounded">
                                                 <a href="{{ route('bills').'/'.strtolower($product->service) }}/{{ $product->id }}" class="bill-link-lg-md center-block">
-                                                    <img class="img-responsive" src="/images/bills/{{ $product->logo }}">
+                                                    <img class="img-responsive" src="\images/bills/{{ $product->logo }}">
                                                 </a>
                                                 <p class="text-center">{{ $product->name }}</p>
                                             </div>
@@ -58,7 +58,7 @@
                                     <div class="col-xs-4 col-sm-4">
                                         <div class="biller img-rounded">
                                             <a href="{{ route('bills').'/'.strtolower($product->service)}}/{{ $product->id }}" class="bill-link-sm-xs center-block">
-                                                <img class="img-responsive" src="/images/bills/{{ $product->logo }}">
+                                                <img class="img-responsive" src="\images/bills/{{ $product->logo }}">
                                             </a>
                                             <p class="text-center">{{ $product->name }}</p>
                                         </div>

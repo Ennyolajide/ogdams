@@ -25,7 +25,7 @@ class Main extends Mailable
     {
         //
         $this->content = $content;
-        //$this->logo = '/honeylogo.jpg';
+        $this->logo = env('APP_URL') . '/home/img/logo.jpg';
         $this->subject = $subject;
         $this->link = $link;
     }
@@ -37,8 +37,8 @@ class Main extends Mailable
      */
     public function build()
     {
-        return $this->from('exmaple@test.com', 'Testing 123')
-                    ->subject($this->subject)
-                    ->view('emails.main');
+        return $this->from(env('SITE_EMAIL_SENDER'), strtoupper(env('APP_NAME')))
+            ->subject($this->subject)
+            ->view('emails.main');
     }
 }

@@ -44,9 +44,15 @@ class DatasController extends ModController
     {
         //validate request
         $this->validate(request(), [
-            'amount' => 'required|numeric', 'volume' => 'required|string'
+            'volume' => 'required|string',
+            'amount' => 'required|numeric',
+            'notification' => 'required|string'
         ]);
-        $status = $network->update(['volume' => request()->volume, 'amount' => request()->amount]);
+        $status = $network->update([
+            'volume' => request()->volume,
+            'amount' => request()->amount,
+            'notification_content' => request()->notification
+        ]);
         $message = $status ? $this->successResponse : $this->failureResponse;
 
         return back()->withNotification($this->clientNotify($message, $status));
@@ -55,12 +61,17 @@ class DatasController extends ModController
     public function newDataPlan(Dataplan $network)
     {
         //validate request
-        $this->validate(request(), ['amount' => 'required|numeric', 'volume' => 'required|string']);
+        $this->validate(request(), [
+            'amount' => 'required|numeric',
+            'volume' => 'required|string',
+            'notification' => 'required|string'
+        ]);
         $status = Dataplan::create([
             'volume' => request()->volume,
             'amount' => request()->amount,
             'network' => $network->network,
             'network_id' => $network->network_id,
+            'notification_content' => request()->notification,
             'notification_phone' => $network->notification_phone,
         ]);
         $message = $status ? $this->successResponse : $this->failureResponse;

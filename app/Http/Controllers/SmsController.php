@@ -22,7 +22,7 @@ class SmsController extends TransactionController
     {
         $smsConfigs = BulkSmsConfig::all();
 
-        return view('dashboard.sms.index', compact('smsConfigs', 'faker'));
+        return view('dashboard.sms.index', compact('smsConfigs'));
     }
 
 

@@ -68,7 +68,7 @@
                                         <div class="form-group">
                                             <label class="col-sm-2 col-xs-12 control-label">Smart Card No.</label>
                                             <div class="col-sm-10 col-xs-12 form-grouping">
-                                                <input type="text" id="cardNo" value="7029664775" class="form-control" name="cardNo" placeholder="Smart Card Number">
+                                                <input type="text" id="cardNo" value="2021809239" class="form-control" name="cardNo" placeholder="Smart Card Number">
                                             </div>
                                         </div>
                                         <div class="form-group" id="nameDiv" style="display:none;">
@@ -100,8 +100,8 @@
                                         <br/>
                                         <div class="form-group">
                                             <div class="col-xs-12">
-                                                <button id="continue" class="btn bg-purple btn-flat pull-right" disabled="true">Continue</button>
-                                                <button id="submit" type="submit" class="btn bg-purple btn-flat pull-right" style="display: none;">Submit</button>
+                                                <button id="continue" class="btn btn-flat btn-success pull-right" disabled="true">Continue</button>
+                                                <button id="submit" type="submit" class="btn btn-flat btn-success pull-right" style="display: none;">Submit</button>
                                             </div>
                                         </div>
                                         <br/><br/>
@@ -209,7 +209,8 @@
                         url:'{{ route("bills.tv.validate") }}',
                         data:{
                             cardNo : $('#cardNo').val(), amount : $('#amount').val(), email : $('#email').val(),
-                            phone : $('#phone').val() , productId : '{{ $product->id }}', product : package.code },
+                            phone : $('#phone').val() , productId : '{{ $product->id }}', product : package.code
+                        },
                         success:function(data){
                             console.log(data);
                             clearTimeout(timeOut);

@@ -19,9 +19,8 @@ Route::get('/', 'HomeController@index')->name('index');
 Route::get('/users/login', 'LoginController@index')->name('user.login');
 Route::post('/users/login', 'LoginController@login')->name('user.login');
 Route::get('/users/logout', 'LoginController@logout')->name('user.logout');
-Route::get('/register', 'LoginController@login')->name('user.register');
-Route::post('/register', 'RegisterController@register')->name('user.register');
-Route::get('/register/referrer/{wallet}', 'RegisterController@show')->name('user.register.referrer');
+Route::get('/register/{referrer?}', 'RegisterController@index')->name('user.register');
+Route::post('/register/create', 'RegisterController@register')->name('user.register.create');
 
 Route::get('users/verify/{email}/{token}', 'VerificationController@verify');
 Route::get('users/reset', 'PasswordResetController@index')->name('user.passwordReset');
@@ -89,13 +88,15 @@ Route::get('dashboard/paystack/webhook', 'WebhookController@paystack')->name('pa
 Route::get('dashboard/sms/bulk', 'SmsController@display')->name('sms.bulk');
 Route::post('dashboard/sms/bulk', 'SmsController@test')->name('sms.bulk');
 
+//Testimonials
+Route::get('dashboard/testimonials', 'TestimonialController@index')->name('testimonials');
+Route::post('dashboard/testimonials', 'TestimonialController@store')->name('testimonial.store');
 
 /**
  * Bill Payments
  */
 Route::namespace('Bills')->group(function () {
 
-    //Route::get('test', 'RingoController@test');
     Route::get('dashboard/bills/', 'RouteController@index')->name('bills');
     Route::get('dashboard/bills/tv/{product}', 'RouteController@tv')->name('bills.tv');
     Route::get('dashboard/bills/misc/{product}', 'RouteController@misc')->name('bills.misc');

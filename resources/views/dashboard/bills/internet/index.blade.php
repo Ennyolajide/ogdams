@@ -93,7 +93,7 @@
                                         <br/>
                                         <div class="form-group">
                                             <div class="col-xs-12">
-                                                <button id="submit" type="submit" class="btn bg-purple btn-flat pull-right">Submit</button>
+                                                <button id="submit" type="submit" class="btn btn-flat btn-success pull-right">Submit</button>
                                             </div>
                                         </div>
                                     <form>

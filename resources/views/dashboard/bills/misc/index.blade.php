@@ -42,7 +42,7 @@
                                     </div>
                                     <div class="col-xs-5 col-sm-5 col-md-4 col-lg-3  pull-right">
                                         <br/>
-                                        <img  src="/images/bills/{{ $product->logo }}" class="img-thumbnail">
+                                        <img  src="\images/bills/{{ $product->logo }}" class="img-thumbnail">
                                     </div>
                                 </div>
                                 <div id="form1">
@@ -86,7 +86,7 @@
                                         <br/>
                                         <div class="form-group">
                                             <div class="col-xs-12">
-                                                <button id="submit" type="submit" class="btn bg-purple btn-flat pull-right">Submit</button>
+                                                <button id="submit" type="submit" class="btn btn-flat btn-success pull-right">Submit</button>
                                             </div>
                                         </div>
                                         <br/><br/>

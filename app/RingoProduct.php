@@ -8,6 +8,8 @@ class RingoProduct extends Model
 {
     //
 
+    protected $hidden = ['status', 'created_at', 'updated_at'];
+
 
     public function productList()
     {

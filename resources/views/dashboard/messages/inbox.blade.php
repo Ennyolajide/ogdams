@@ -164,20 +164,16 @@
     @endSection
 
     @section('scripts')
-        @if (session('response'))
-            <script>alert('{{ session('response') }}');</script>
-        @endif
-
         <script>
-        $(function() {
-            $('.previousPage').click( function(){
-                window.location.href='{{ $messages->previousPageUrl() }}';
-            });
+            $(function() {
+                $('.previousPage').click( function(){
+                    window.location.href='{{ $messages->previousPageUrl() }}';
+                });
 
-            $('.nextPage').click( function(){
-                window.location.href='{{ $messages->nextPageUrl() }}';
+                $('.nextPage').click( function(){
+                    window.location.href='{{ $messages->nextPageUrl() }}';
+                });
             });
-        });
         </script>
 
     @endSection

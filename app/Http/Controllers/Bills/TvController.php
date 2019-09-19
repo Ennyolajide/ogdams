@@ -25,18 +25,42 @@ class TvController extends BillController
      */
     public function store()
     {
+        //check is the request is an api request
+        $isApi = request()->wantsJson();
+
         //validate request()
         $this->validate(request(), [
-            'email' => 'required|email',
-            'owner' => 'required|string',
-            'package' => 'required|json',
-            'phone' => 'required|string|min:10|max:13',
             'cardNo' => 'required|string|min:10|max:18',
+            'email' => $isApi ? 'sometimes|string' : 'required|email',
+            'package' => $isApi ? 'sometimes|string' : 'required|json',
+            'owner' => $isApi ? 'sometimes|string' : 'required|string',
+            'phone' => $isApi ? 'sometimes|string' : 'required|string|min:10|max:13',
+
+            'packageId' => $isApi ? ['required', 'numeric', function ($attribute, $value, $fail) {
+                in_array($value, RingoSubProductList::whereService('Tv')->pluck('id')->toArray()) ? false : $fail('Invalid Tv :attribute');
+            }] : 'sometimes|numeric',
         ]);
 
-        $status = $this->processTvTopup();
+        $uniqueReference = $this->getUniqueReference();
+
+        $status = $this->processTvTopup($uniqueReference);
 
         $message = $status ? $this->successResponse : $this->failureResponse;
+
+        ///Api response
+        if ($isApi) {
+            if (isset($this->responseObject->original['pin_based'])) {
+                $responseObject = $this->responseObject->original;
+                $pins = $responseObject['pin_based'] ? $responseObject['pins'] : false;
+            }
+
+            return response()->json([
+                'status' => $status,
+                'message' => $message,
+                'pins' =>  $pins ?? [],
+                'reference' => $status ? $uniqueReference : null,
+            ], 200);
+        }
 
         return back()->withNotification($this->clientNotify($message, $status));
     }
@@ -44,11 +68,11 @@ class TvController extends BillController
     /**
      * Proces Tv Topup
      */
-    protected function processTvTopup()
+    protected function processTvTopup($uniqueReference)
     {
-        $packageId = json_decode(request()->package, true);
+        $packageId = request()->wantsJson() ? request()->packageId : json_decode(request()->package, true);
 
-        $packageId = $packageId['id'] ?? $packageId;
+        $packageId = request()->wantsJson() ? $packageId : $packageId['id'] ?? $packageId;
 
         $subProduct = RingoSubProductList::find($packageId);
 
@@ -64,9 +88,8 @@ class TvController extends BillController
 
         if ($subProduct && (Auth::user()->balance >= $subProduct->selling_price)) {
 
-            $status = $subProduct ? $this->topup($subProduct, $details) : false;
-
-            $status ? $this->notify($this->tvTopupNotification($details)) : false;
+            $status = $subProduct ? $this->topup($subProduct, $details, $uniqueReference) : false;
+            $status ? $this->notify($this->tvTopupNotification($details, $uniqueReference, $this->responseObject)) : false;
 
             return $status;
         }

@@ -9,9 +9,18 @@ class TransactionController extends NotificationController
 {
     public function transactionIndex()
     {
-        $transactions = Transaction::where('user_id', Auth::user()->id)->orderBy('id', 'desc')->paginate(2);
+        $rowsPage = request()->wantsJson() ? 50 : 15;
+        $transactions = Transaction::where('user_id', Auth::user()->id)->orderBy('id', 'desc')->paginate($rowsPage);
 
-        return view('dashboard/transactions/index', compact('transactions'));
+        return request()->wantsJson() ?
+            response()->json($transactions, 200) : view('dashboard/transactions/index', compact('transactions'));
+    }
+
+    public function reference($reference)
+    {
+        $transaction = Transaction::whereReference($reference)->where('user_id', Auth::user()->id)->first();
+
+        return request()->wantsJson() ? response()->json($transaction, 200) : [];
     }
 
 

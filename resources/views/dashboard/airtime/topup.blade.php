@@ -77,7 +77,7 @@
                                     <br/>
                                     <div class="form-group">
                                         <div class="col-xs-12">
-                                            <button id="submit" class="btn btn-primary btn-flat pull-right">&nbsp;&nbsp;&nbsp;&nbsp;Topup&nbsp;&nbsp;&nbsp;&nbsp;</button>
+                                            <button id="submit" class="btn btn-flat btn-success pull-right">&nbsp;&nbsp;&nbsp;&nbsp;Topup&nbsp;&nbsp;&nbsp;&nbsp;</button>
                                         </div>
                                     </div>
                                 </form>

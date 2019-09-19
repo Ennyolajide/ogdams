@@ -165,7 +165,7 @@
                                     <br/>
                                     <div class="form-group">
                                         <div class="col-sm-12">
-                                            <button id="submit" class="btn bg-purple pull-right">Continue</button>
+                                            <button id="submit" class="btn btn-success pull-right">Continue</button>
                                         </div>
                                     </div>
                                     <br/><br/>
@@ -314,7 +314,15 @@
                 $('#gateway').change(function() {
                     var gateway = $('#gateway').val();
                     console.log(gateway);
-                    if(gateway == 1){//airtime
+                    if(gateway == 1){
+                        $('#ecard-form,#airtime-form,#bank-transfer').hide();
+                        $('#atmBankBitcoin-form,#amount-field').show();
+                        $('#fund-wallet-form').attr('action','{{ route("paystack.pay") }}');
+                    }else if(gateway == 2){
+                        $('#ecard-form,#airtime-form').hide();
+                        $('#atmBankBitcoin-form,#amount-field,#bank-transfer').show();
+                        $('#fund-wallet-form').attr('action','{{ route("wallet.fund.bank") }}');
+                    }else if(gateway == 3){//airtime
                         $('#fund-wallet-form').attr('action',"{{ route('wallet.fund.airtime')}}");
                         $('#amount-field,#ecard-form,#bank-transfer').hide();
                         $('#airtime-form').show();
@@ -329,14 +337,6 @@
                             }
                         });
 
-                    }else if(gateway == 2){
-                        $('#ecard-form,#airtime-form,#bank-transfer').hide();
-                        $('#atmBankBitcoin-form,#amount-field').show();
-                        $('#fund-wallet-form').attr('action','{{ route("paystack.pay") }}');
-                    }else if(gateway == 3){
-                        $('#ecard-form,#airtime-form').hide();
-                        $('#atmBankBitcoin-form,#amount-field,#bank-transfer').show();
-                        $('#fund-wallet-form').attr('action','{{ route("wallet.fund.bank") }}');
                     }else if(gateway == 4){
                         $('#ecard-form,#airtime-form').hide();
                         $('#atmBankBitcoin-form,#amount-field').show();

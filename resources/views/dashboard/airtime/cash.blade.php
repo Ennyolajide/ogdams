@@ -109,12 +109,13 @@
                                         </div>
                                     </div>
                                     <div class="form-group">
-                                        <div class="col-sm-12">
-                                            <a href="{{ route('user.profile') }}" class="btn bg-red btn-flat bank add-bank" style="display:none;">
+                                        <label class="col-sm-2 col-xs-12 control-label" ></label>
+                                        <div class="col-sm-10 col-xs-12">
+                                            <a href="{{ route('user.profile') }}#tab_content3" class="btn bg-red btn-flat bank add-bank" style="display:none;">
                                                 <i class="fa fa-bank"></i>
                                                 Add {{ $banks->count() > 0 ? 'More' : 'New' }} Bank Account
                                             </a>
-                                            <button id="submit" class="btn bg-purple btn-flat pull-right">Cash</button>
+                                            <button id="submit" class="btn btn-flat btn-success pull-right">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Cash&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</button>
                                         </div>
                                     </div>
                                 </form>

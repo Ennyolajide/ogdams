@@ -1,15 +1,22 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
     <head>
+        <title>@yield('title') | Dashboard</title>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <!-- Meta, title, CSS, favicons, etc. -->
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="_token" content="{{ csrf_token() }}" />
-        <title>@yield('title') | Dashboard</title>
         <!-- Tell the browser to be responsive to screen width -->
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <link rel="icon" href="images/favicon.ico" type="image/ico" />
+
+        <!-- Favicons -->
+        <link rel="shortcut icon" href="\favicon.ico" type="image/x-icon">
+        <link rel="icon" href="\favicon.ico" type="image/x-icon">
+        <meta name="msapplication-TileColor" content="#1ABB9C">
+        <meta name="theme-color" content="#1ABB9C">
+
+        <link rel="icon" href="\favicon.ico" type="image/ico"/>
         <!-- Bootstrap -->
         <link rel="stylesheet" href="\css/bootstrap/bootstrap.min.css">
         <!-- Font Awesome -->
@@ -30,6 +37,11 @@
         @yield('css')
         <!-- Custom styles -->
         @yield('style')
+        <style>
+            /* body{
+                font-size: 15px;
+            } */
+        </style>
     </head>
     <body class="nav-md">
         <div class="container body">

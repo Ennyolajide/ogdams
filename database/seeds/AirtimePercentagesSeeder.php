@@ -45,7 +45,18 @@ class AirtimePercentagesTableSeeder extends Seeder
         ]);
 
         DB::table('airtime_percentages')->insert([
-            'network' => '9MOBILE',
+            'network' => '9MOBILE DATA',
+            'airtime_to_cash_percentage' => 70,
+            'airtime_swap_percentage' => 70,
+            'airtime_to_cash_phone_numbers' => json_encode(['07088776655', '07055443322']),
+            'transfer_code' => '* 232 * pin * amount * recipient-number #',
+            'airtime_to_cash_percentage_status' => false,
+            'created_at' => Carbon::now()->format('Y-m-d H:i:s'),
+            'updated_at' => Carbon::now()->format('Y-m-d H:i:s'),
+        ]);
+
+        DB::table('airtime_percentages')->insert([
+            'network' => '9MOBILE GIFTING',
             'airtime_to_cash_percentage' => 70,
             'airtime_swap_percentage' => 70,
             'airtime_to_cash_phone_numbers' => json_encode(['07088776655', '07055443322']),

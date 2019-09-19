@@ -15,20 +15,21 @@ $unReadMessages = Auth::user()->messages->where('read',0)->sortByDesc('id');
 
             <ul class="nav navbar-nav navbar-right">
                 <li class="">
-                    <a class="text-bold">@naira(Auth::user()->balance)</a>
+                    <a class="text-bold" style="font-size: 20px;">@naira(Auth::user()->balance)</a>
                 </li>
 
                 <li role="presentation" class="dropdown">
                     <a href="javascript:;" class="dropdown-toggle info-number" data-toggle="dropdown" aria-expanded="false">
                         <i class="fa fa-envelope-o"></i>
                         <span class="badge bg-green">{{ $unReadMessages->count() }}</span>
+                        <input type="hidden" id="unread" value="{{ $unReadMessages->count() }}">
                     </a>
                     <ul id="menu1" class="dropdown-menu list-unstyled msg_list animated fadeInDown" role="menu">
                         @foreach ($unReadMessages as $unReadMessage)
                         <li>
                             <a href="{{ route('messages.message',$unReadMessage->id) }}">
                                 <span class="image">
-                                    <img src="images/img.jpg" alt="Profile Image" />
+                                    <img src="\images/avatar/default.png" alt="Profile Image" />
                                 </span>
                                 <span>
                                     <span>{{ $unReadMessage->sender->name }}</span>

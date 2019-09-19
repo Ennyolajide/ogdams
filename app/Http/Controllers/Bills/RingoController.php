@@ -16,13 +16,14 @@ class RingoController extends RingoTokenController
      */
     public function tvInternetMiscTopup($subProduct)
     {
+
         $meterId = json_encode(['meter' => (string) request()->cardNo]);
 
         $endPoint = 'billpay/dstv/' . $subProduct->product->product_id . '/' . $subProduct->code;
 
-        $response = $endPoint ? $this->ringo($endPoint, 'post', $meterId) : false;
+        $response = true; // $endPoint ? $this->ringo($endPoint, 'post', $meterId) : false;
 
-        $response ? $response->response = true : false;
+        //$response ? $response->response = true : false;
 
         return  response()->json($response ? $response : ['response' => false]);
     }
@@ -39,11 +40,11 @@ class RingoController extends RingoTokenController
             'denomination' => (string) request()->amount,
         ]);
 
-        $enPoint = 'billpay/electricity/' . request()->cardNo;
+        $endPoint = 'billpay/electricity/' . request()->cardNo;
 
-        $response = $endPoint ? $this->ringo($endPoint, 'post', $body) : false;
+        $response = true; //endPoint ? $this->ringo($endPoint, 'post', $body) : false;
 
-        $response ? $response->response = true : false;
+        //$response ? $response->response = true : false;
 
         return  response()->json($response ? $response : ['response' => false]);
     }
@@ -78,7 +79,9 @@ class RingoController extends RingoTokenController
 
         $endPoint = \config('constants.url.ringo') . $route;
 
-        $client = new \GuzzleHttp\Client(['http_errors' => false]);
+        $client = new \GuzzleHttp\Client([
+            'http_errors' => false, 'timeout' => 30, 'connect_timeout' => 30
+        ]);
 
         $request = $client->$type($endPoint, ['headers' => $this->headers(), 'body' => $body]);
 

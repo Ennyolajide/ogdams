@@ -2,14 +2,16 @@
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 <head>
   <meta charset="utf-8">
-  <title>OGDAMS</title>
+  <title>{{ strtoupper($app->name) }}</title>
   <meta content="width=device-width, initial-scale=1.0" name="viewport">
   <meta content="" name="keywords">
   <meta content="" name="description">
 
   <!-- Favicons -->
-  <link href="\home/img/favicon.png" rel="icon">
-  <link href="\home/img/apple-touch-icon.png" rel="apple-touch-icon">
+  <link rel="shortcut icon" href="\favicon.ico" type="image/x-icon">
+  <link rel="icon" href="\favicon.ico" type="image/x-icon">
+  <meta name="msapplication-TileColor" content="#1ABB9C">
+  <meta name="theme-color" content="#1ABB9C">
 
   <!-- Google Fonts -->
   <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,700,700i|Raleway:300,400,500,700,800|Montserrat:300,400,700" rel="stylesheet">
@@ -28,13 +30,8 @@
   <!-- Main Stylesheet File -->
   <link href="\home/css/style.css" rel="stylesheet">
   <link href="\home/css/pricing-style.css" rel="stylesheet">
+  <script src="https://www.google.com/recaptcha/api.js" async defer></script>
 
-  <!-- =======================================================
-    Theme Name: Reveal
-    Theme URL: https://bootstrapmade.com/reveal-bootstrap-corporate-template/
-    Author: BootstrapMade.com
-    License: https://bootstrapmade.com/license/
-  ======================================================= -->
 </head>
 
 <body id="body">
@@ -45,15 +42,15 @@
   <section id="topbar" class="d-none d-lg-block">
     <div class="container clearfix">
       <div class="contact-info float-left">
-        <i class="fa fa-envelope-o"></i> <a href="mailto:contact@example.com">support@ogdam.com</a>
-        <i class="fa fa-phone"></i> +234 9066 6857 02
+        <i class="fa fa-envelope-o"></i> <a href="mailto:{{ $app->email }}"></a>
+        <i class="fa fa-phone"></i> {{ $app->phone }}
       </div>
       <div class="social-links float-right">
-        <a href="#" class="twitter"><i class="fa fa-twitter"></i></a>
-        <a href="#" class="facebook"><i class="fa fa-facebook"></i></a>
-        <a href="#" class="instagram"><i class="fa fa-instagram"></i></a>
-        <a href="#" class="google-plus"><i class="fa fa-google-plus"></i></a>
-        <a href="#" class="linkedin"><i class="fa fa-linkedin"></i></a>
+        <a href="{{ $app->twitter }}" class="twitter"><i class="fa fa-twitter"></i></a>
+        <a href="{{ $app->facebook }}" class="facebook"><i class="fa fa-facebook"></i></a>
+        <a href="{{ $app->instagram }}" class="instagram"><i class="fa fa-instagram"></i></a>
+        <a href="{{ $app->google }}" class="google-plus"><i class="fa fa-google-plus"></i></a>
+        <a href="{{ $app->linkedin }}" class="linkedin"><i class="fa fa-linkedin"></i></a>
       </div>
     </div>
   </section>
@@ -76,8 +73,8 @@
           <li><a href="#about">About Us</a></li>
           <li><a href="#services">Services</a></li>
           <li><a href="#contact">Contact</a></li>
-          <li><a href="#team">DataPlans</a></li>
-          <li><a href="{{ route('user.register') }}">Register</a></li>
+          <li><a href="#dataPlans">DataPlans</a></li>
+          <li><a href="{{ route('user.login') }}#signup">Register</a></li>
           <li><a href="{{ route('user.login') }}">Login</a></li>
         </ul>
       </nav><!-- #nav-menu-container -->
@@ -90,19 +87,19 @@
   <section id="intro">
 
     <div class="intro-content">
-      <h2>Making <span>your ideas</span><br>happen!</h2>
+      {{-- <h2>Making <span>your ideas</span><br>happen!</h2> --}}
       <div>
         <a href="{{ route('user.login') }}" class="btn-get-started scrollto">Get Started</a>
-        <a href="{{ route('user.register') }}" class="btn-projects scrollto">Sign Up</a>
+        <a href="{{ route('user.login') }}#signup" class="btn-projects scrollto">Sign Up</a>
       </div>
     </div>
 
     <div id="intro-carousel" class="owl-carousel" >
-      <div class="item" style="background-image: url('img/intro-carousel/1.jpg');"></div>
-      <div class="item" style="background-image: url('img/intro-carousel/2.jpg');"></div>
-      <div class="item" style="background-image: url('img/intro-carousel/3.jpg');"></div>
-      <div class="item" style="background-image: url('img/intro-carousel/4.jpg');"></div>
-      <div class="item" style="background-image: url('img/intro-carousel/5.jpg');"></div>
+      <div class="item" style="background-image: url('\home/img/intro-carousel/1.jpg');"></div>
+      <div class="item" style="background-image: url('\home/img/intro-carousel/2.jpg');"></div>
+      <div class="item" style="background-image: url('\home/img/intro-carousel/3.jpg');"></div>
+      <div class="item" style="background-image: url('\home/img/intro-carousel/4.jpg');"></div>
+      <div class="item" style="background-image: url('\home/img/intro-carousel/5.jpg');"></div>
     </div>
 
   </section><!-- #intro -->
@@ -121,13 +118,13 @@
           </div>
 
           <div class="col-lg-6 content">
-            <h2>Lorem ipsum dolor sit amet, consectetur adipiscing</h2>
-            <h3>Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</h3>
+            <h2>Why choose us </h2>
+            <h3>We offer quality, transparent service putting our customers/clients first</h3>
 
             <ul>
-              <li><i class="ion-android-checkmark-circle"></i> Ullamco laboris nisi ut aliquip ex ea commodo consequat.</li>
-              <li><i class="ion-android-checkmark-circle"></i> Duis aute irure dolor in reprehenderit in voluptate velit.</li>
-              <li><i class="ion-android-checkmark-circle"></i> Ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate trideta storacalaperda mastiro dolore eu fugiat nulla pariatur.</li>
+              <li><i class="ion-android-checkmark-circle"></i> 100 % automated secure services.</li>
+              <li><i class="ion-android-checkmark-circle"></i> Instant and secure wallet funding.</li>
+              <li><i class="ion-android-checkmark-circle"></i> Over 7000 + active users.</li>
             </ul>
 
           </div>
@@ -143,7 +140,9 @@
       <div class="container">
         <div class="section-header text-center">
           <h2 class="mx-auto">Services</h2>
-          <p>Sed tamen tempor magna labore dolore dolor sint tempor duis magna elit veniam aliqua esse amet veniam enim export quid quid veniam aliqua eram noster malis nulla duis fugiat culpa esse aute nulla ipsum velit export irure minim illum fore</p>
+          <p>
+            Ogdams Technologies offers the best deals in Internet Data Subscriptions, Airtime To cash, Airtime(VTU), CableTV (DStv, GOtv & Startimes), Electricity Bill Payemnt etc
+          </p>
         </div>
 
         <div class="row">
@@ -154,7 +153,7 @@
                   <img class="img-fluid mx-auto" src="\home/img/services/bulk-sms.png">
                 </div>
               <h4 class="title"><a href="">Send Bulk SMS</a></h4>
-              <p class="description">Send BulkSMS to any number for as low as just 50 kobo per unit. Ours Bulks sms service also deliver sms to DND numbers</p>
+              <p class="description">Send BulkSMS to any number for as low as just ₦2 per unit. Ours Bulks sms service also deliver sms to DND numbers</p>
             </div>
           </div>
 
@@ -204,7 +203,7 @@
             <p class="cta-text"> Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
           </div>
           <div class="col-lg-3 cta-btn-container text-center">
-            <a class="cta-btn align-middle" href="#">Call To Action</a>
+            <a class="cta-btn align-middle" href="#"></a>
           </div>
         </div>
 
@@ -214,7 +213,7 @@
     <!--==========================
       Pricing tables
     ============================-->
-    <section id="team" class="wow fadeInUp">
+    <section id="dataPlans" class="wow fadeInUp">
       <div class="container">
         <div class="section-header">
           <h2>Data Plans</h2>
@@ -244,7 +243,7 @@
         </div>
 
       </div>
-    </section><!-- #team -->
+    </section><!-- #dataPlans -->
 
     <!--==========================
       Our Partners
@@ -257,15 +256,15 @@
             </div>
             @php
                 $partners = collect([
-                    'networks/9mobile', 'networks/airtel', 'networks/glo', 'networks/mtn','bills/electricity/ekedc', 'bills/electricity/ikedc',
-                    'bills/internet/smile', 'bills/internet/spectranet', 'bills/misc/waec', 'bills/tv/dstv', 'bills/tv/gotv', 'bills/tv/startimes',
+                    'networks/9mobile.png', 'networks/airtel.png', 'networks/glo.png', 'networks/mtn.png','bills/electricity/ekedc.png', 'bills/electricity/ikedc.png',
+                    'bills/internet/smile.png', 'bills/internet/spectranet.png', 'bills/misc/waec.png', 'bills/tv/dstv.jpg', 'bills/tv/gotv.jpg', 'bills/tv/startimes.jpg',
                 ]);
                 //$partners = shuffle($partners);
             @endphp
 
             <div class="owl-carousel clients-carousel">
                 @foreach ($partners->shuffle() as $partner)
-                    <img class="mx-auto" src="\images/{{ $partner }}.png">
+                    <img class="mx-auto" src="\images/{{ $partner }}">
                 @endforeach
             </div>
 
@@ -275,73 +274,30 @@
     <!--==========================
       Testimonials Section
     ============================-->
-    <section id="testimonials" class="wow fadeInUp">
-        <div class="container">
-            <div class="section-header">
-            <h2>Testimonials</h2>
-            <p>Sed tamen tempor magna labore dolore dolor sint tempor duis magna elit veniam aliqua esse amet veniam enim export quid quid veniam aliqua eram noster malis nulla duis fugiat culpa esse aute nulla ipsum velit export irure minim illum fore</p>
-            </div>
-            <div class="owl-carousel testimonials-carousel">
-
-                <div class="testimonial-item">
-                <p>
-                    <img src="img/quote-sign-left.png" class="quote-sign-left" alt="">
-                    Proin iaculis purus consequat sem cure digni ssim donec porttitora entum suscipit rhoncus. Accusantium quam, ultricies eget id, aliquam eget nibh et. Maecen aliquam, risus at semper.
-                    <img src="img/quote-sign-right.png" class="quote-sign-right" alt="">
-                </p>
-                <img src="img/testimonial-1.jpg" class="testimonial-img" alt="">
-                <h3>Saul Goodman</h3>
-                <h4>Ceo &amp; Founder</h4>
+    @if($testimonials->count())
+        <section id="testimonials" class="wow fadeInUp">
+            <div class="container">
+                <div class="section-header">
+                <h2>Testimonials</h2>
+                <p>Hear what about customers/clients are saying about us</p>
                 </div>
-
-                <div class="testimonial-item">
-                <p>
-                    <img src="img/quote-sign-left.png" class="quote-sign-left" alt="">
-                    Export tempor illum tamen malis malis eram quae irure esse labore quem cillum quid cillum eram malis quorum velit fore eram velit sunt aliqua noster fugiat irure amet legam anim culpa.
-                    <img src="img/quote-sign-right.png" class="quote-sign-right" alt="">
-                </p>
-                <img src="img/testimonial-2.jpg" class="testimonial-img" alt="">
-                <h3>Sara Wilsson</h3>
-                <h4>Designer</h4>
-                </div>
-
-                <div class="testimonial-item">
-                <p>
-                    <img src="img/quote-sign-left.png" class="quote-sign-left" alt="">
-                    Enim nisi quem export duis labore cillum quae magna enim sint quorum nulla quem veniam duis minim tempor labore quem eram duis noster aute amet eram fore quis sint minim.
-                    <img src="img/quote-sign-right.png" class="quote-sign-right" alt="">
-                </p>
-                <img src="img/testimonial-3.jpg" class="testimonial-img" alt="">
-                <h3>Jena Karlis</h3>
-                <h4>Store Owner</h4>
-                </div>
-
-                <div class="testimonial-item">
-                <p>
-                    <img src="img/quote-sign-left.png" class="quote-sign-left" alt="">
-                    Fugiat enim eram quae cillum dolore dolor amet nulla culpa multos export minim fugiat minim velit minim dolor enim duis veniam ipsum anim magna sunt elit fore quem dolore labore illum veniam.
-                    <img src="img/quote-sign-right.png" class="quote-sign-right" alt="">
-                </p>
-                <img src="img/testimonial-4.jpg" class="testimonial-img" alt="">
-                <h3>Matt Brandon</h3>
-                <h4>Freelancer</h4>
-                </div>
-
-                <div class="testimonial-item">
-                <p>
-                    <img src="img/quote-sign-left.png" class="quote-sign-left" alt="">
-                    Quis quorum aliqua sint quem legam fore sunt eram irure aliqua veniam tempor noster veniam enim culpa labore duis sunt culpa nulla illum cillum fugiat legam esse veniam culpa fore nisi cillum quid.
-                    <img src="img/quote-sign-right.png" class="quote-sign-right" alt="">
-                </p>
-                <img src="img/testimonial-5.jpg" class="testimonial-img" alt="">
-                <h3>John Larson</h3>
-                <h4>Entrepreneur</h4>
+                <div class="owl-carousel testimonials-carousel">
+                    @foreach ($testimonials as $item)
+                        <div class="testimonial-item">
+                        <p>
+                            <img src="\home/img/quote-sign-left.png" class="quote-sign-left" alt="">
+                                {{ $item->testimony }}
+                            <img src="\home/img/quote-sign-right.png" class="quote-sign-right" alt="">
+                        </p>
+                        <img src="\images/avatar/{{ $item->user->avatar }}" class="testimonial-img" alt="user image">
+                        <h3>{{ ucwords($item->user->name) }}</h3>
+                        </div>
+                    @endforeach
                 </div>
 
             </div>
-
-        </div>
-    </section><!-- #testimonials -->
+        </section><!-- #testimonials -->
+    @endif
 
     <!--==========================
       Contact Section
@@ -350,16 +306,15 @@
       <div class="container">
         <div class="section-header">
           <h2>Contact Us</h2>
-          <p>Sed tamen tempor magna labore dolore dolor sint tempor duis magna elit veniam aliqua esse amet veniam enim export quid quid veniam aliqua eram noster malis nulla duis fugiat culpa esse aute nulla ipsum velit export irure minim illum fore</p>
+          <p>Have enquiries? Please contact us.</p>
         </div>
-
         <div class="row contact-info">
 
           <div class="col-md-4">
             <div class="contact-address">
               <i class="ion-ios-location-outline"></i>
               <h3>Address</h3>
-              <address>Camp,Abeokuta.Ogun State, Nigeria.</address>
+              <address>{{ $app->address }}</address>
             </div>
           </div>
 
@@ -367,7 +322,7 @@
             <div class="contact-phone">
               <i class="ion-ios-telephone-outline"></i>
               <h3>Phone Number</h3>
-              <p><a href="tel:+2349066685702">+234 9066 6857 02</a></p>
+              <p><a href="tel:{{ preg_replace('/\s+/', '',$app->phone) }}">{{ $app->phone }}</a></p>
             </div>
           </div>
 
@@ -375,7 +330,7 @@
             <div class="contact-email">
               <i class="ion-ios-email-outline"></i>
               <h3>Email</h3>
-              <p><a href="mailto:info@example.com">support@ogdam.com</a></p>
+              <p><a href="mailto:{{ $app->email }}">{{ $app->email }}</a></p>
             </div>
           </div>
 
@@ -383,7 +338,7 @@
       </div>
 
       <div class="container mb-4">
-        <iframe src="https://www.google.com/maps/embed?pb=!1m23!1m12!1m3!1d7916.862982549558!2d3.4318005225864616!3d7.1915070292316345!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!4m8!3e6!4m0!4m5!1s0x103a363bcdd152df%3A0xf3ab70233638c6ec!2sCamp%2C+Abeokuta!3m2!1d7.194497999999999!2d3.4359531!5e0!3m2!1sen!2sng!4v1564561313169!5m2!1sen!2sng" width="100%" height="300" frameborder="0" style="border:0" allowfullscreen></iframe>
+        <iframe src="{{ $app->googleMap }}" width="100%" height="300" frameborder="0" style="border:0" allowfullscreen></iframe>
       </div>
 
 
@@ -425,17 +380,11 @@
   <footer id="footer">
     <div class="container">
       <div class="copyright">
-        &copy; Copyright <strong>Ogdams</strong>. All Rights Reserved
+        &copy; Copyright <strong>{{ $app->name }}</strong>. All Rights Reserved
       </div>
-      <div class="credits">
-        <!--
-          All the links in the footer should remain intact.
-          You can delete the links only if you purchased the pro version.
-          Licensing information: https://bootstrapmade.com/license/
-          Purchase the pro version with working PHP/AJAX contact form: https://bootstrapmade.com/buy/?theme=Reveal
-        -->
-        Designed by <a href="https://facebook.com/9jaloads">Redhoster</a>
-      </div>
+      <script type="text/javascript">
+        document.write(unescape('%3c%64%69%76%20%63%6c%61%73%73%3d%22%63%72%65%64%69%74%73%22%20%73%74%79%6c%65%3d%22%66%6f%6e%74%2d%73%69%7a%65%3a%20%31%38%70%78%3b%22%3e%0d%0a%20%20%20%20%20%20%20%20%44%65%73%69%67%6e%65%64%20%62%79%20%3c%61%20%68%72%65%66%3d%22%68%74%74%70%73%3a%2f%2f%66%61%63%65%62%6f%6f%6b%2e%63%6f%6d%2f%39%6a%61%6c%6f%61%64%73%22%3e%52%65%64%68%6f%73%74%65%72%3c%2f%61%3e%0d%0a%20%20%20%20%20%20%3c%2f%64%69%76%3e'));
+      </script>
     </div>
   </footer><!-- #footer -->
 

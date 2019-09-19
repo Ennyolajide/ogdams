@@ -61,13 +61,21 @@ class ElectricityTvInternetMiscController extends RingoController
 
     /**
      * Amount validation base of the product min and max amount | numeric | step
-     * @return amount or false on failed validation
+     * @return true or false on failed validation
      */
-    public function validateAmount($product, $amount)
+    public function amountError($product, $amount)
     {
-        $amount = ($amount && $amount % $product->step == 0) ? $amount : false;
-        $amount = ($amount && $amount >= $product->min_amount && $amount <= $product->max_amount) ? $amount : false;
+        $minValueError = $amount >= $product->min_amount ? false : true; //check min value error
+        $maxValueError = $amount <= $product->max_amount ? false : true; //check max value error
+        $stepValueError = $amount % $product->step == 0 ? false : true;  //check step value error
 
-        return $amount ? ['option' => $amount, 'charge' => ($product->charges + $amount)] : false;
+        $stepErrorMessage = $stepValueError ? 'Amount can only be a multiple of ' . $product->step : false;
+
+        $minMaxErrorMessage = $minValueError || $maxValueError ?
+            'Amount cannot be less than ₦' . $product->min_amount . ' or greater than ₦' . $product->max_amount : false;
+
+        $error = $minMaxErrorMessage ? $minMaxErrorMessage : $stepErrorMessage;
+
+        return $error;
     }
 }
