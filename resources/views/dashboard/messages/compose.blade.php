@@ -111,10 +111,6 @@
     @endSection
 
     @section('scripts')
-        @if (session('response'))
-            <script>alert('{{ session('response') }}');</script>
-        @endif
-
         <script src="https://ajax.aspnetcdn.com/ajax/jquery.validate/1.16.0/jquery.validate.min.js"></script>
         <script>
             $(function () {

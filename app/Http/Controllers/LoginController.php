@@ -19,8 +19,10 @@ class LoginController extends Controller
 
     public function index()
     {
+        $referrer = null;
+        $app = (object) config('constants.site');
 
-        return view('users/login');
+        return view('users/login', compact('app', 'referrer'));
     }
 
     public function login()
@@ -40,15 +42,17 @@ class LoginController extends Controller
             'active'    => true
         ];
 
-
-
         if (Auth::attempt($userData, request()->has('remember'))) {
-            $route = Auth::user()->role == 'admin' ? '/control' : '/dashboard';
-            return redirect($route);
+
+            $user = User::where('email', request()->email)->first();
+            $token = request()->wantsJson() ? $user->createToken('bearer')->accessToken : false; //;
+
+            return $token ? response()->json($token, 200) : redirect('/dashboard');
         } else {
             $user = User::where('email', request()->email)->first();
 
             $response = $user->active ? 'Invalid Username/Password' : $inactiveResponse;
+
             return back()->with('response', $response);
         }
     }

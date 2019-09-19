@@ -20,7 +20,7 @@ class CreateUsersTable extends Migration
             $table->string('role')->default('customer');
             $table->boolean('permission')->default(false);
             $table->string('number')->nullable();
-            $table->string('referal')->nullable();
+            //$table->string('referal')->nullable();
             $table->unsignedBigInteger('balance')->default(0);
             $table->string('avatar')->default('default.jpg');
             $table->string('address')->nullable();
@@ -32,7 +32,6 @@ class CreateUsersTable extends Migration
             $table->string('referrer')->nullable();
             $table->string('wallet_id')->unique();
             $table->rememberToken();
-            $table->string('api_token');
             $table->timestamps();
         });
     }

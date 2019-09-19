@@ -22,8 +22,27 @@
         <!-- Theme style -->
         <link href="\css/custom.min.css" rel="stylesheet">
 
+        <style>
+            .text-15{
+                font-size: 15px!important;
+            }
+
+            .text-17{
+                font-size: 17px!important;
+            }
+            .img-icon{
+                display: inline;
+                width: 32px;
+                height: 32px;
+            }
+            .login-form-logo{
+                width: 60px;
+                height: 60px;
+            }
+        </style>
 
     </head>
+
 
     <body class="login">
 

@@ -19,17 +19,41 @@ class InternetController extends BillController
      */
     public function store()
     {
+        //check is the request is an api request
+        $isApi = request()->wantsJson();
+
         //validate request()
         $this->validate(request(), [
-            'email' => 'required|email',
-            'package' => 'required|json',
-            'phone' => 'required|string|min:10|max:13',
+            'email' => $isApi ? 'sometimes|string' : 'required|email',
+            'package' => $isApi ? 'sometimes|string' : 'required|json',
+            'phone' => $isApi ? 'sometimes|string' : 'required|string|min:10|max:13',
             'cardNo' => 'required|string|min:10|max:18',
+
+            'packageId' => $isApi ? ['required', 'numeric', function ($attribute, $value, $fail) {
+                in_array($value, RingoSubProductList::whereService('Internet')->pluck('id')->toArray()) ? false : $fail('Invalid Internet :attribute');
+            }] : 'sometimes|numeric',
         ]);
 
-        $status = $this->processInternetTopup();
+        $uniqueReference = $this->getUniqueReference();
+
+        $status = $this->processInternetTopup($uniqueReference);
 
         $message = $status ? $this->successResponse : $this->failureResponse;
+
+        //Api response
+        if ($isApi) {
+            if (isset($this->responseObject->original['pin_based'])) {
+                $responseObject = $this->responseObject->original;
+                $pins = $responseObject['pin_based'] ? $responseObject['pins'] : false;
+            }
+
+            return response()->json([
+                'status' => $status,
+                'message' => $message,
+                'pins' =>  $pins ?? [],
+                'reference' => $status ? $uniqueReference : null,
+            ], 200);
+        }
 
         return back()->withNotification($this->clientNotify($message, $status));
     }
@@ -37,11 +61,11 @@ class InternetController extends BillController
     /**
      * Proces Tv Topup
      */
-    protected function processInternetTopup()
+    protected function processInternetTopup($uniqueReference)
     {
-        $packageId = json_decode(request()->package, true);
+        $packageId = request()->wantsJson() ? request()->packageId : json_decode(request()->package, true);
 
-        $packageId = $packageId['id'] ?? $packageId;
+        $packageId = request()->wantsJson() ? $packageId : $packageId['id'] ?? $packageId;
 
         $subProduct = RingoSubProductList::find($packageId);
 
@@ -57,9 +81,9 @@ class InternetController extends BillController
 
         if ($subProduct && (Auth::user()->balance >= $subProduct->selling_price)) {
 
-            $status = $subProduct ? $this->topup($subProduct, $details) : false;
+            $status = $subProduct ? $this->topup($subProduct, $details, $uniqueReference) : false;
 
-            $status ? $this->notify($this->tvTopupNotification($details)) : false;
+            $status ? $this->notify($this->tvTopupNotification($details, $uniqueReference, $this->responseObject)) : false;
 
             return $status;
         }

@@ -85,7 +85,7 @@
                                         <br/>
                                         <div class="form-group">
                                             <div class="col-x-12">
-                                                <button id="submit" class="btn bg-purple btn-flat pull-right">Submit</button>
+                                                <button id="submit" class="btn btn-flat btn-success pull-right">&nbsp;&nbsp;&nbsp;&nbsp;Submit&nbsp;&nbsp;&nbsp;&nbsp;</button>
                                             </div>
                                             <br/>
                                         </div>
@@ -96,7 +96,7 @@
                                     <div class="row">
                                         @foreach ($networks as $network)
                                             <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
-                                                <img src="/images/networks/{{ strtolower($network->network) }}.png" class="img-responsive">
+                                                <img src="\images/networks/{{ strtolower($network->network) }}.png" class="img-responsive">
                                             </div>
                                         @endforeach
                                     </div>

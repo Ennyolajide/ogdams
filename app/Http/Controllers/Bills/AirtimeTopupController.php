@@ -39,6 +39,13 @@ class AirtimeTopupController extends RingoController
         $status = $this->processAirtimeTopup();
         $message = $status ? $this->successResponse : $this->failureResponse;
 
+        if (request()->wantsJson()) {
+            return response()->json([
+                'status' => $status,
+                'message' => $message
+            ], 200);
+        }
+
         return back()->withNotification($this->clientNotify($message, $status));
     }
 

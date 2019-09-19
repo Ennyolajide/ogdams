@@ -115,8 +115,8 @@
                                         <br/>
                                         <div class="form-group">
                                             <div class="col-xs-12">
-                                                <button id="continue" class="btn bg-purple btn-flat pull-right" disabled="true">Continue</button>
-                                                <button id="submit" type="submit" class="btn bg-purple btn-flat pull-right" style="display: none;">Submit</button>
+                                                <button id="continue" class="btn btn-flat btn-success pull-right" disabled="true">Continue</button>
+                                                <button id="submit" type="submit" class="btn btn-flat btn-success pull-right" style="display: none;">Submit</button>
                                             </div>
                                         </div>
                                         <br/><br/>

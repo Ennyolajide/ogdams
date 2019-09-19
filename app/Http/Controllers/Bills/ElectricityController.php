@@ -13,6 +13,7 @@ class ElectricityController extends BillController
 {
 
     protected $successResponse = ' Topup successful';
+    protected $invalidResponse = 'Invalid serviceId';
     protected $apiErrorResponse = 'Top failed, Pls try again later';
     protected $failureResponse = 'Insuffient balance, Pls fund your account';
 
@@ -30,30 +31,44 @@ class ElectricityController extends BillController
      */
     public function store()
     {
-        //validate request()
-        $this->validate(request(), [
-            'email' => 'required|email',
-            'owner' => 'required|string',
-            'amount' => 'required|numeric',
-            'packageId' => 'required|numeric',
-            'phone' => 'required|string|min:10|max:13',
-            'cardNo' => 'required|string|min:10|max:18',
-        ]);
+        //check is the request is an api request
+        $isApi = request()->wantsJson();
 
-        $status = $this->processElectricityTopup();
+        $this->requestValidation($isApi);
+
+        $uniqueReference = $this->getUniqueReference();
+
+        $status = $this->processElectricityTopup($uniqueReference);
 
         $message = $status ? $this->successResponse : $this->failureResponse;
 
+        ///Api response
+        if ($isApi) {
+            if (isset($this->responseObject->original['pin_based'])) {
+                $responseObject = $this->responseObject->original;
+                $pins = $responseObject['pin_based'] ? $responseObject['pins'] : false;
+            }
+
+            return response()->json([
+                'status' => $status,
+                'message' => $message,
+                'pins' =>  $pins ?? [],
+                'reference' => $status ? $uniqueReference : null,
+            ], 200);
+        }
+
+        //web response
         return back()->withNotification($this->clientNotify($message, $status));
     }
 
     /**
-     * Proces Tv Topup
+     * Proces Electricity Topup
      */
-    protected function processElectricityTopup()
+    protected function processElectricityTopup($uniqueReference)
     {
+        $productId = request()->wantsJson() ? request()->serviceId : request()->packageId;
 
-        $product = RingoProduct::find(request()->packageId);
+        $product = RingoProduct::find($productId);
 
         $details['cardNo'] = $product ? request()->cardNo : false;
 
@@ -65,13 +80,38 @@ class ElectricityController extends BillController
 
         $this->successResponse = $details['product'] . $this->successResponse;
 
-        if ($product && (Auth::user()->balance >= request()->amount)) {
+        if (Auth::user()->balance >= request()->amount) {
 
-            $status = $product ? $this->topup($product, $details, true) : false;
+            $status = $product ? $this->topup($product, $details, $uniqueReference, true) : false;
 
-            $status ? $this->notify($this->tvTopupNotification($details)) : false;
+            $status ? $this->notify($this->electricityTopupNotification($details, $uniqueReference)) : false;
 
             return $status;
         }
+        return false;
+    }
+
+    protected function requestValidation($isApi)
+    {
+        //validate these 2 request parameters first
+        $this->validate(request(), [
+            'cardNo' => 'required|string|min:10|max:18',
+            'email' => $isApi ? 'sometimes|email' : 'required|email',
+            'owner' => $isApi ? 'sometimes|string' : 'required|string',
+            'phone' => $isApi ? 'sometimes|string|min:10|max:13' : 'required|string|min:10|max:13',
+
+            'amount' => ['required', 'numeric', 'min:1000', 'max:50000', function ($attribute, $value, $fail) {
+                ($value % 100 == 0) ? false : $fail(':attribute can only be a multiple of 100');
+            }],
+
+            'packageId' => !$isApi ? ['required', 'numeric', 'min:1', 'max:5', function ($attribute, $value, $fail) {
+                in_array($value, RingoProduct::whereService('Electricity')->pluck('id')->toArray()) ? false : $fail('Invalid electricty :attribute');
+            }] : 'sometimes|numeric',
+
+            'serviceId' => $isApi ? ['required', 'numeric', 'min:1', 'max:5', function ($attribute, $value, $fail) {
+                in_array($value, RingoProduct::whereService('Electricity')->pluck('id')->toArray()) ? false : $fail('Invalid electricty :attribute');
+            }] : 'sometimes|numeric',
+
+        ]);
     }
 }

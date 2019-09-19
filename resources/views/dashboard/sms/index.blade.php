@@ -75,7 +75,7 @@
                                     <div class="form-group row">
                                         <label class="col-sm-2 col-xs-12 control-label">Recepient</label>
                                         <div class="col-sm-8 col-xs-12 form-grouping">
-                                            <textarea placeholder="Enter recepient number seperate by space or comma" id="recepients" name="recepients" style="width: 100%; height: 100px; font-size: 14px; line-height: 18px; border: 2px solid #dddddd; padding: 10px;" disabled="true">07063637002</textarea>
+                                            <textarea placeholder="Enter recepient number seperate by space or comma" id="recepients" name="recepients" style="width: 100%; height: 100px; font-size: 14px; line-height: 18px; border: 2px solid #dddddd; padding: 10px;" disabled="true"></textarea>
                                             <div class="">
                                                 <p id="numbers" class="pull-left text-success" style="font-size:18px"></p>
                                             </div>
@@ -84,7 +84,7 @@
                                     <div class="form-group row">
                                         <label class="col-sm-2 col-xs-12  control-label">Message</label>
                                         <div class="col-sm-8 col-xs-12  form-grouping">
-                                            <textarea placeholder="Enter message" id="message" name="message" style="width: 100%; height: 125px; font-size: 14px; line-height: 18px; border: 2px solid #dddddd; padding: 10px;" disabled="true">{{ $faker->paragraph(3) }}</textarea>
+                                            <textarea placeholder="Enter message" id="message" name="message" style="width: 100%; height: 125px; font-size: 14px; line-height: 18px; border: 2px solid #dddddd; padding: 10px;" disabled="true"></textarea>
                                             <div class="count">
                                                 <p id="characters" class="pull-left text-success" style="font-size:18px"></p>
                                                 <p id="pages" class="pull-right text-success" style="font-size:18px"></p>
@@ -94,7 +94,7 @@
                                     <div class="form-group row">
                                         <label class="col-sm-2 col-xs-12 control-label"></label>
                                         <div class="col-sm-8 col-xs-12 form-grouping">
-                                            <button id="continue" class="btn bg-purple btn-flat pull-right" disabled="true" type="submit">Send
+                                            <button id="continue" class="btn btn-flat btn-success pull-right" disabled="true" type="submit">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Send&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                                                 <i class="fa fa-arrow-circle-right"></i>
                                             </button>
                                         </div>
@@ -250,7 +250,7 @@
     @endif
 
     @section('scripts')
-        <script src="/js/jquery-number.min.js"></script>
+        <script src="\js/jquery-number.min.js"></script>
         <script src="https://ajax.aspnetcdn.com/ajax/jquery.validate/1.16.0/jquery.validate.min.js"></script>
         <script>
             $(document).ready(function() {
@@ -270,7 +270,7 @@
                     }
                 });
 
-                $('#misc-bill-form').validate({
+                $('#send-bulk-sms-form').validate({
                     rules: {
                         route: { required: true },
                         amount: { required: true },

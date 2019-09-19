@@ -73,6 +73,6 @@ class Controller extends BaseController
      */
     protected function getUniqueReference()
     {
-        return md5(env('APP_REFERENCE') . time() . rand(1, 10000));
+        return md5(env('APP_NAME') . time() . rand(1, 10000));
     }
 }

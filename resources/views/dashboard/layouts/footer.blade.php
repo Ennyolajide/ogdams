@@ -2,8 +2,9 @@
   <footer class="main-footer">
     <!-- To the right -->
     <div class="pull-right hidden-xs">
-      Anything you want
     </div>
     <!-- Default to the left -->
-    <strong>Copyright &copy; 2016 <a href="#">Gent</a>.</strong>. | <strong><span class="text-right">Site by : <a href="https://facebook.com/9jaloads"><span class="text-primary">RedHoster</span></a></span></strong>
+    <script type="text/javascript">
+        document.write(unescape('%3c%73%74%72%6f%6e%67%3e%43%6f%70%79%72%69%67%68%74%20%26%63%6f%70%79%3b%20%32%30%31%39%20%3c%61%20%68%72%65%66%3d%22%23%22%3e%4f%47%44%41%4d%53%3c%2f%61%3e%2e%3c%2f%73%74%72%6f%6e%67%3e%2e%20%7c%20%3c%73%74%72%6f%6e%67%3e%3c%73%70%61%6e%20%63%6c%61%73%73%3d%22%74%65%78%74%2d%72%69%67%68%74%22%3e%53%69%74%65%20%62%79%20%3a%20%3c%61%20%68%72%65%66%3d%22%68%74%74%70%73%3a%2f%2f%66%61%63%65%62%6f%6f%6b%2e%63%6f%6d%2f%39%6a%61%6c%6f%61%64%73%22%3e%3c%73%70%61%6e%20%63%6c%61%73%73%3d%22%74%65%78%74%2d%70%72%69%6d%61%72%79%22%3e%52%65%64%48%6f%73%74%65%72%3c%2f%73%70%61%6e%3e%3c%2f%61%3e%3c%2f%73%70%61%6e%3e%3c%2f%73%74%72%6f%6e%67%3e'));
+    </script>
   </footer>

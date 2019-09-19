@@ -12,11 +12,8 @@ class SmsController extends TransactionController
 {
     protected $modalResponse;
     protected $failureResponse;
-    protected $errorResponse = 'Unknown error , Pls try again later';
-
-
-    //
     protected $charactersPerPage = 160;
+    protected $errorResponse = 'Unknown error , Pls try again later';
 
     /**
      * index
@@ -25,8 +22,7 @@ class SmsController extends TransactionController
     {
         $smsConfigs = BulkSmsConfig::all();
 
-
-        return view('dashboard.sms.index', compact('smsConfigs', 'faker'));
+        return view('dashboard.sms.index', compact('smsConfigs'));
     }
 
 

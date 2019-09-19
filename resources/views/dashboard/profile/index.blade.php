@@ -37,24 +37,116 @@
                         </a>
                     </li>
                 </ul>
-                <a href="#tab_content2" class="btn btn-success"><i class="fa fa-edit m-right-xs"></i>Edit Profile</a>
+                <a href="{{ route('user.profile') }}#tab_content2" class="btn btn-success"><i class="fa fa-edit m-right-xs"></i>Edit Profile</a>
                 <br />
             </div>
             <div class="col-md-9 col-sm-9 col-xs-12">
                 <div class="" role="tabpanel" data-example-id="togglable-tabs">
                     <ul id="myTab" class="nav nav-tabs bar_tabs" role="tablist">
                         <li role="presentation" class="active">
-                            <a href="#tab_content1" id="home-tab" role="tab" data-toggle="tab" aria-expanded="true">Add Bank(s)</a>
+                            <a href="#tab_content1" id="inbox-tab" role="tab" data-toggle="tab" aria-expanded="true">Inbox</a>
                         </li>
                         <li role="presentation" class="">
-                            <a href="#tab_content2" role="tab" id="profile-tab" data-toggle="tab" aria-expanded="false">Profile</a>
+                            <a href="#tab_content2" role="profile-tab" id="profile-tab" data-toggle="tab" aria-expanded="false">Profile</a>
                         </li>
                         <li role="presentation" class="">
-                            <a href="#tab_content3" role="tab" id="profile-tab2" data-toggle="tab" aria-expanded="false">Inbox</a>
+                            <a href="#tab_content3" role="bank-tab" id="inbox" data-toggle="tab" aria-expanded="false">Add Bank(s)</a>
                         </li>
                     </ul>
                     <div id="myTabContent" class="tab-content">
-                        <div role="tabpanel" class="tab-pane fade  active in" id="tab_content1" aria-labelledby="home-tab">
+                        <div role="tabpanel" class="tab-pane fade active in" id="tab_content1" aria-labelledby="inbox-tab">
+                            <div class="mailbox-messages">
+                                <table class="table table-hover table-striped">
+                                    <tbody>
+                                    @foreach ($messages as $message)
+                                        <tr>
+                                            <td>
+                                                <input type="checkbox">
+                                            </td>
+                                            <td class="mailbox-star">
+                                                @if ($message->read)
+                                                    <a href="#"><i class="fa fa-star-o text-yellow"></i></a>
+                                                @else
+                                                    <a href='#'><i class='fa fa-star text-yellow'></i></a>
+                                                @endif
+                                            </td>
+                                            <td class="mailbox-name">
+                                                <a href="{{ route('messages.message',$message->id) }}" class="submit" type="submit">
+                                                {{ $message->sender->name }}</a>
+                                            </td>
+                                            <td class="mailbox-subject">
+                                                <b>{{ $message->subject }}</b> -
+                                                <a href="{{ route('messages.message',$message->id) }}">{{ str_limit($message->content,100,'...') }}</a></td>
+                                            <td class="mailbox-attachment"></td>
+                                            <td class="mailbox-date">{{ $message->created_at->diffForHumans() }}</td>
+                                        </tr>
+                                    @endforeach
+
+                                    </tbody>
+                                </table>
+                                <!-- /.table -->
+                                <div class="col-md-12 text-right">
+                                    <div class="pull-right">
+                                        @if ($messages->hasPages())
+                                            {{ $messages->firstItem() }} - {{ $messages->lastItem() }}/{{ $messages->total() }}
+                                            <div class="btn-group">
+                                                {{-- Previous Page Link --}}
+                                                @if (!$messages->onFirstPage())
+                                                    <button type="button" class="previousPage btn btn-default btn-sm">
+                                                        <i class="fa fa-chevron-left"></i>
+                                                    </button>
+                                                @endif
+                                                {{-- Next Page Link --}}
+                                                @if ($messages->hasMorePages())
+                                                    <button type="button" class="nextPage btn btn-default btn-sm">
+                                                        <i class="fa fa-chevron-right"></i>
+                                                    </button>
+                                                @endif
+
+                                            </div>
+                                            <!-- /.btn-group -->
+                                        @endif
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div role="tabpanel" class="tab-pane fade" id="tab_content2" aria-labelledby="profile-tab">
+                            <form id="change-password-form" class="form-horizontal" action="{{ route('user.password.edit') }}" method="post">
+                                @csrf
+                                <br/>
+                                <div class="form-group">
+                                    <label class="col-sm-2 control-label">Current Password</label>
+
+                                    <div class="col-sm-10 form-grouping">
+                                        <input type="password" class="form-control" name="currentPassword">
+                                    </div>
+                                </div>
+                                <br/>
+                                <div class="form-group">
+                                    <label for="inputName" class="col-sm-2 control-label">New Password</label>
+
+                                    <div class="col-sm-10 form-grouping">
+                                        <input type="password" class="form-control" id="password" name="password">
+                                    </div>
+                                </div>
+                                <br/>
+                                <div class="form-group">
+                                    <label for="inputNo" class="col-sm-2 control-label">Comfirm Password</label>
+
+                                    <div class="col-sm-10 form-grouping">
+                                        <input type="password" class="form-control" id="password_confirmation" name="password_confirmation">
+                                    </div>
+                                </div>
+                                <br/>
+                                <div class="form-group">
+                                    <div class="col-sm-offset-2 col-sm-10">
+                                        <button type="submit" class="btn btn-danger btn-flat">Submit</button>
+
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                        <div role="tabpanel" class="tab-pane fade" id="tab_content3" aria-labelledby="bank-tab">
                             <div class="row">
                                 <div class="col-sm-12 col-md-12" style="display:none;" id="newBankDiv">
                                     <form id="add-bank-details-form" class="form-horizontal" action="{{ route('user.bank.store') }}" method="POST">
@@ -141,67 +233,6 @@
                                     <br/>
                                 </div>
                             </div>
-
-                        </div>
-                        <div role="tabpanel" class="tab-pane fade" id="tab_content2" aria-labelledby="profile-tab">
-                            <form id="change-password-form" class="form-horizontal" action="{{ route('user.password.edit') }}" method="post">
-                                @csrf
-                                <br/>
-                                <div class="form-group">
-                                    <label class="col-sm-2 control-label">Current Password</label>
-
-                                    <div class="col-sm-10 form-grouping">
-                                        <input type="password" class="form-control" name="currentPassword">
-                                    </div>
-                                </div>
-                                <br/>
-                                <div class="form-group">
-                                    <label for="inputName" class="col-sm-2 control-label">New Password</label>
-
-                                    <div class="col-sm-10 form-grouping">
-                                        <input type="password" class="form-control" id="password" name="password">
-                                    </div>
-                                </div>
-                                <br/>
-                                <div class="form-group">
-                                    <label for="inputNo" class="col-sm-2 control-label">Comfirm Password</label>
-
-                                    <div class="col-sm-10 form-grouping">
-                                        <input type="password" class="form-control" id="password_confirmation" name="password_confirmation">
-                                    </div>
-                                </div>
-                                <br/>
-                                <div class="form-group">
-                                    <div class="col-sm-offset-2 col-sm-10">
-                                        <button type="submit" class="btn btn-danger btn-flat">Submit</button>
-
-                                    </div>
-                                </div>
-                            </form>
-                        </div>
-                        <div role="tabpanel" class="tab-pane fade" id="tab_content3" aria-labelledby="profile-tab">
-
-                            <ul class="messages">
-                                @foreach ($messages as $message)
-                                <li>
-                                    <img src="images/img.jpg" class="avatar" alt="Avatar">
-                                    <div class="message_date">
-                                        <h3 class="date text-info">{{ $message->created_at }}</h3>
-                                        <p class="month">May</p>
-                                    </div>
-                                    <div class="message_wrapper">
-                                        <h4 class="heading">{{ $message->sender->name }}</h4>
-                                        <blockquote class="message">{{ str_limit($message->content,150,'...') }}</blockquote>
-                                        <br />
-                                        <p class="url">
-                                            <span class="fs1 text-info" aria-hidden="true" data-icon=""></span>
-                                            <a href="#"><i class="fa fa-paperclip"></i></a>
-                                        </p>
-                                    </div>
-                                </li>
-                                @endforeach
-                            </ul>
-
                         </div>
                     </div>
                 </div>
@@ -245,6 +276,12 @@
         <script src="https://ajax.aspnetcdn.com/ajax/jquery.validate/1.16.0/jquery.validate.min.js"></script>
         <script>
             $(document).ready(function(){
+
+
+                //$('a[href="' + window.location.hash + '"]').click();
+                var hash = location.hash, hashPieces = hash.split('?') , activeTab = $('[href=' + hashPieces[0] + ']');
+                activeTab && activeTab.tab('show');
+
 
                 $.validator.setDefaults({
                     errorClass: 'help-block',
@@ -334,5 +371,17 @@
 
             });
 
+        </script>
+
+        <script>
+            $(function() {
+                $('.previousPage').click( function(){
+                    window.location.href='{{ $messages->previousPageUrl() }}';
+                });
+
+                $('.nextPage').click( function(){
+                    window.location.href='{{ $messages->nextPageUrl() }}';
+                });
+            });
         </script>
     @endSection

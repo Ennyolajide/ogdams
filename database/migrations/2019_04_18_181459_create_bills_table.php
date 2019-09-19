@@ -21,6 +21,7 @@ class CreateBillsTable extends Migration
             $table->json('details')->nullable();
             $table->string('class')->default('App\Bills');
             $table->string('type');
+            $table->json('responseObject')->nullable();
             $table->unsignedTinyInteger('status')->default(1);
             $table->timestamps();
         });

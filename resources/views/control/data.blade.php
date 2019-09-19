@@ -146,6 +146,12 @@
                                     <input type="text" class="form-control" name="amount" value="{{ $item->amount }}" required>
                                 </div>
                             </div>
+                            <div class="form-group row">
+                                <label class="col-sm-2 col-sm-offset-1 control-label">Notification</label>
+                                <div class="col-sm-8 form-grouping">
+                                    <input type="text" class="form-control" name="notification" value="{{ $item->notification_content }}" required>
+                                </div>
+                            </div>
                         </div>
                         <div class="modal-footer">
                             <button type="button"  data-dismiss="modal" class="btn btn-danger pull-left">Deline</button>
@@ -184,6 +190,12 @@
                             <label class="col-sm-2 col-sm-offset-1 control-label">Amount</label>
                             <div class="col-sm-8 form-grouping">
                                 <input type="text" class="form-control" name="amount" required>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-sm-2 col-sm-offset-1 control-label">Notification</label>
+                            <div class="col-sm-8 form-grouping">
+                                <input type="text" class="form-control" name="notification" value="" required>
                             </div>
                         </div>
                     </div>

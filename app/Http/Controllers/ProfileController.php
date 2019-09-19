@@ -21,7 +21,7 @@ class ProfileController extends PaystackController
     {
         $banks = $this->bankList()->data; //get the list of all available banks
         $myBanks = Bank::where('user_id', Auth::user()->id)->get();  //get User's bank List
-        $messages = Message::where('user_id', Auth::user()->id)->orderBy('id', 'desc');
+        $messages = Message::where('user_id', Auth::user()->id)->orderBy('id', 'desc')->paginate(10);
 
         return view('dashboard.profile.index', compact('banks', 'myBanks', 'messages'));
     }
@@ -39,4 +39,7 @@ class ProfileController extends PaystackController
 
         return back()->withNotification($this->clientNotify($message, $status));
     }
+
+    public function uploadAvatar()
+    { }
 }

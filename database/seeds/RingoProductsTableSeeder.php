@@ -158,7 +158,8 @@ class RingoProductsTableSeeder extends Seeder
             'max_amount' => 50000,
             'multichoice' => true,
             'logo' => 'internet/smile.png',
-            'route' => 'internet/smile.recharge'
+            'route' => 'internet/smile.recharge',
+            'status' => false,
         ]);
 
         DB::table('ringo_products')->insert([

@@ -20,6 +20,9 @@ class VoucherController extends WalletController
         return $voucher->update(['user_id' => Auth::user()->id, 'status' => false]) ? true : false;
     }
 
+    /**
+     *
+     */
     public function store()
     {
         //validate post data
