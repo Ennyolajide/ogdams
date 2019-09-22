@@ -52,7 +52,11 @@
                                                 <option value="" disabled selected>Select network Type</option>
                                                 @foreach ($networks as $network)
                                                 <option value="{{ $network->id }}">
+                                                    @if($loop->iteration > 4)
+                                                        @continue
+                                                    @endif
                                                     {{ $network->network }}
+
                                                 </option>
                                                 @endforeach
                                             </select>
@@ -85,8 +89,9 @@
                                 <div class="form-grouping" id="network-images">
                                     <div class="row">
                                         @foreach ($networks as $network)
+                                            @if($loop->iteration > 4) @continue @endif
                                             <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
-                                                <a href="#"><img src="/images/networks/{{ strtolower($network->network) }}.png" class="img-responsive"></a>
+                                                <a href="#"><img src="\images/networks/{{ strtolower($network->network) }}.png" class="img-responsive"></a>
                                             </div>
                                         @endforeach
                                     </div>
@@ -116,12 +121,12 @@
                     highlight: function (element) {
                         $(element)
                             .closest('.form-grouping')
-                            .addClass('has-error');
+                            .addClass('orange');
                     },
                     unhighlight: function (element) {
                         $(element)
                             .closest('.form-grouping')
-                            .removeClass('has-error');
+                            .removeClass('orange');
                     }
                 });
 

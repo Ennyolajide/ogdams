@@ -150,12 +150,12 @@
                 highlight: function(element) {
                     $(element)
                         .closest('.form-grouping')
-                        .addClass('has-error');
+                        .addClass('orange');
                 },
                 unhighlight: function(element) {
                     $(element)
                         .closest('.form-grouping')
-                        .removeClass('has-error');
+                        .removeClass('orange');
                 }
             });
 

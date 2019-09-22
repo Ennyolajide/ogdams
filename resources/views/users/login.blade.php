@@ -27,7 +27,7 @@
 
                     <form method="post" action="{{ route('user.login') }}">
                         @csrf
-                        <img src="\home/img/logo.jpg" class="img-thumbnail login-form-logo">
+                        <img src="\home/img/logo.jpg" class="img-fluid">
                         <h1>Login</h1>
                         <div>
                             <input type="email" name="email" class="form-control" placeholder="email" required="" />
@@ -43,14 +43,14 @@
                         <div class="clearfix"></div>
 
                         <div class="separator">
-                            <p class="change_link text-17">New to site?
+                            <p class="change_link text-17">New to {{ $app->name }}?
                                 <a href="#signup" class="to_register text-17"> Create Account </a>
                             </p>
 
                             <div class="clearfix"></div>
                             <br />
                             <div>
-                                <h1><img src="\home/img/logo.jpg" class="img-icon"> {{ $app->name }}</h1>
+                                <h1>{{ $app->name }}</h1>
                                 <p class="text-15">{{ $app->about }}</p>
                             </div>
                         </div>
@@ -71,7 +71,7 @@
 
                     <form action="{{ route('user.register.create') }}" method="post">
                         @csrf
-                        <img src="\home/img/logo.jpg" class="img-thumbnail login-form-logo">
+                        <img src="\home/img/logo.jpg" class="img-fluid">
                         <h1>Create Account</h1>
 
                         @empty(!$referrer)
@@ -107,7 +107,7 @@
                             <br />
 
                             <div>
-                                <h1><i class="fa fa-paw"></i> {{ $app->name }}</h1>
+                                <h1>{{ $app->name }}</h1>
                                 <p class="text-15">{{ $app->about }}</p>
                             </div>
                         </div>

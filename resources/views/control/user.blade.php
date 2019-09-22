@@ -83,7 +83,7 @@
                         <h4 class="modal-title">My Referral Link</h4>
                     </div>
                     <div class="modal-body">
-                        <p class="text-center"><a href="{{ route('user.register.referrer',['wallet' => $user->wallet_id]) }}"><span class="h3">{{ route('user.register.referrer',['wallet' => $user->wallet_id]) }}</span></a></p>
+                        <p class="text-center"><a href="{{ route('user.register',['referrer' => $user->wallet_id]) }}"><span class="h3">{{ route('user.register',['referrer' => $user->wallet_id]) }}</span></a></p>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>

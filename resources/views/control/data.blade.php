@@ -68,6 +68,17 @@
                                             </td>
                                                 <!--a href="" class="btn btn-info btn-xs"><i class="fa fa-edit"></i> Edit</a></td-->
                                         </tr>
+                                        <tr>
+                                            <td>#</td>
+                                            <td>Availability</td>
+                                            <td class="text-bold">{{ $network->available ? 'Available' : 'Unavailable' }}</td>
+                                            <td>
+                                                <label>
+                                                    <input type="checkbox" class="js-switch" {{ $network->available ? 'checked' : '' }} data-switchery="true" style="display: none;">
+                                                </label>
+                                            </td>
+                                                <!--a href="" class="btn btn-info btn-xs"><i class="fa fa-edit"></i> Edit</a></td-->
+                                        </tr>
                                     </tbody>
                                 </table>
                             </div>
@@ -225,6 +236,13 @@
                     @method('patch') @csrf
                     <div class="modal-body block-center">
                         <br/>
+                        <div class="form-group row text-center">
+                            <label class="col-sm-2 control-label">Availability : </label>
+                            <div class="col-sm-3 form-grouping">
+                                <input type="checkbox" name="availabilityStatus" class="js-switch" {{ $network->available ? 'checked' : '' }} data-switchery="true" style="display: none;">
+                                <span class="help-block text-bold">Availability</p>
+                            </div>
+                        </div>
                         <div class="form-group row notification-status">
                             <label class="col-sm-2 control-label">Phone : </label>
                             <div class="col-sm-5 form-grouping text-input">

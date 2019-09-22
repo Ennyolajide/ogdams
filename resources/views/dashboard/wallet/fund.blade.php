@@ -24,12 +24,6 @@
                 <div class="x_panel">
                     <div class="x_title">
                         <h2>Fund Wallet</h2>
-                        <ul class="nav navbar-right panel_toolbox">
-                            <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
-                            </li>
-                            <li><a class="close-link"><i class="fa fa-close"></i></a>
-                            </li>
-                        </ul>
                         <div class="clearfix"></div>
                     </div>
                     <div class="x_content">
@@ -126,7 +120,7 @@
                                                             </option>
                                                         @endforeach
                                                     </select>
-                                                    <p class="help-block text-olive">Select the network you want to fund with.</p>
+                                                    <p class="help-block text-primary">Select the network you want to fund with.</p>
                                                 </div>
                                             </div>
                                         </div>
@@ -298,7 +292,7 @@
             $(document).ready(function(){
 
                 $.validator.setDefaults({
-                    errorClass: 'help-block text-olive',
+                    errorClass: 'help-block',
                     highlight: function (element) {
                         $(element)
                             .closest('.form-grouping')
@@ -318,10 +312,28 @@
                         $('#ecard-form,#airtime-form,#bank-transfer').hide();
                         $('#atmBankBitcoin-form,#amount-field').show();
                         $('#fund-wallet-form').attr('action','{{ route("paystack.pay") }}');
+
+                        $('#submit').click(function() {
+                            $('#fund-wallet-form').validate({
+                                rules: {
+                                    amount: {
+                                        required: true,
+                                        range: [100, 1000]
+                                    }
+                                },
+                                messages: {
+                                    amount: {
+                                        required: "Pls enter amount.",
+                                        range: jQuery.validator.format("Minimum of ₦{0} Maximum of ₦{1}"),
+                                    }
+
+                                }
+                            });
+                        });
                     }else if(gateway == 2){
                         $('#ecard-form,#airtime-form').hide();
                         $('#atmBankBitcoin-form,#amount-field,#bank-transfer').show();
-                        $('#fund-wallet-form').attr('action','{{ route("wallet.fund.bank") }}');
+                        $('#fund-wallet-form').attr('action','{{ route("wallet.fund.bank") }}').attr('novalidate',true);
                     }else if(gateway == 3){//airtime
                         $('#fund-wallet-form').attr('action',"{{ route('wallet.fund.airtime')}}");
                         $('#amount-field,#ecard-form,#bank-transfer').hide();
@@ -352,25 +364,7 @@
 
                 });
 
-                $('#submit').click(function() {
-                    $('#fund-wallet-form').validate({
-                        rules: {
-                            voucher: {
-                                required: true,
-                                minlength: 16,
-                                maxlength: 20
-                            }
-                        },
-                        messages: {
-                            voucher: {
-                                required: "Pls enter the Voucher pin.",
-                                minlength: jQuery.validator.format("Minimum of {0} characters required."),
-                                maxlength: jQuery.validator.format("Maximum {0} characters.")
-                            }
 
-                        }
-                    });
-                });
 
                 $('#chooseBank').change(function(){
                     let banks = @json($banks);

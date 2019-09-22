@@ -51,7 +51,9 @@
                                                 <div class="swap-from-network-image col-xs-4 col-sm-3 col-md-3 col-lg-3  pull-right" style="display:none;">
                                                     <img class="img-responsive">
                                                 </div>
+
                                             </div>
+
                                         </div>
                                     </div>
 
@@ -82,6 +84,7 @@
                                         <label class="col-sm-2 col-xs-12 control-label">Amount</label>
                                         <div class="col-sm-10 col-xs-12 form-grouping">
                                             <input type="text" id="amount" class="form-control" name="amount" disabled="true">
+                                            <label id="amount-info" style="font-size:15px; display:none;" class="text-center text-primary" for="amount"></label>
                                             <p class="help-block">Enter amount you want to fund.</p>
                                         </div>
                                     </div>
@@ -92,29 +95,9 @@
                                         </div>
                                     </div>
                                     <br/>
-                                    <div class="form-group bank" style="display:none;">
-                                        <label class="col-sm-2 col-xs-12 control-label" >Bank</label>
-                                        <div class="col-sm-10 col-xs-12">
-                                            <div id="swap-from-network" data-networks="{{ $networks }}">
-                                                <select class="form-control" name="bankId">
-                                                    <option value="" disabled selected>Choose Bank</option>
-                                                    @foreach ($banks as $bank)
-                                                        <option value="{{ $bank->id }}">
-                                                            {{ $bank->acc_name  }} {{ $bank->acc_no }} {{ $bank->bank_name }}
-                                                        </option>
-                                                    @endforeach
-                                                </select>
-                                                <p class="help-block">Select a bank account to receive your cash.  </p>
-                                            </div>
-                                        </div>
-                                    </div>
                                     <div class="form-group">
                                         <label class="col-sm-2 col-xs-12 control-label" ></label>
                                         <div class="col-sm-10 col-xs-12">
-                                            <a href="{{ route('user.profile') }}#tab_content3" class="btn bg-red btn-flat bank add-bank" style="display:none;">
-                                                <i class="fa fa-bank"></i>
-                                                Add {{ $banks->count() > 0 ? 'More' : 'New' }} Bank Account
-                                            </a>
                                             <button id="submit" class="btn btn-flat btn-success pull-right">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Cash&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</button>
                                         </div>
                                     </div>
@@ -169,12 +152,7 @@
                                 <p class="text-primary text-bold visible-xs">{{ session('modal')->transferCode }}</p>
                             </p>
                             <p class="h4 text-center text-danger">
-                                You will receive @naira(session('modal')->walletAmount) on
-                                {{ session('modal')->bankDetails->acc_no.'( '.session('modal')->bankDetails->bank_name.' )' }}
-                                within {{ session('modal')->processTime }} minutes
-                            </p>
-                            <p class="h4 text-center text-danger">
-                                Please use/click the Completed button only after you have transfered the airtime to avoid been baned
+                                Please use/click the Completed button only after you have transfered the airtime to avoid been barred
                             </p>
                         </section>
                     </div>
@@ -206,8 +184,21 @@
                     }
                 });
 
-                $('.add-bank').click(function(){
-                    document.location.href="{{ route('user.profile') }}";
+
+
+                $('#network').change(function(){
+                    $('.networkList').remove();
+
+                    $('#amount').closest('.form-grouping').removeClass('has-error');
+                    $('#amount-error').hide();
+                    $('#amount').removeAttr('disabled');
+                    let network = $(this).val();
+                    let networks = @json($networks);
+                    network = networks.splice((network-1),1)[0];
+                    let fromNetwork = network.network.toLowerCase();
+                    $('.swap-from-network-image').show().find('img').attr('src', '/images/networks/'+fromNetwork+'.png');
+                    $('#amount-info').text(`Minimum of ₦${network.airtime_to_cash_min}, Maximum of ₦${network.airtime_to_cash_max} for ${network.network}`).show();
+                    //$('#swapToNetworkImage').show().find('img').attr('src', '/images/networks/'+networkImage+'.png');
                 });
 
                 $('#amount').keyup(function(){
@@ -217,17 +208,10 @@
                     let returnAmount = networks[(network-1)].airtime_swap_percentage / 100 * amount;
                     amount.length > 2 ? $('#wallet-amount').show().find('input').val(returnAmount) : false;
                     amount.length > 2 ? $('.bank').show() : false;
+
                 });
 
-                $('#network').change(function(){
-                    $('.networkList').remove();
-                    $('#amount').removeAttr('disabled');
-                    let network = $(this).val();
-                    let networks = @json($networks);
-                    let fromNetwork = networks.splice((network-1),1)[0].network.toLowerCase();
-                    $('.swap-from-network-image').show().find('img').attr('src', '/images/networks/'+fromNetwork+'.png');
-                    //$('#swapToNetworkImage').show().find('img').attr('src', '/images/networks/'+networkImage+'.png');
-                })
+
 
 
 

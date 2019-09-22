@@ -21,9 +21,9 @@ class RingoController extends RingoTokenController
 
         $endPoint = 'billpay/dstv/' . $subProduct->product->product_id . '/' . $subProduct->code;
 
-        $response = true; // $endPoint ? $this->ringo($endPoint, 'post', $meterId) : false;
+        $response = $endPoint ? $this->ringo($endPoint, 'post', $meterId) : false;
 
-        //$response ? $response->response = true : false;
+        $response ? $response->response = true : false;
 
         return  response()->json($response ? $response : ['response' => false]);
     }
@@ -42,9 +42,9 @@ class RingoController extends RingoTokenController
 
         $endPoint = 'billpay/electricity/' . request()->cardNo;
 
-        $response = true; //endPoint ? $this->ringo($endPoint, 'post', $body) : false;
+        $response = $endPoint ? $this->ringo($endPoint, 'post', $body) : false;
 
-        //$response ? $response->response = true : false;
+        $response ? $response->response = true : false;
 
         return  response()->json($response ? $response : ['response' => false]);
     }

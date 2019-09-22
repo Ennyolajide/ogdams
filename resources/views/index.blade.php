@@ -62,9 +62,11 @@
     <div class="container">
 
       <div id="logo" class="pull-left">
-        <h1><img src="\home/img/logo.jpg" class="img-fluid logo"><a href="#body" class="scrollto">G<span>DAM</span></a></h1>
-        <!-- Uncomment below if you prefer to use an image logo -->
-        <!-- <a href="#body"><img src="img/logo.png" alt="" title="" /></a>-->
+        <div class="col-xs-4 col-sm-4 col-md-3 col-lg-3">
+            <h1><img src="\home/img/logo.jpg" class="img-responsive">{{-- <a href="#body" class="scrollto">G<span>DAM</span></a></h1>--}}
+            <!-- Uncomment below if you prefer to use an image logo -->
+        </div>
+            {{-- <a href="#body"><img src="\home/img/logo.jpg" alt="" title="" /></a> --}}
       </div>
 
       <nav id="nav-menu-container">
@@ -118,13 +120,15 @@
           </div>
 
           <div class="col-lg-6 content">
-            <h2>Why choose us </h2>
-            <h3>We offer quality, transparent service putting our customers/clients first</h3>
+            <h2>Why choose us? </h2>
+            <h3>
+                Ogdams Technologies offers the best deals in Internet Data Subscriptions, Airtime To Cash, Airtime(VTU), CableTV (DStv, GOtv & Startimes), Electricity Bill Payemnt etc
+            </h3>
 
             <ul>
               <li><i class="ion-android-checkmark-circle"></i> 100 % automated secure services.</li>
               <li><i class="ion-android-checkmark-circle"></i> Instant and secure wallet funding.</li>
-              <li><i class="ion-android-checkmark-circle"></i> Over 7000 + active users.</li>
+              <li><i class="ion-android-checkmark-circle"></i> Over 7,000 + active users.</li>
             </ul>
 
           </div>
@@ -140,9 +144,15 @@
       <div class="container">
         <div class="section-header text-center">
           <h2 class="mx-auto">Services</h2>
-          <p>
+          <p>Internet Data Subscription</p>
+          <p>Airtime(VTU)</p>
+          <p>Airtime To Cash</p>
+          <p>CableTV Subscription</p>
+          <p>Electricity Payment</p>
+          <p>Bulk SMS</p>
+          <!--p>
             Ogdams Technologies offers the best deals in Internet Data Subscriptions, Airtime To cash, Airtime(VTU), CableTV (DStv, GOtv & Startimes), Electricity Bill Payemnt etc
-          </p>
+          </p-->
         </div>
 
         <div class="row">
@@ -153,7 +163,9 @@
                   <img class="img-fluid mx-auto" src="\home/img/services/bulk-sms.png">
                 </div>
               <h4 class="title"><a href="">Send Bulk SMS</a></h4>
-              <p class="description">Send BulkSMS to any number for as low as just ₦2 per unit. Ours Bulks sms service also deliver sms to DND numbers</p>
+              <p class="description">
+                    Send Bulk SMS to any number In Nigeria for as low as ₦2.00 per unit. Our Bulk SMS service also delivers SMS to numbers on DND list.
+              </p>
             </div>
           </div>
 
@@ -167,13 +179,16 @@
             </div>
           </div>
 
+
           <div class="col-lg-6">
             <div class="box wow fadeInLeft text-center" data-wow-delay="0.2s">
               <div class="icon">
                 <img class="img-fluid mx-auto" src="\home/img/services/cable-tv.png">
               </div>
               <h4 class="title"><a href="">Cable Tv subscription</a></h4>
-              <p class="description">Instantly Activate Cable subscription(Dstv, Gotv, Startimes ...) with favourable discount compare to others.</p>
+              <p class="description">
+                    Instant recharge of your DStv, GOtv and Startimes.
+              </p>
             </div>
           </div>
 
@@ -183,7 +198,9 @@
                 <img class="img-fluid mx-auto" src="\home/img/services/airtime-cash.png">
               </div>
               <h4 class="title"><a href="">Airtime To Cash</a></h4>
-              <p class="description">We offer this service at a 80% CONVERSION RATE.This simply means that if you send N1,000 worth of AIRTIME to us you will receive instant N800.</p>
+              <p class="description">
+                Convert your excess MTN, Airtel, Glo and 9mobile Airtime to Cash and get paid instantly.
+                </p>
             </div>
           </div>
 
@@ -195,7 +212,7 @@
     <!--==========================
       Call To Action Section
     ============================-->
-    <section id="call-to-action" class="wow fadeInUp">
+    {{-- <section id="call-to-action" class="wow fadeInUp">
       <div class="container">
         <div class="row">
           <div class="col-lg-9 text-center text-lg-left">
@@ -208,7 +225,7 @@
         </div>
 
       </div>
-    </section><!-- #call-to-action -->
+    </section><!-- #call-to-action --> --}}
 
     <!--==========================
       Pricing tables
@@ -220,6 +237,9 @@
         </div>
         <div class="row">
             @foreach ($dataPlans as $networks)
+
+                @if($loop->iteration > 4 ) @continue @endif
+
                 <div class="col-md-3">
                     <div class="block block-pricing">
                         <div class="table table-{{ strtolower($networks[0]->network) }}">
@@ -252,7 +272,8 @@
         <div class="container">
             <div class="section-header">
             <h2>Our Partners</h2>
-            <p>We Partner directly with major service providers make our service affordable without sacrificing quality</p>
+            <p>
+                    We realise that we can’t walk this road alone. So, we have partnered with all these incredible brands to create a seamless user experience for you.</p>
             </div>
             @php
                 $partners = collect([
@@ -380,7 +401,7 @@
   <footer id="footer">
     <div class="container">
       <div class="copyright">
-        &copy; Copyright <strong>{{ $app->name }}</strong>. All Rights Reserved
+        &copy; Copyright <strong>{{ $app->bussinessName }}</strong>. All Rights Reserved
       </div>
       <script type="text/javascript">
         document.write(unescape('%3c%64%69%76%20%63%6c%61%73%73%3d%22%63%72%65%64%69%74%73%22%20%73%74%79%6c%65%3d%22%66%6f%6e%74%2d%73%69%7a%65%3a%20%31%38%70%78%3b%22%3e%0d%0a%20%20%20%20%20%20%20%20%44%65%73%69%67%6e%65%64%20%62%79%20%3c%61%20%68%72%65%66%3d%22%68%74%74%70%73%3a%2f%2f%66%61%63%65%62%6f%6f%6b%2e%63%6f%6d%2f%39%6a%61%6c%6f%61%64%73%22%3e%52%65%64%68%6f%73%74%65%72%3c%2f%61%3e%0d%0a%20%20%20%20%20%20%3c%2f%64%69%76%3e'));

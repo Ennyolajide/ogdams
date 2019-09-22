@@ -89,5 +89,28 @@ class DataPlansTableSeeder extends Seeder
             'volume' => '5.5 GB',
             'amount' => 2365,
         ]);
+
+        //9mobile
+        DB::table('data_plans')->insert([
+            'network_id' => 5,
+            'addon' => true,
+            'network' => '9mobile Gifting',
+            'volume' => '1 GB',
+            'amount' => 850,
+        ]);
+        DB::table('data_plans')->insert([
+            'network_id' => 5,
+            'addon' => true,
+            'network' => '9mobile Gifting',
+            'volume' => '1.5 GB',
+            'amount' => 1200,
+        ]);
+        DB::table('data_plans')->insert([
+            'network_id' => 5,
+            'addon' => true,
+            'network' => '9mobile Gifting',
+            'volume' => '2 GB',
+            'amount' => 1850,
+        ]);
     }
 }

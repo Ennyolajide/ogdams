@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Bank;
+use App\Charge;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
