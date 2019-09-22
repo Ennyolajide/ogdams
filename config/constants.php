@@ -4,7 +4,7 @@ return [
 
     'site' => [
         'name' => env('APP_NAME'),
-        'email' => 'helps@ogdams.com',
+        'email' => 'help@ogdams.com',
         'phone' => '+234 9066 6857 02',
         'telegram' => 'https://t.me/ogdams',
         'address' => 'Camp,Abeokuta.Ogun State, Nigeria.',
