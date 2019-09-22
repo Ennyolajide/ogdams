@@ -44,8 +44,8 @@
                                         @foreach ($networks as $item)
                                             <div class="col-sm-3 col-xs-3 cursor text-center">
                                                 <a href="{{ route('admin.dataplan', ['network' => $item->id ]) }}">
-                                                    <img src="\images/networks/{{ strtolower($item->network).'.png' }}" class="img-thumbnail" style="max-height: 50px; display:inline-block;">
-                                                    <p class="text-bold">{{ $item->network }}</p>
+                                                    <img src="\images/networks/{{ strtolower($item->addon ? $item->group_network : $item->network).'.png' }}" class="img-thumbnail" style="max-height: 50px; display:inline-block;">
+                                                    <p class="text-bold">{{ $item->has_addon ? $item->alternate_network : $item->network }}</p>
                                                 </a>
                                             </div>
                                         @endforeach
@@ -80,6 +80,7 @@
                                     </legend>
                                     <div class="row">
                                         @foreach ($networks as $item)
+                                            @if($item->addon) @continue @endif
                                             <div class="col-sm-3 col-xs-3 cursor text-center">
                                                 <a href="{{ route('admin.airtime.config') }}">
                                                     <img src="\images/networks/{{ strtolower($item->network).'.png' }}" class="img-thumbnail" style="max-height: 50px; display:inline-block;">

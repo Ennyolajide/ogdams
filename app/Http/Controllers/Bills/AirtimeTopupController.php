@@ -21,7 +21,7 @@ class AirtimeTopupController extends RingoController
      */
     public function index()
     {
-        $networks = AirtimePercentage::all();
+        $networks = AirtimePercentage::whereAddon(false)->get();
         return view('dashboard.airtime.topup', compact('networks'));
     }
 

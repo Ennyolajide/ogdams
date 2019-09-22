@@ -135,10 +135,10 @@
                                         <i class="fa fa-arrow-right fa-2x" style="height:40px;"></i>
                                     </div>
                                     <div class="col-md-4 col-xs-4">
-                                        <p class=""><b>{{ $transaction->class->bank->bank_name }}</b></p>
+                                        <p class=""><b>{{ $transaction->user->name }}</b></p>
                                         <span class="text-success text-bold">@naira($transaction->class->amount * $transaction->class->percentage / 100)</span>
-                                        <p class=""><b>{{ $transaction->class->bank->acc_no }}</b></p>
-                                        <p class="text-olive h4"><b> {{ $transaction->class->bank->acc_name }} </b></p>
+                                        <p class=""><b>Wallet</b></p>
+                                        <p class="text-olive h4"><b> user</b></p>
                                     </div>
                                 @endif
 

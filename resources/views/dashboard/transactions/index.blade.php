@@ -57,8 +57,8 @@
                                     <tbody>
                                         @php
                                             function getStatus($status){
-                                                $array = ['Declined','Pending','Success','Canceled'];
-                                                return $status ? $array[$status] : 'Decline';
+                                                $array = ['Declined','Pending','Successful','Canceled'];
+                                                return $status ? $array[$status] : 'Declined';
                                             }
                                         @endphp
 

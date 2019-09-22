@@ -18,7 +18,7 @@ class CreateBanksTable extends Migration
             $table->unsignedInteger('user_id');
             $table->string('bank_name');
             $table->string('acc_name');
-            $table->string('acc_no')->unique();
+            $table->string('acc_no');
             $table->boolean('status')->default(false);
             $table->timestamps();
         });

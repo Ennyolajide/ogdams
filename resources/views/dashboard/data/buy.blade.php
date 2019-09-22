@@ -38,7 +38,7 @@
                                 <div class="row">
                                     <div class="col-xs-12 col-md-12">
                                         <br/>
-                                        <img style="height: 60px; width:50px; display:none; margin-right:5px;" id="network-image" class="img-responsive pull-right">
+                                        <!--img style="height: 60px; width:50px; display:none; margin-right:5px;" id="network-image" class="img-responsive pull-right"-->
                                     </div>
                                 </div>
                                 <form id="data-purchase-form" class="form-horizontal" action="{{ route('data.buy') }}" method="post">
@@ -51,8 +51,9 @@
                                             <select class="form-control" id="network">
                                                 <option value="" disabled selected>Select network Type</option>
                                                 @foreach ($networks as $network)
+                                                    @if($network->available == false) @continue @endif
                                                     <option value="{{ $network->network_id }}">
-                                                        {{ $network->network }}
+                                                        {{ strtoupper($network->network) }}
                                                     </option>
                                                 @endforeach
                                             </select>
@@ -64,7 +65,7 @@
                                             <label class="col-sm-2 col-xs-12 control-label" >Choose data plan</label>
                                             <div class="col-sm-10 col-xs-12 ">
                                                 @foreach ($networks as $network)
-                                                    <select class="form-control plans {{ strtolower($network->network) }}" name="plan" style="display:none;">
+                                                    <select class="form-control plans {{ str_replace(' ', '' ,strtolower($network->network)) }}" name="plan" style="display:none;">
                                                         <option value="" disabled selected>Choose a data plan</option>
                                                         @foreach ($network->plans as $plan)
                                                             <option value="{{ $plan->id }}">
@@ -95,6 +96,9 @@
                                 <div class="form-grouping" id="network-images">
                                     <div class="row">
                                         @foreach ($networks as $network)
+                                            @if ($loop->iteration > 4)
+                                                @continue
+                                            @endif
                                             <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
                                                 <img src="\images/networks/{{ strtolower($network->network) }}.png" class="img-responsive">
                                             </div>
@@ -128,12 +132,12 @@
                     highlight: function (element) {
                         $(element)
                             .closest('.form-grouping')
-                            .addClass('has-error');
+                            .addClass('orange');
                     },
                     unhighlight: function (element) {
                         $(element)
                             .closest('.form-grouping')
-                            .removeClass('has-error');
+                            .removeClass('orange');
                     }
                 });
 
@@ -154,13 +158,16 @@
                 });
 
                 $('#network').change(function() {
+                    console.log($('#network').val());
                     $('#network-images,#data-plan,.plans').hide();
                     $('#other-fields,#network-image').show();
                     let networks = @json($networks);
+                    //console.log(networks);
                     let networkId = $('#network').val();
-                    let network = networks.splice((networkId-1),1)[0].network.toLowerCase();
+                    let network = networks.splice((networkId-1),1)[0].network.toLowerCase().replace(/ /g,'')
+                    console.log(network);
                     $('#data-plan,.'+network).show();
-                    $('#network-image').attr('src','/images/networks/'+network+'.png');
+                    $('#network-image').attr('src','\images/networks/'+network+'.png');
                 });
 
             });

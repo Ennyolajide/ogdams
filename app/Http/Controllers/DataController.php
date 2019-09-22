@@ -13,15 +13,10 @@ class DataController extends TransactionController
     protected $successResponse = 'Data Topup successful';
     protected $failureResponse = 'Insuffient balance, Pls fund your account';
 
-    public function index()
-    {
-        return view('dashboard.data.prices');
-    }
-
     public function create()
     {
         $dataPlans = DataPlan::all();
-        $networks = DataPlan::orderBy('network_id', 'asc')->distinct()->get(['network', 'network_id']);
+        $networks = DataPlan::whereAvailable(true)->orderBy('network_id', 'asc')->get()->unique('network_id')->values()->all();
 
         return view('dashboard.data.buy', compact('dataPlans', 'networks'));
     }
@@ -53,7 +48,7 @@ class DataController extends TransactionController
         //validate request
         $this->validate(request(), ['plan' => 'required|numeric|', 'phone' => 'required']);
 
-        $dataPlan = DataPlan::find(request()->plan)->first();
+        $dataPlan = DataPlan::whereId(request()->plan)->first();
 
         $status = $dataPlan ? $this->processDataPurchase($dataPlan) : false;
 

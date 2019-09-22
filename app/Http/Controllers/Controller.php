@@ -23,6 +23,15 @@ class Controller extends BaseController
         ]);
     }
 
+    public function notifyUser($userId, $notification = null)
+    {
+        Message::create([
+            'user_id' => $userId,
+            'subject' => $notification['subject'],
+            'content' => $notification['content'],
+        ]);
+    }
+
     public function naira($amount)
     {
         return '₦' . number_format($amount, 2);

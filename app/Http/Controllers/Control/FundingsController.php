@@ -20,13 +20,22 @@ class FundingsController extends ModController
 
     public function edit(Transaction $trans)
     {
-        $status = request()->has('decline') || request()->has('completed') ? true : false;
-        $transactionStatus = ['status' => request()->has('completed') ? 2 : 0];
-        $status ? $trans->class->update($transactionStatus) : false;
-        $status = $status ? $this->creditWallet($trans->class->amount) : false;
-        $status ? $trans->update($transactionStatus) : false;
-        $status ? $this->notify($this->creditNotification($trans->class->amount, $trans->method)) : false;
-        $message = $status ? $this->successResponse : $this->failureResponse;
+        if (request()->has('completed')) {
+            $transactionStatus = ['status' =>  2];
+            $trans->class->update($transactionStatus);
+            $status = $this->creditUserWallet($trans->user->id, $trans->class->amount);
+            $status ? $trans->update($transactionStatus) : false;
+            $status ? $this->notify($this->creditNotification($trans->class->amount, $trans->method)) : false;
+            $message = $status ? $this->successResponse : $this->failureResponse;
+        } else if (request()->has('decline')) {
+            $transactionStatus = ['status' =>  0];
+            $trans->class->update($transactionStatus);
+            $status ? $trans->update($transactionStatus) : false;
+            $message = $status ? $this->successResponse : $this->failureResponse;
+        } else {
+            $status = false;
+            $message = $this->errorResponse;
+        }
 
         return back()->withNotification($this->clientNotify($message, $status));
     }

@@ -176,11 +176,11 @@
                               <tbody>
                                 <tr>
                                   <td><img src="\images/networks/mtn.png" style="height: 60px; width:50px;" id="network-image" class="img-responsive"></td>
-                                  <td class="h4 text-right text-info">*461*2*3*1#</td>
+                                  <td class="h4 text-right text-info">*461*4#</td>
                                 </tr>
                                 <tr>
                                   <td><img src="\images/networks/9mobile.png" style="height: 60px; width:50px;" id="network-image" class="img-responsive"></td>
-                                  <td class="h4 text-right text-info">*228#</td>
+                                  <td class="h4 text-right text-info">SME(*229*9#) Gift(*228#)</td>
                                 </tr>
                                 <tr>
                                   <td><img src="\images/networks/glo.png" style="height: 60px; width:50px;" id="network-image" class="img-responsive"></td>

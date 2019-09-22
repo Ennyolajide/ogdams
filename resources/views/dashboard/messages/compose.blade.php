@@ -119,12 +119,12 @@
                     highlight: function (element) {
                         $(element)
                             .closest('.form-group')
-                            .addClass('has-error');
+                            .addClass('orange');
                     },
                     unhighlight: function (element) {
                         $(element)
                             .closest('.form-group')
-                            .removeClass('has-error');
+                            .removeClass('orange');
                     }
                 });
 

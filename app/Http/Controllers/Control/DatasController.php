@@ -33,8 +33,9 @@ class DatasController extends ModController
         return back()->withNotification($this->clientNotify($message, $status));
     }
 
-    public function settings(DataPlan $network)
+    public function settings($network)
     {
+        $network = DataPlan::where('network_id', $network)->first();
         $plans = $network->plans;
 
         return view('control.data', compact('plans', 'network'));
@@ -46,7 +47,7 @@ class DatasController extends ModController
         $this->validate(request(), [
             'volume' => 'required|string',
             'amount' => 'required|numeric',
-            'notification' => 'required|string'
+            'notification' => 'required|string',
         ]);
         $status = $network->update([
             'volume' => request()->volume,
@@ -83,13 +84,17 @@ class DatasController extends ModController
     {
         //validate request
         $this->validate(request(), [
+            'availabilityStatus' => 'sometimes|string',
             'email' => 'sometimes|email', 'emailNotificationStatus' => 'sometimes|string',
             'phone' => 'sometimes|string', 'phoneNotificationStatus' => 'sometimes|string',
         ]);
         // get and instance of the data plan
         $dataPlan = DataPlan::where('network_id', $network->network_id);
+        $planIds = $dataPlan->pluck('id');
+
         //update the instance of the dataplan
-        $status = $dataPlan->update([
+        $status = Dataplan::whereIn('id', $planIds)->update([
+            'available' => request()->has('availabilityStatus'),
             'phone_notification_status' => request()->has('phoneNotificationStatus'),
             'email_notification_status' => request()->has('emailNotificationStatus'),
             'notification_phone' => request()->phone ?? $dataPlan->first()->notification_phone,

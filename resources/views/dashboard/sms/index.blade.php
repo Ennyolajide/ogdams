@@ -183,13 +183,14 @@
                                 </p>
                                 </fieldset>
                             </div>
-
-                            <div class="col-md-11 col-xs-11 text-center">
-                                <small class="text-bold">DnD Numbers </small>
-                                <p class="h6 text-bold text-primary">
-                                    {{ session('modal')->realtime_dnd }}
-                                </p>
-                            </div>
+                            @if(isset(session('modal')->realtime_dnd))
+                                <div class="col-md-11 col-xs-11 text-center">
+                                    <small class="text-bold">DnD Numbers </small>
+                                    <p class="h6 text-bold text-primary">
+                                        {{ session('modal')->realtime_dnd }}
+                                    </p>
+                                </div>
+                            @endif
                             <div class="col-md-11 col-xs-11 text-center">
                                 <small class="text-bold">Invalid Numbers </small>
                                 <p class="h6 text-bold text-dnager">
@@ -261,12 +262,12 @@
                     highlight: function(element) {
                         $(element)
                             .closest('.form-grouping')
-                            .addClass('has-error');
+                            .addClass('orange');
                     },
                     unhighlight: function(element) {
                         $(element)
                             .closest('.form-grouping')
-                            .removeClass('has-error');
+                            .removeClass('orange');
                     }
                 });
 

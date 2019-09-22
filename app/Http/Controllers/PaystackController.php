@@ -32,7 +32,8 @@ class PaystackController extends PaymentController
      */
     public function redirectToGateway()
     {
-        request()->merge(['amount' => request()->amount * 100]);
+        $charges =  \config('constants.charges.paystack');
+        request()->merge(['amount' => (request()->amount * 100) + $charges * request()->amount]);
 
         return Paystack::getAuthorizationUrl()->redirectNow();
     }

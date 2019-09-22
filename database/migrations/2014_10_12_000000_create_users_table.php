@@ -22,7 +22,7 @@ class CreateUsersTable extends Migration
             $table->string('number')->nullable();
             //$table->string('referal')->nullable();
             $table->unsignedBigInteger('balance')->default(0);
-            $table->string('avatar')->default('default.jpg');
+            $table->string('avatar')->default('default.png');
             $table->string('address')->nullable();
             $table->string('city')->nullable();
             $table->string('state')->nullable();

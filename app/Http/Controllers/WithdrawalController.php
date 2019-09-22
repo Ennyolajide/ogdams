@@ -18,11 +18,12 @@ class  WithdrawalController extends TransactionController
      */
     public function index()
     {
-        $banks = User::where('id', Auth::user()->id)->first()->banks;
+
+        $banks = User::find(Auth::user()->id)->banks;
 
         if ($banks->count()) {
             $charge = Charge::whereService('withdrawals')->first()->amount;
-            return view('dashboard/wallet/withdraw', compact('banks', 'charge'));
+            return view('dashboard.wallet.withdraw', compact('banks', 'charge'));
         } else {
             $message = 'Pls Add at least one Bank to your Profile';
             return redirect(route('user.profile', 'bank'))->withNotification($this->clientNotify($message, false));

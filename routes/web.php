@@ -55,9 +55,9 @@ Route::post('/dashboard/data/buy', 'DataController@store')->name('data.buy');
 //Route::post('dashboard/airtime/cash', 'AirtimeController@airtime2cash')->name('airtime.toCash');
 
 
-Route::get('dashboard/airtime/swap', 'AirtimeSwapController@index')->name('airtime.swap');
-Route::post('dashboard/airtime/swap', 'AirtimeSwapController@store')->name('airtime.swap');
-Route::patch('dashboard/airtime/swap/{airtimeRecord}', 'AirtimeSwapController@completed')->name('airtime.swap.completed');
+Route::get('dashboard/airtime/swap', 'AirtimeSwapController@index')->name('airtime.swap'); //not in use
+Route::post('dashboard/airtime/swap', 'AirtimeSwapController@store')->name('airtime.swap'); //not in use
+Route::patch('dashboard/airtime/swap/{airtimeRecord}', 'AirtimeSwapController@completed')->name('airtime.swap.completed'); // not in use
 Route::get('dashboard/airtime/cash', 'AirtimeToCashController@index')->name('airtime.cash');
 Route::post('dashboard/airtime/cash', 'AirtimeToCashController@store')->name('airtime.cash');
 Route::patch('dashboard/airtime/cash/{airtimeRecord}', 'AirtimeToCashController@completed')->name('airtime.cash.completed');
