@@ -29,8 +29,9 @@ class CreateUsersTable extends Migration
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->string('pin')->nullable();
-            $table->string('referrer')->nullable();
+            $table->unsignedBigInteger('referrer')->nullable();
             $table->string('wallet_id')->unique();
+            $table->boolean('first_time_funding')->default(true);
             $table->rememberToken();
             $table->timestamps();
         });

@@ -32,8 +32,12 @@ class PaystackController extends PaymentController
      */
     public function redirectToGateway()
     {
-        $charges =  \config('constants.charges.paystack');
-        request()->merge(['amount' => (request()->amount * 100) + $charges * request()->amount]);
+        //$originalAmount = request()->amount * 100;
+        $charges = \config('constants.charges.paystack');
+        $additionalCharge = request()->amount < 2500 ? 0 : $charges['addtionalCharge'];
+        $totalTranxCharge = (($charges['chargePercentage'] / 100 * request()->amount) + $additionalCharge);
+        $cappedTranxCharge = $totalTranxCharge < 2000 ? $totalTranxCharge : $charges['cappedCharge'];
+        request()->merge(['amount' => ((request()->amount + $cappedTranxCharge) * 100)]);
 
         return Paystack::getAuthorizationUrl()->redirectNow();
     }
@@ -46,8 +50,6 @@ class PaystackController extends PaymentController
         $paymentDetails = Paystack::getPaymentData();
         //execute fund user wallet method
         $status = $this->fundUserWallet($paymentDetails['data']);
-        //send message to inbox about what just happen
-        $status ? $this->notify($this->cardPaymentNotification($paymentDetails['data']['amount'] / 100)) : false;
         //set success / failure message for user
         $message = $status ? $this->successResponse : $this->failureResponse;
         //redirect back and show message

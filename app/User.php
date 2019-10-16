@@ -16,7 +16,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password', 'token', 'wallet_id', 'referrer', 'api_token', 'active', 'balance',
+        'name', 'email', 'number', 'password', 'token', 'wallet_id', 'referrer', 'api_token', 'active', 'balance', 'first_time_funding'
     ];
 
     /**
@@ -61,6 +61,11 @@ class User extends Authenticatable
     public function testimonials()
     {
         return $this->hasMany(Testimonial::class);
+    }
+
+    public function myReferrer()
+    {
+        return $this->hasOne(User::class, 'id', 'referrer');
     }
 
 

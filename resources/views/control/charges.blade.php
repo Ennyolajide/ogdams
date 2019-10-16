@@ -1,10 +1,5 @@
 @extends('dashboard.layouts.master')
 
-    @section('css')
-        <!-- DataTables -->
-        <link rel="stylesheet" href="\bower_components/datatables.net-bs/css/dataTables.bootstrap.min.css">
-    @endsection
-
     @section('content-header')
         <div class="page-title">
             <div class="title_left">
@@ -126,30 +121,4 @@
             <!-- /.row -->
         </div>
         <!-- /.content -->
-    @endSection
-
-    @section('scripts')
-        <!-- DataTables -->
-        <script src="\bower_components/datatables.net/js/jquery.dataTables.min.js"></script>
-        <script src="\bower_components/datatables.net-bs/js/dataTables.bootstrap.min.js"></script>
-        <script>
-            $(function () {
-              $('#transactions-table').DataTable({
-                'paging'      : true,
-                'lengthChange': false,
-                'searching'   : false,
-                'ordering'    : true,
-                'info'        : true,
-                'autoWidth'   : false
-              })
-            })
-        </script>
-
-
-
-        <script>
-
-
-        </script>
-
     @endSection

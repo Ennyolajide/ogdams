@@ -30,8 +30,29 @@ class DashboardController extends Controller
         return view('dashboard.index', compact('transactions', 'referrals'));
     }
 
-    public function myBalance()
+    /**
+     * Get User's Balance
+     */
+    public function balance()
     {
-        return response()->json(Auth::user()->balance, 200);
+        return response()->json([
+            'balance' => Auth::user()->balance,
+            'curreny' => 'NGN'
+        ], 200);
+    }
+
+    /**
+     * Get Users's Details
+     */
+    public function info()
+    {
+        $user = Auth::user();
+
+        $user->makeHidden([
+            'id', 'token', 'pin', 'referrer', 'first_time_funding',
+            'created_at', 'updated_at', 'active', 'role', 'permission'
+        ]);
+
+        return response()->json(Auth::user(), 200);
     }
 }

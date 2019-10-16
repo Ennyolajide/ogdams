@@ -22,7 +22,7 @@
         <!-- Font Awesome -->
         <link rel="stylesheet" href="\plugins/font-awesome/css/font-awesome.min.css">
         <!-- NProgress -->
-        <link href="\plugins/nprogress/nprogress.css" rel="stylesheet">
+        <!--link href="\plugins/nprogress/nprogress.css" rel="stylesheet"-->
         <!-- Animate.css -->
         <link href="\css/animate.min.css" rel="stylesheet">
 
@@ -42,6 +42,19 @@
                 font-size: 15px;
             } */
         </style>
+        <!--Start of Tawk.to Script-->
+        <script type="text/javascript">
+            var Tawk_API=Tawk_API||{}, Tawk_LoadStart=new Date();
+            (function(){
+            var s1=document.createElement("script"),s0=document.getElementsByTagName("script")[0];
+            s1.async=true;
+            s1.src="{{ config('constants.livechat.tawk') }}";
+            s1.charset='UTF-8';
+            s1.setAttribute('crossorigin','*');
+            s0.parentNode.insertBefore(s1,s0);
+            })();
+        </script>
+        <!--End of Tawk.to Script-->
     </head>
     <body class="nav-md">
         <div class="container body">
@@ -80,7 +93,7 @@
         <!-- FastClick -->
         <script src="\js/fastclick.js"></script>
         <!-- NProgress -->
-        <script src="\plugins/nprogress/nprogress.js"></script>
+        <!--script src="\plugins/nprogress/nprogress.js"></script-->
         <!-- Custom Theme Scripts -->
         <script src="\js/custom.min.js"></script>
         <!-- Notify -->

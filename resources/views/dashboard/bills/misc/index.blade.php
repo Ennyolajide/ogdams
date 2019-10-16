@@ -117,12 +117,12 @@
                     highlight: function(element) {
                         $(element)
                             .closest('.form-grouping')
-                            .addClass('orange');
+                            .addClass('has-error');
                     },
                     unhighlight: function(element) {
                         $(element)
                             .closest('.form-grouping')
-                            .removeClass('orange');
+                            .removeClass('has-error');
                     }
                 });
 
@@ -134,7 +134,7 @@
                         phone: { required: true, minlength: 10, maxlength: 13 }
                     },
                     messages: {
-                        package: { required: 'Pls choose your prefered package' },
+                        package: { required: 'Please choose your prefered package' },
                         amount: { required: 'Bill amount cannot be blank' },
                         email: {
                             minlength: $.validator.format("Minimum of {0} characters required."),

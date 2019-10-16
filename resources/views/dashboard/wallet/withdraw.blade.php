@@ -38,7 +38,7 @@
                 </div>
                 <div class="x_content">
                     <div class="row">
-                        <div class="col-xs-12 col-sm-7 col-md-7 col-lg-5">
+                        <div class="col-xs-12 col-sm-8 col-md-6 col-lg-6">
                             <h3 class="text-bold text-danger col-sm-offset-2">Charges of @naira($charge) apply</h3>
                             <form id="withdrawal-form" class="form-horizontal" method="post" action="{{ route('wallet.withdraw') }}">
                                 @csrf
@@ -52,8 +52,8 @@
                                 <div class="form-group" id="amount-field">
                                     <label class="col-sm-3 col-xs-12 control-label">Amount</label>
                                     <div class="col-sm-9 col-xs-12 form-grouping">
-                                        <input id="amount" type="text" class="form-control" name="amount" placeholder="Enter you want to withdraw" required>
-                                        <p id="amount-error" style="display:none; font-size:14px;" class="orange">Amount Exceed Withdrawable Balance</p>
+                                        <input id="amount" type="text" class="form-control" name="amount" placeholder="Enter the you want to withdraw" required>
+                                        <p id="amount-error" style="display:none; font-size:14px;" class="orange">Amount Exceeds Withdrawable Balance</p>
                                     </div>
                                 </div>
                                 <br/>
@@ -61,7 +61,7 @@
                                     <label class="col-sm-3 col-xs-12 control-label">Bank</label>
                                     <div class="col-sm-9 col-xs-12">
                                         <select class="form-control" id="bank" name="bank">
-                                            <option value="" disabled selected>Select Our Bank </option>
+                                            <option value="" disabled selected>Select Withdrawal Account </option>
                                             @foreach ($banks as $item)
                                                 <option value="{{ $loop->index }}">
                                                     {{ $item->bank_name }}
@@ -69,7 +69,7 @@
                                             @endforeach
                                         </select>
                                         <input type="hidden" id="bankId" name="bankId">
-                                        <p class="help-block blue font-size:14px;">Bank to transfer to</p>
+                                        <p class="help-block blue font-size:14px;">Select an account for withdraw</p>
                                     </div>
                                     <div class="col-sm-9  col-xs-12 col-sm-offset-3">
                                         <div class="radio" style="display:none; border: 2px solid #605ca8;">
@@ -92,6 +92,7 @@
                         </div>
                     </div>
                     @include('dashboard.layouts.errors')
+                    <br/><br/>
                 </div>
                <!-- .box-footer -->
                @include('dashboard.layouts.box-footer')
@@ -113,12 +114,12 @@
                 highlight: function (element) {
                     $(element)
                         .closest('.form-grouping')
-                        .addClass('orange');
+                        .addClass('has-error');
                 },
                 unhighlight: function (element) {
                     $(element)
                         .closest('.form-grouping')
-                        .removeClass('orange');
+                        .removeClass('has-error');
                 }
             });
 
@@ -146,12 +147,12 @@
                 if(amount > withdrawableBalance){
                     $('#amount')
                         .closest('.form-grouping')
-                        .addClass('orange');
+                        .addClass('has-error');
                     $('#amount-error').show();
                 }else{
                     $('#amount')
                         .closest('.form-grouping')
-                        .removeClass('orange');
+                        .removeClass('has-error');
                     $('#amount-error').hide();
                 }
             });
@@ -159,7 +160,6 @@
             $('#bank').change(function(){
                 let banks = @json($banks);
                 let bankDetails = banks[ $('#bank').val() ];
-                console.log(bankDetails);
                 $('#bankId').val(bankDetails.id);
                 $('.radio').find('.bankName').text(bankDetails.bank_name);
                 $('.radio').find('.accNo').text(bankDetails.acc_no);

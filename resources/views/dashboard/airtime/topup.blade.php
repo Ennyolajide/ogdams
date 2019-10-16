@@ -67,14 +67,14 @@
                                         <div class="form-group">
                                             <label class="col-sm-2 col-xs-12 control-label">Phone Number</label>
                                             <div class="col-sm-10 col-xs-12 form-grouping">
-                                                <input type="text" class="form-control" name="phone" placeholder="Pls Enter Phone Number">
+                                                <input type="text" class="form-control" name="phone" placeholder="Please Enter Phone Number">
                                             </div>
                                         </div>
                                         <br/>
                                         <div class="form-group">
                                             <label class="col-sm-2 col-xs-12 control-label">Amount</label>
                                             <div class="col-sm-10 col-xs-12 form-grouping">
-                                                <input type="text" class="form-control" name="amount" placeholder="Pls Enter Phone Number">
+                                                <input type="text" class="form-control" name="amount" placeholder="Please Enter Phone Number">
                                             </div>
                                         </div>
                                     </div>
@@ -121,12 +121,12 @@
                     highlight: function (element) {
                         $(element)
                             .closest('.form-grouping')
-                            .addClass('orange');
+                            .addClass('has-error');
                     },
                     unhighlight: function (element) {
                         $(element)
                             .closest('.form-grouping')
-                            .removeClass('orange');
+                            .removeClass('has-error');
                     }
                 });
 
@@ -137,24 +137,24 @@
                         },
                         phone: {
                             required: true,
-                            digit: true
+                            number: true
                         },
                         amount: {
                             required: true,
-                            digit: true
+                            number: true
                         }
                     },
                     messages: {
                         phone: {
-                            required: "Pls select topup network.",
+                            required: "Please select topup network.",
                         },
                         phone: {
-                            required: "Pls enter phone number.",
-                            digit:  "Phone numbers only "
+                            required: "Please enter phone number.",
+                            number:  "Phone numbers only "
                         },
                         amount: {
-                            required: "Pls enter topup amount.",
-                            digit:  "Phone numbers only "
+                            required: "Please enter topup amount.",
+                            number:  "Inavlid topup amount"
                         }
 
                     }

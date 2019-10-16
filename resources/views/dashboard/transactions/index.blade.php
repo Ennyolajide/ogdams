@@ -1,11 +1,6 @@
 @extends('dashboard.layouts.master')
 
-@section('css')
-      <!-- DataTables -->
-  <link rel="stylesheet" href="\bower_components/datatables.net-bs/css/dataTables.bootstrap.min.css">
-@endsection
-
-@section('content-header')
+    @section('content-header')
 
     <!-- Content Header (Page header) -->
     @section('content-header')
@@ -57,8 +52,8 @@
                                     <tbody>
                                         @php
                                             function getStatus($status){
-                                                $array = ['Declined','Pending','Successful','Canceled'];
-                                                return $status ? $array[$status] : 'Declined';
+                                                $array = ['Declined','Pending','Success','Canceled'];
+                                                return $status === NULL ? 'Pending' : $array[$status];
                                             }
                                         @endphp
 
@@ -136,7 +131,7 @@
                     <div class="row" style="font-size: 20px;">
                         <div class="col-md-5 col-xs-11  col-xs-offset-1 col-sm-offset-1 col-md-offset-1">
                             <small>Transaction Reference :</small>
-                            <p class=""><b> {{ '7e38yrb8383hnfj8f8' }} </b></p>
+                            <p class=""><b> {{ $transaction->reference }} </b></p>
                         </div>
                         <div class="col-md-5 col-xs-11 col-xs-offset-1 col-sm-offset-1 col-md-offset-1">
                             <small>Transaction Type : </small>
@@ -175,21 +170,6 @@
     @endSection
 
     @section('scripts')
-        <!-- DataTables -->
-        <script src="\bower_components/datatables.net/js/jquery.dataTables.min.js"></script>
-        <script src="\bower_components/datatables.net-bs/js/dataTables.bootstrap.min.js"></script>
-        <script>
-            $(function () {
-              $('#transactions-table').DataTable({
-                'paging'      : true,
-                'lengthChange': false,
-                'searching'   : false,
-                'ordering'    : true,
-                'info'        : true,
-                'autoWidth'   : false
-              })
-            })
-          </script>
 
         <script>
             $(function() {

@@ -23,7 +23,7 @@
             <div class="col-md-12 col-sm-12 col-xs-12">
                 <div class="x_panel">
                     <div class="x_title">
-                        <h2>By Data</h2>
+                        <h2>Buy Data</h2>
                         <ul class="nav navbar-right panel_toolbox">
                             <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
                             </li>
@@ -132,12 +132,12 @@
                     highlight: function (element) {
                         $(element)
                             .closest('.form-grouping')
-                            .addClass('orange');
+                            .addClass('has-error');
                     },
                     unhighlight: function (element) {
                         $(element)
                             .closest('.form-grouping')
-                            .removeClass('orange');
+                            .removeClass('has-error');
                     }
                 });
 
@@ -145,13 +145,13 @@
                     rules: {
                         phone: {
                             required: true,
-                            digit: true
+                            number: true
                         }
                     },
                     messages: {
                         phone: {
-                            required: "Pls enter phone number.",
-                            digit:  "Phone numbers only "
+                            required: "Please enter phone number.",
+                            number:  "Phone numbers only "
                         }
 
                     }
@@ -162,10 +162,8 @@
                     $('#network-images,#data-plan,.plans').hide();
                     $('#other-fields,#network-image').show();
                     let networks = @json($networks);
-                    //console.log(networks);
                     let networkId = $('#network').val();
-                    let network = networks.splice((networkId-1),1)[0].network.toLowerCase().replace(/ /g,'')
-                    console.log(network);
+                    let network = networks.splice((networkId-1),1)[0].network.toLowerCase().replace(/ /g,'');
                     $('#data-plan,.'+network).show();
                     $('#network-image').attr('src','\images/networks/'+network+'.png');
                 });

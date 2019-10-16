@@ -42,7 +42,7 @@
                                 <div class="row">
                                     <div class="col-xs-7 col-sm-7 col-md-7 col-lg-7">
                                         <h3 class="text-primary text-center"><strong> {{ $product->name }} </strong></h3>
-                                        <h4 class="text-danger text-center"><strong>Charges @naira(0) Apply </strong></h3>
+                                        <h4 class="text-danger text-center"><strong>Charges @naira($charge) Apply </strong></h3>
                                     </div>
                                     <div class="col-xs-5 col-sm-5 col-md-4 col-lg-3  pull-right">
                                         <br/>
@@ -57,7 +57,7 @@
                                         <div class="form-group">
                                             <label class="col-sm-2 col-xs-12 control-label">Meter id</label>
                                             <div class="col-sm-10 col-xs-12 form-grouping">
-                                                <input type="text" id="cardNo" class="form-control" name="cardNo" value="23300065960" placeholder="Pls Eneter Meter ID">
+                                                <input type="text" id="cardNo" class="form-control" name="cardNo" placeholder="Please enter Meter ID">
                                             </div>
                                         </div>
                                         <div class="form-group" id="nameDiv" style="display:none;">
@@ -70,7 +70,7 @@
                                         <div class="form-group">
                                             <label class="col-sm-2 col-xs-12 control-label">Amount</label>
                                             <div class="col-sm-10 col-xs-12 form-grouping">
-                                                <input type="text" id="amount" class="form-control" name="amount" value="10" placeholder="Pls Eter Amount">
+                                                <input type="text" id="amount" class="form-control" name="amount" placeholder="Please enter Amount">
                                             </div>
                                         </div>
                                         <br/>
@@ -150,12 +150,12 @@
                 highlight: function(element) {
                     $(element)
                         .closest('.form-grouping')
-                        .addClass('orange');
+                        .addClass('has-error');
                 },
                 unhighlight: function(element) {
                     $(element)
                         .closest('.form-grouping')
-                        .removeClass('orange');
+                        .removeClass('has-error');
                 }
             });
 
@@ -223,7 +223,6 @@
                     cardNo : $('#cardNo').val(), amount : $('#amount').val(), email : $('#email').val(),
                     phone : $('#phone').val(), productId : '{{ $product->id  }}' },
                     success:function(data){
-                        console.log(data);
                         clearTimeout(timeOut);
                         data.response ? finalizeBill(data) : notifyError();
                     }

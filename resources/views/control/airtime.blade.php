@@ -1,12 +1,10 @@
 @extends('dashboard.layouts.master')
 
     @section('css')
-        <!-- iCheck -->
-        <link rel="stylesheet" href="\plugins/iCheck/square/blue.css">
+        {{-- <!-- iCheck -->
+        <link rel="stylesheet" href="\plugins/iCheck/square/blue.css"> --}}
         <!-- switchery -->
         <link href="\plugins/switchery/dist/switchery.min.css" rel="stylesheet">
-        <!-- DataTables -->
-        <link rel="stylesheet" href="\bower_components/datatables.net-bs/css/dataTables.bootstrap.min.css">
     @endsection
 
     @section('content-header')
@@ -184,22 +182,9 @@
 
     @section('scripts')
         <script src="\plugins/switchery/dist/switchery.min.js"></script>
-        <script>
-            $(function () {
-              $('#transactions-table').DataTable({
-                'paging'      : true,
-                'lengthChange': false,
-                'searching'   : false,
-                'ordering'    : true,
-                'info'        : true,
-                'autoWidth'   : false
-              })
-            })
-        </script>
-
-        <!-- iCheck -->
-        <script src="\plugins/iCheck/icheck.min.js"></script>
-        <script>
+        {{-- <!-- iCheck -->
+        <script src="\plugins/iCheck/icheck.min.js"></script> --}}
+       {{--  <script>
             $(function () {
                 $('input').iCheck({
                 checkboxClass: 'icheckbox_square-blue',
@@ -207,7 +192,7 @@
                 increaseArea: '20%' /* optional */
                 });
             });
-        </script>
+        </script> --}}
 
         <script>
 

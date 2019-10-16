@@ -1157,3 +1157,7 @@ body.mobile-nav-active #mobile-nav-toggle {
     margin-top: 20px;
   }
 }
+
+.w-100 {
+    height: unset!important
+}

@@ -3,8 +3,6 @@
     @section('css')
         <!-- Switchery -->
         <link href="\plugins/switchery/dist/switchery.min.css" rel="stylesheet">
-        <!-- DataTables -->
-        <link rel="stylesheet" href="\bower_components/datatables.net-bs/css/dataTables.bootstrap.min.css">
     @endsection
 
     @section('content-header')
@@ -102,7 +100,13 @@
                                                 <td><img src="\images/networks/{{ strtolower($item->network).'.png'  }}" style="max-height: 50px; display:inline-block;"></td>
                                                 <td>{{ $item->volume }}</td>
                                                 <td>@naira($item->amount)</td>
-                                                <td><a href="" data-toggle="modal" data-target="#{{ $item->id }}" class="btn btn-info btn-xs"><i class="fa fa-edit"></i> Edit</a></td>
+                                                <td>
+                                                    <a href="" data-toggle="modal" data-target="#{{ $item->id }}" class="btn btn-info btn-xs"><i class="fa fa-edit"></i> Edit</a>
+                                                    <form action="{{ route('admin.dataplan.delete', ['plan' => $item->id ]) }}" method="POST">
+                                                        @csrf @method('patch')
+                                                        <button class="btn btn-danger btn-xs"><i class="fa fa-delete"></i> Delete</button>
+                                                    </form>
+                                                </td>
                                             </tr>
                                         @endforeach
                                     </tbody>
@@ -267,7 +271,6 @@
                                 <span class="help-block text-bold">Email Notification status</p>
                             </div>
                         </div>
-
                     </div>
                     <div class="modal-footer">
                         <button type="button"  data-dismiss="modal" class="btn btn-danger pull-left">Deline</button>
@@ -283,20 +286,6 @@
     @section('scripts')
         <!-- DataTables -->
         <script src="\plugins/switchery/dist/switchery.min.js"></script>
-        <script src="\bower_components/datatables.net/js/jquery.dataTables.min.js"></script>
-        <script src="\bower_components/datatables.net-bs/js/dataTables.bootstrap.min.js"></script>
-        <script>
-            $(function () {
-              $('#transactions-table').DataTable({
-                'paging'      : true,
-                'lengthChange': false,
-                'searching'   : false,
-                'ordering'    : true,
-                'info'        : true,
-                'autoWidth'   : false
-              })
-            })
-        </script>
 
         <script>
             $('.notification-status').find(':checkbox').change(function(){
@@ -304,4 +293,3 @@
             });
         </script>
     @endSection
-    });

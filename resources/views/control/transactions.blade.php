@@ -1,8 +1,4 @@
 @extends('dashboard.layouts.master')
-    @section('css')
-        <!-- DataTables -->
-        <link rel="stylesheet" href="\bower_components/datatables.net-bs/css/dataTables.bootstrap.min.css">
-    @endsection
 
     @section('content-header')
         <div class="page-title">
@@ -27,7 +23,7 @@
             <div class="col-md-12 col-sm-12 col-xs-12">
                 <div class="x_panel">
                     <div class="x_title">
-                        <h3>Monthly Recap Report</h3>
+                        <h3>Transactions</h3>
                         <div class="clearfix"></div>
                     </div>
                     <!-- /.box-header -->
@@ -48,7 +44,7 @@
                                     @php
                                         function getStatus($status){
                                             $array = ['Declined','Pending','Success','Canceled'];
-                                            return $array[$status];
+                                            return $status === NULL ? 'Pending' : $array[$status];
                                         }
                                     @endphp
 
@@ -75,9 +71,19 @@
                                         <th>Type</th>
                                         <th>Status</th>
                                         <th class="hidden-xs">Date</th>
+                                        <th>Action</th>
                                     </tr>
                                 </tfoot>
                             </table>
+                            <div class="col-md-12 col-xs-12">
+                                @php $paginator = $transactions; @endphp
+                                <span class="hidden-xs text-bold" style="font-size:16px;">
+                                    {{ $transactions->firstItem() }} - {{ $transactions->lastItem() }}/{{ $transactions->total() }}
+                                </span>
+                                <span class="pull-right">
+                                    @include('dashboard.layouts.pagination')
+                                </span>
+                            </div>
                             <!-- /.row -->
                         </div>
                     </div>
@@ -141,22 +147,4 @@
             <!-- /Modal -->
         @endforeach
 
-    @endSection
-
-    @section('scripts')
-        <!-- DataTables -->
-        <script src="\bower_components/datatables.net/js/jquery.dataTables.min.js"></script>
-        <script src="\bower_components/datatables.net-bs/js/dataTables.bootstrap.min.js"></script>
-        <script>
-            $(function () {
-              $('#transactions-table').DataTable({
-                'paging'      : true,
-                'lengthChange': false,
-                'searching'   : false,
-                'ordering'    : true,
-                'info'        : true,
-                'autoWidth'   : false
-              })
-            })
-          </script>
     @endSection

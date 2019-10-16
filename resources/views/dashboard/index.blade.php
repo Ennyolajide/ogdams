@@ -6,48 +6,49 @@
 
     @section('content')
         <!-- top tiles -->
-        <div class="row tile_count">
-            <div class="col-md-3 col-sm-3 col-xs-6 tile_stats_count">
-                <span class="count_top"><i class="fa fa-envelope"></i> Inbox</span>
-                <div class="count orange" id="unread_messages"></div>
-                <span class="count_bottom">
-                    <i class="green">
-                        <i class="fa fa-sort-asc"></i>0%
-                    </i> From last Week
-                </span>
-              </div>
-              <div class="col-md-3 col-sm-3 col-xs-6 tile_stats_count">
-                <span class="count_top"><i class="fa fa-calculator"></i> Transactions</span>
-                <div class="count info">{{ $referrals->count() }} <span class="index_description">Transactions<span></div>
-                <span class="count_bottom">
-                    <i class="green">
-                        <i class="fa fa-sort-asc"></i>0%
-                    </i> From last Week
-                </span>
-              </div>
-              <div class="col-md-3 col-sm-3 col-xs-6 tile_stats_count">
-                <span class="count_top"><i class="fa fa-users"></i> Referrals</span>
-                <div class="count green">{{ $referrals->count() }} <span class="index_description">User(s)</span></div>
-                <span class="count_bottom">
-                    <i class="green">
-                        <i class="fa fa-sort-asc"></i>0%
-                    </i> From last Week
-                </span>
-              </div>
-              <div class="col-md-3 col-sm-3 col-xs-6 tile_stats_count">
-                <span class="count_top"><i class="fa fa-money"></i> Balance</span>
-                <div class="count blue">@naira(Auth::user()->balance)</div>
-                <span class="count_bottom">
-                    <i class="green">
-                        <i class="fa fa-sort-asc"></i>0%
-                    </i> From last Week
-                </span>
-              </div>
+            <div class="row tile_count">
+                <div class="col-md-3 col-sm-3 col-xs-6 tile_stats_count">
+                    <span class="count_top"><i class="fa fa-envelope"></i> Inbox</span>
+                    <div class="count orange" id="unread_messages"></div>
+                    <span class="count_bottom">
+                        <i class="green">
+                            <i class="fa fa-sort-asc"></i>0%
+                        </i> All time
+                    </span>
+                </div>
+                <div class="col-md-3 col-sm-3 col-xs-6 tile_stats_count">
+                    <span class="count_top"><i class="fa fa-calculator"></i> Transactions</span>
+                    <div class="count info">{{ $referrals->count() }} <span class="index_description">Transactions<span></div>
+                    <span class="count_bottom">
+                        <i class="green">
+                            <i class="fa fa-sort-asc"></i>0%
+                        </i> All time
+                    </span>
+                </div>
+                <span class="visible-xs"><br/></span>
+                <div class="col-md-3 col-sm-3 col-xs-6 tile_stats_count">
+                    <span class="count_top"><i class="fa fa-users"></i> Referrals</span>
+                    <div class="count green">{{ $referrals->count() }} <span class="index_description">User(s)</span></div>
+                    <span class="count_bottom">
+                        <i class="green">
+                            <i class="fa fa-sort-asc"></i>0%
+                        </i> All time
+                    </span>
+                </div>
+                <div class="col-md-3 col-sm-3 col-xs-6 tile_stats_count">
+                    <span class="count_top"><i class="fa fa-money"></i> Balance</span>
+                    <div class="count blue">@naira(Auth::user()->balance)</div>
+                    <span class="count_bottom">
+                        <i class="green">
+                            <i class="fa fa-sort-asc"></i>0%
+                        </i> All time
+                    </span>
+                </div>
             </div>
-            <!-- /top tiles -->
+        <!-- /top tiles -->
 
    {{--          <div class="count green">2,500</div>
-                <span class="count_bottom"><i class="green"><i class="fa fa-sort-asc"></i>34% </i> From last Week</span>
+                <span class="count_bottom"><i class="green"><i class="fa fa-sort-asc"></i>34% </i> All time</span>
               </div> --}}
 
             <div class="row">
@@ -73,7 +74,7 @@
                                     @php
                                         function getStatus($status){
                                             $array = ['Declined','Pending','Success','Canceled'];
-                                            return $status ? $array[$status] : 'Decline';
+                                            return $status === NULL ? 'Pending' : $array[$status];
                                         }
                                     @endphp
 
@@ -133,12 +134,12 @@
                         </li>
 
 
-                        <li>
+                        {{-- <li>
                           <div class="block">
                             <div class="block_content">
                               <h2 class="title">
-                                                <a>Who Needs Sundance When You’ve Got&nbsp;Crowdfunding?</a>
-                                            </h2>
+                                <a>Who Needs Sundance When You’ve Got&nbsp;Crowdfunding?</a>
+                              </h2>
                               <div class="byline">
                                 <span>13 hours ago</span> by <a>Jane Smith</a>
                               </div>
@@ -146,7 +147,7 @@
                               </p>
                             </div>
                           </div>
-                        </li>
+                        </li> --}}
                       </ul>
                     </div>
                   </div>
@@ -358,6 +359,6 @@
 
     @section('scripts')
         <script>
-            $('#unread_messages').html($('#unread').val()+'<span class="index_description">Messages</span>');
+            $('#unread_messages').html($('#unread').val()+'<span class="index_description"> Messages</span>');
         </script>
     @endSection

@@ -3,14 +3,14 @@
     @section('content-header')
         <div class="page-title">
             <div class="title_left">
-                <h4>Bulk Sms</h4>
+                <h4>Testimonial</h4>
             </div>
             <div class="pull-right">
                 <ol class="breadcrumb">
                     <li>
                         <a href="#"><i class="fa fa-dashboard"></i> Home</a>
                     </li>
-                    <li class="active">Sms</li>
+                    <li class="active">Write Testimonial</li>
                 </ol>
             </div>
         </div>
@@ -23,7 +23,7 @@
             <div class="col-md-12 col-sm-12 col-xs-12">
                 <div class="x_panel">
                     <div class="x_title">
-                        <h2>Pay Bills</h2>
+                        <h2>Write Testimonial</h2>
                         <ul class="nav navbar-right panel_toolbox">
                             <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
                             </li>
@@ -41,9 +41,10 @@
                                     <div class="form-group row">
                                         <label class="col-sm-2 col-xs-12  control-label">Testimony</label>
                                         <div class="col-sm-8 col-xs-12  form-grouping">
-                                            <textarea placeholder="Enter message" id="testimony" name="testimony" style="width: 100%; height: 125px; font-size: 14px; line-height: 18px; border: 2px solid #dddddd; padding: 10px;" disabled="true"></textarea>
+                                            <textarea placeholder="Enter message" id="testimony" name="testimony" style="width: 100%; height: 125px; font-size: 14px; line-height: 18px; border: 2px solid #dddddd; padding: 10px;" {{ Auth::user()->testimonials->count() ? 'disabled' : '' }}></textarea>
                                         </div>
                                     </div>
+                                    <br/>
                                     <div class="form-group row">
                                         <label class="col-sm-2 col-xs-12 control-label"></label>
                                         <div class="col-sm-8 col-xs-12 form-grouping">
@@ -52,11 +53,13 @@
                                             </button>
                                         </div>
                                     </div>
+                                    <br/>
                                 </form>
                                 <!--/div-->
                             </div>
                         </div>
                         @include('dashboard.layouts.errors')
+                        <br/>
                     </div>
 
                     <!-- /.box-body -->
@@ -81,18 +84,18 @@
                     highlight: function(element) {
                         $(element)
                             .closest('.form-grouping')
-                            .addClass('orange');
+                            .addClass('has-error');
                     },
                     unhighlight: function(element) {
                         $(element)
                             .closest('.form-grouping')
-                            .removeClass('orange');
+                            .removeClass('has-error');
                     }
                 });
 
                 $('#testimony-form').validate({
                     rules: {
-                        testimony: { required: true, minlength: 10, maxlength: 13 }
+                        testimony: { required: true, minlength: 30, maxlength: 150 }
                     },
                     messages: {
                         testimony: {
