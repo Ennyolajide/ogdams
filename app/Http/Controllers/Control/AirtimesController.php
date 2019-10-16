@@ -15,7 +15,7 @@ class AirtimesController extends ModController
 
     public function show()
     {
-        $transactions = Transaction::where('class_type', 'App\Airtime')->whereStatus(!NULL)->orderBy('id', 'desc')->paginate(20);
+        $transactions = Transaction::where('class_type', 'App\Airtime')->orderBy('id', 'desc')->paginate(20);
 
         return view('control.airtimes', compact('transactions'));
     }
@@ -26,6 +26,7 @@ class AirtimesController extends ModController
         if (request()->has('completed')) {
             $transactionStatus = ['status' =>  2];
             $trans->class->update($transactionStatus);
+            $trans->update(['status' =>  2, 'balance_after' => ($trans->user->balance + $creditAmout)]);
             $status = $this->creditUserWallet($trans->user_id, $creditAmout);
             $status ? $trans->update($transactionStatus) : false;
             $status ? $this->notify($this->creditNotification($creditAmout, $trans->method)) : false;

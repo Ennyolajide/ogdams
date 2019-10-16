@@ -69,7 +69,7 @@
                                                         </option>
                                                     @endforeach
                                                 </select>
-                                                <p class="help-block">Select the network you want to swap airtime from.</p>
+                                                <p class="help-block">Select the network you want to transfer airtime from.</p>
                                             </div>
                                         </div>
                                     </div>
@@ -77,15 +77,15 @@
                                         <label class="col-sm-2 col-xs-12 control-label">Phone Number</label>
                                         <div class="col-sm-10 col-xs-12 form-grouping">
                                             <input type="text" class="form-control" name="swapFromPhone">
-                                            <p class="help-block">The phone number you want to swap airtime from</p>
+                                            <p class="help-block">The phone number you want to transfer airtime from</p>
                                         </div>
                                     </div>
                                     <div class="form-group">
                                         <label class="col-sm-2 col-xs-12 control-label">Amount</label>
                                         <div class="col-sm-10 col-xs-12 form-grouping">
                                             <input type="text" id="amount" class="form-control" name="amount" disabled="true">
-                                            <label id="amount-info" style="font-size:15px; display:none;" class="text-center text-primary" for="amount"></label>
-                                            <p class="help-block">Enter amount you want to fund.</p>
+                                            <label id="amount-info" style="font-size:15px; display:none;" class="text-primary" for="amount"></label>
+                                            <!--p class="help-block">Enter amount you want to fund.</p-->
                                         </div>
                                     </div>
                                     <div id="wallet-amount" class="form-group" style="display:none;">
@@ -222,21 +222,25 @@
                             required : true
                         },
                         swapFromPhone: {
-                            required : true
+                            required : true,
+                            number :true
                         },
                         amount: {
-                            required : true
+                            required : true,
+                            number :true
                         }
                     },
                     messages: {
                         network: {
-                            required: "Pls select a network to swap from.",
+                            required: "Please select a network.",
                         },
                         swapFromPhone: {
-                            required: "Pls enter phone number to swap airtime from.",
+                            required: "Please enter phone number.",
+                            number : "Invalid Phone number"
                         },
                         amount: {
-                            required: "Pls enter swap amount",
+                            required: "Please enter amount",
+                            number : "Inavlid amount"
                         }
                     }
                 });

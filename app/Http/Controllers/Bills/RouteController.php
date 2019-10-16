@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Bills;
 
+use App\Charge;
 use App\RingoProduct;
 use App\RingoSubProductList;
 use Illuminate\Http\Request;
@@ -19,7 +20,8 @@ class RouteController extends HomeController
 
     public function electricity(RingoProduct $product)
     {
-        return view('dashboard.bills.electricity.index', compact('product'));
+        $charge = Charge::whereService('electricity')->first()->amount;
+        return view('dashboard.bills.electricity.index', compact('product', 'charge'));
     }
 
     public function tv(RingoProduct $product)

@@ -5,10 +5,10 @@ namespace App\Http\Controllers\Control;
 use App\User;
 use App\Transaction;
 use Illuminate\Http\Request;
-use App\Http\Controllers\NotificationController;
+use App\Http\Controllers\ReferralController;
 use Illuminate\Support\Facades\Auth;
 
-class ModController extends NotificationController
+class ModController extends ReferralController
 {
     /**
      * Create a new controller instance.

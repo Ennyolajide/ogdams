@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\BulkSmsConfig;
 use Illuminate\Http\Request;
-use Faker\Generator as Faker;
 use Illuminate\Support\Facades\Auth;
 use function GuzzleHttp\json_decode;
 
@@ -18,7 +17,7 @@ class SmsController extends TransactionController
     /**
      * index
      */
-    public function display(Faker $faker)
+    public function display()
     {
         $smsConfigs = BulkSmsConfig::all();
 
@@ -27,10 +26,8 @@ class SmsController extends TransactionController
 
 
 
-    public function test()
+    public function send()
     {
-
-        //return request()->route;
         //validation
         $this->validate(request(), [
             'route'  => 'required|json',
@@ -50,7 +47,7 @@ class SmsController extends TransactionController
 
     protected function processBulkSms($smsConfig)
     {
-        $smsPages = $this->countSmsPages(request()->message);
+        //$smsPages = $this->countSmsPages(request()->message);
         $recipientList = trim(preg_replace('/\s+/', ' ', request()->recepients));
         $unitRequired = $this->unitRequired(($smsConfig->amount_per_unit / 100), $recipientList, request()->message);
         $isSufficientBalance = Auth::user()->balance >= ($unitRequired * $smsConfig->amount_per_unit / 100);
@@ -106,7 +103,7 @@ class SmsController extends TransactionController
         return [
             'sender' => urlencode($senderId), 'to' => $to, 'message' => $message,
             'type' => '0', 'routing' => $routing, 'ref_id' => $this->getUniqueReference(),
-            'token' => $token ? env('SMARTSMSSOLUTION_TOKEN') : env('SMARTSMSSOLUTION_TEST_TOKEN')
+            'token' => env('SMARTSMSSOLUTION_TOKEN')
         ];
     }
 

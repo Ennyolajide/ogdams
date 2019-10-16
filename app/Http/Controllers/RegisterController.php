@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 
 use App\User;
+use Validator;
 use App\Mail\Main;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
@@ -18,7 +19,7 @@ class RegisterController extends Controller
     public function index($referrer = null)
     {
         $app = (object) config('constants.site');
-        $referrer = User::where('wallet_id', $referrer)->first();
+        $referrer = $referrer ? User::where('wallet_id', $referrer)->first() : null;
 
         return view('users/login', compact('app', 'referrer'));
     }
@@ -27,20 +28,26 @@ class RegisterController extends Controller
     {
         $token = md5(uniqid());
 
-        $this->validate(request(), [
+        $validator = Validator::make(request()->all(), [
             'referrerId'  => 'sometimes',
-            'name'      => 'required|string|min:5|max:75',
-            'password'  => 'required|string|min:5|confirmed',
             'email'     => 'required|string|email|max:255|unique:users',
+            'name'      => 'required|string|min:5|max:75',
+            'phone'    => 'required|string|min:11|max:13',
+            'password'  => 'required|string|min:5|confirmed',
+
         ]);
+        if ($validator->fails()) {
+            return redirect(url()->previous() . '#signup')->withErrors($validator)->withInput();
+        }
 
         User::create([
             'token'         => $token,
             'email'         => request()->email,
+            'number'        => request()->phone,
             'name'          => ucwords(request()->name),
-            'referrer'      => request()->referrerId ?? null,
             'password'      => Hash::make(request()->password),
-            'wallet_id'     => Str::random(2) . rand(1, 10) . Str::random(1) . rand(1, 100) . Str::random(2),
+            'referrer'      => request()->has('referrerId') ? User::find(request()->referrerId)->id : null,
+            'wallet_id'     => strtoupper(Str::random(2)) . rand(1, 10) . strtoupper(Str::random(1)) . rand(1, 100) . strtoupper(Str::random(2)),
         ]);
 
         $link = url('users/verify/' . request()->email . '/' . $token);

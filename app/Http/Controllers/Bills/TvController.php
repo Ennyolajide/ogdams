@@ -15,9 +15,46 @@ class TvController extends BillController
     /**
      * validate Tv SmartCard
      */
-    public function validateSmartCard()
+    public function validateSmartCard($provider)
     {
-        return $this->billValidation(request()->productId, request()->cardNo);
+        $validation = 'required|string|min:8|max:13';
+        $this->validate(request(), ['cardNo' => $validation]);
+        return $this->tvSmartCardValidation($provider, request()->cardNo);
+    }
+
+    /*
+    * get the list of Misc services
+     */
+    public function tvProviders()
+    {
+        $providers = $this->service('Tv')->map(function ($item) {
+            $item['serviceId'] = $item['id'];
+            return $item;
+        })->makeHidden([
+            'id', 'product_id', 'service', 'logo', 'route',
+            'service_id', 'min_amount', 'max_amount', 'step', 'multichoice'
+        ]);
+
+        return response()->json($providers, 200);
+    }
+
+    /**
+     * get the list of Misc services
+     */
+    public function tvPackages($provider)
+    {
+        $packages = RingoSubProductList::whereCategory($provider)
+            ->whereStatus(1)->get()->map(function ($item) {
+                $item['bouquetId'] = $item['id'];
+                $item['provider'] = $item['category'];
+                $item['price'] = $item['selling_price'];
+                $item['currency'] = 'NGN';
+                return $item;
+            })->makeHidden([
+                'id', 'code', 'created_at', 'updated_at', 'route',
+                'ringo_price', 'selling_price', 'ringo_product_id', 'category', 'status'
+            ]);
+        return response()->json($packages, 200);
     }
 
     /**
@@ -35,30 +72,20 @@ class TvController extends BillController
             'package' => $isApi ? 'sometimes|string' : 'required|json',
             'owner' => $isApi ? 'sometimes|string' : 'required|string',
             'phone' => $isApi ? 'sometimes|string' : 'required|string|min:10|max:13',
-
-            'packageId' => $isApi ? ['required', 'numeric', function ($attribute, $value, $fail) {
+            'bouquetId' => $isApi ? ['required', 'numeric', function ($attribute, $value, $fail) {
                 in_array($value, RingoSubProductList::whereService('Tv')->pluck('id')->toArray()) ? false : $fail('Invalid Tv :attribute');
             }] : 'sometimes|numeric',
         ]);
 
         $uniqueReference = $this->getUniqueReference();
-
         $status = $this->processTvTopup($uniqueReference);
-
         $message = $status ? $this->successResponse : $this->failureResponse;
 
         ///Api response
         if ($isApi) {
-            if (isset($this->responseObject->original['pin_based'])) {
-                $responseObject = $this->responseObject->original;
-                $pins = $responseObject['pin_based'] ? $responseObject['pins'] : false;
-            }
-
             return response()->json([
-                'status' => $status,
-                'message' => $message,
-                'pins' =>  $pins ?? [],
-                'reference' => $status ? $uniqueReference : null,
+                'status' => $status, 'message' => $message,
+                'reference' => $status ? $uniqueReference : null
             ], 200);
         }
 
@@ -70,7 +97,7 @@ class TvController extends BillController
      */
     protected function processTvTopup($uniqueReference)
     {
-        $packageId = request()->wantsJson() ? request()->packageId : json_decode(request()->package, true);
+        $packageId = request()->wantsJson() ? request()->bouquetId : json_decode(request()->package, true);
 
         $packageId = request()->wantsJson() ? $packageId : $packageId['id'] ?? $packageId;
 
@@ -88,7 +115,8 @@ class TvController extends BillController
 
         if ($subProduct && (Auth::user()->balance >= $subProduct->selling_price)) {
 
-            $status = $subProduct ? $this->topup($subProduct, $details, $uniqueReference) : false;
+            $status = $subProduct ? $this->topup($subProduct, $details, $uniqueReference, 'tv') : false;
+
             $status ? $this->notify($this->tvTopupNotification($details, $uniqueReference, $this->responseObject)) : false;
 
             return $status;

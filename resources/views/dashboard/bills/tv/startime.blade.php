@@ -42,7 +42,7 @@
                                     </div>
                                     <div class="col-xs-5 col-sm-5 col-md-4 col-lg-3  pull-right">
                                         <br/>
-                                        <img  src="/images/bills/{{ $product->logo }}" class="img-thumbnail">
+                                        <img  src="\images/bills/{{ $product->logo }}" class="img-thumbnail">
                                     </div>
                                 </div>
                                 <div id="form1">
@@ -53,7 +53,7 @@
                                             <label class="col-sm-2 col-xs-12 control-label">Bouquet</label>
                                             <div class="col-sm-10 col-xs-12 form-grouping text-bold">
                                                 <select style="height: 40px;" class="form-control" id="bonquet" name="bonquet">
-                                                    <option value="" disabled selected><strong>Choose Package/Plan</strong></option>
+                                                    <option value="" disabled selected><strong>Choose Bouquet</strong></option>
                                                     @foreach ($groups as $group)
                                                         <option value="{{ $group }}">
                                                             {{ $group[0]->group }}
@@ -83,7 +83,7 @@
                                         <div class="form-group">
                                             <label class="col-sm-2 col-xs-12 control-label">Smart Card No.</label>
                                             <div class="col-sm-10 col-xs-12 form-grouping">
-                                                <input type="text" id="cardNo" value="02027857407" class="form-control" name="cardNo" placeholder="Smart Card Number">
+                                                <input type="text" id="cardNo" class="form-control" name="cardNo" placeholder="Smart Card Number">
                                             </div>
                                         </div>
                                         <div class="form-group" id="nameDiv" style="display:none;">
@@ -175,12 +175,12 @@
                     highlight: function(element) {
                         $(element)
                             .closest('.form-grouping')
-                            .addClass('orange');
+                            .addClass('has-error');
                     },
                     unhighlight: function(element) {
                         $(element)
                             .closest('.form-grouping')
-                            .removeClass('orange');
+                            .removeClass('has-eror');
                     }
                 });
 
@@ -193,7 +193,7 @@
                         phone: { required: true, minlength: 10, maxlength: 13 }
                     },
                     messages: {
-                        package: { required: 'Pls choose your prefered package' },
+                        package: { required: 'Please choose your prefered package' },
                         cardNo: { equired: 'Card number cannot be blank' },
                         amount: { required: 'Bill amount cannot be blank' },
                         email: {

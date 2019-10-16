@@ -37,7 +37,7 @@
                                             <label for="inputWallet" class="col-sm-3 col-xs-12 control-label">Payment Method</label>
                                             <div class="col-sm-9 col-xs-12 ">
                                                 <select class="form-control" id="gateway" name="gateway" required>
-                                                    <option value="" disabled selected>Select gateway Method</option>
+                                                    <option value="" disabled selected>Select Payment Method</option>
                                                     @foreach ($gateways as $gateway)
                                                         <option value="{{ $gateway->id }}">
                                                             {{ $gateway->name }}
@@ -55,7 +55,7 @@
                                             <label class="col-sm-3 col-xs-12 control-label">Amount</label>
                                             <div class="col-sm-9 col-xs-12 form-grouping">
                                                 <input type="text" class="form-control" name="amount" required>
-                                                <p class="help-block text-olive">Enter amount you want to fund.</p>
+                                                <p class="help-block text-olive">Enter the amount you want to fund.</p>
                                             </div>
                                         </div>
                                     </div>
@@ -158,7 +158,7 @@
                                     </div>
                                     <br/>
                                     <div class="form-group">
-                                        <div class="col-sm-12">
+                                        <div class="col-sm-12 col-xs-12">
                                             <button id="submit" class="btn btn-success pull-right">Continue</button>
                                         </div>
                                     </div>
@@ -318,12 +318,12 @@
                                 rules: {
                                     amount: {
                                         required: true,
-                                        range: [100, 1000]
+                                        range: [ {{ config('constants.fundings.paystack.min') }}, {{ config('constants.fundings.paystack.max') }}]
                                     }
                                 },
                                 messages: {
                                     amount: {
-                                        required: "Pls enter amount.",
+                                        required: "Please enter amount.",
                                         range: jQuery.validator.format("Minimum of ₦{0} Maximum of ₦{1}"),
                                     }
 
@@ -333,6 +333,23 @@
                     }else if(gateway == 2){
                         $('#ecard-form,#airtime-form').hide();
                         $('#atmBankBitcoin-form,#amount-field,#bank-transfer').show();
+                        $('#submit').click(function() {
+                            $('#fund-wallet-form').validate({
+                                rules: {
+                                    amount: {
+                                        required: true,
+                                        range: [1000, 50000]
+                                    }
+                                },
+                                messages: {
+                                    amount: {
+                                        required: "Please enter amount.",
+                                        range: jQuery.validator.format("Minimum of ₦{0} Maximum of ₦{1}"),
+                                    }
+
+                                }
+                            });
+                        });
                         $('#fund-wallet-form').attr('action','{{ route("wallet.fund.bank") }}').attr('novalidate',true);
                     }else if(gateway == 3){//airtime
                         $('#fund-wallet-form').attr('action',"{{ route('wallet.fund.airtime')}}");

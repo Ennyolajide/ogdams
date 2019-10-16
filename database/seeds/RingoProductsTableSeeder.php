@@ -11,13 +11,6 @@ class RingoProductsTableSeeder extends Seeder
      */
     public function run()
     {
-        //
-
-        /* $table->string('product_id');
-        $table->string('services');
-        $table->integer('min_amount');
-        $table->integer('max_amount'); */
-
         /**
          * Electricity
          */
@@ -26,7 +19,7 @@ class RingoProductsTableSeeder extends Seeder
             'product_id' => 'BPE-NGEK-OR',
             'service' => 'Electricity',
             'service_id' => 'electricity',
-            'min_amount' => 50,
+            'min_amount' => 1000,
             'max_amount' => 50000,
             'validation' => true,
             'logo' => 'electricity/ekedc.png',
@@ -81,7 +74,7 @@ class RingoProductsTableSeeder extends Seeder
             'route' => 'electricity.phedc.prepaid'
         ]);
 
-        DB::table('ringo_products')->insert([
+        /* DB::table('ringo_products')->insert([
             'name' => 'Port Harcourt Postpaid',
             'product_id' => 'BPE-NGCABIB-OR',
             'service' => 'Electricity',
@@ -92,7 +85,7 @@ class RingoProductsTableSeeder extends Seeder
             'logo' => 'electricity/phedc.png',
             'route' => 'electricity.phedc.postpaid'
         ]);
-
+ */
         /**
          * Tv
          */
@@ -185,6 +178,34 @@ class RingoProductsTableSeeder extends Seeder
             'product_list' => true,
             'logo' => 'misc/waec.png',
             'route' => 'internet/waec'
+        ]);
+
+
+        /**
+         * Electricity
+         */
+        DB::table('ringo_products')->insert([
+            'name' => 'Kano Prepaid',
+            'product_id' => 'BPE-NGCAAVB-OR',
+            'service' => 'Electricity',
+            'service_id' => 'electricity',
+            'min_amount' => 100,
+            'max_amount' => 50000,
+            'validation' => true,
+            'logo' => 'electricity/kano.png',
+            'route' => 'electricity.kano'
+        ]);
+
+        DB::table('ringo_products')->insert([
+            'name' => 'Abuja Prepaid',
+            'product_id' => 'BPE-NGCABABA-OR',
+            'service' => 'Electricity',
+            'service_id' => 'electricity',
+            'min_amount' => 100,
+            'max_amount' => 50000,
+            'validation' => true,
+            'logo' => 'electricity/abuja.png',
+            'route' => 'electricity.abuja'
         ]);
     }
 }

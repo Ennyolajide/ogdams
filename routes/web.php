@@ -11,11 +11,14 @@
 |
 */
 
-Route::get('/', 'HomeController@index')->name('index');
-
-//Auth::routes();
-
 //Auth
+//Auth::routes();
+//Route::get('/test', 'HomeController@index')->name('index');
+
+Route::get('/', 'HomeController@index')->name('index');
+Route::get('/faq', 'HomeController@faq')->name('faq');
+Route::get('/contact', 'HomeController@contact')->name('contact');
+
 Route::get('/users/login', 'LoginController@index')->name('user.login');
 Route::post('/users/login', 'LoginController@login')->name('user.login');
 Route::get('/users/logout', 'LoginController@logout')->name('user.logout');
@@ -86,8 +89,8 @@ Route::get('dashboard/paystack/webhook', 'WebhookController@paystack')->name('pa
 
 //Sms
 Route::get('dashboard/sms/bulk', 'SmsController@display')->name('sms.bulk');
-Route::post('dashboard/sms/bulk', 'SmsController@test')->name('sms.bulk');
-
+Route::post('dashboard/sms/bulk', 'SmsController@send')->name('sms.bulk');
+Route::get('dashboard/sms/test', 'SmsController@test');
 //Testimonials
 Route::get('dashboard/testimonials', 'TestimonialController@index')->name('testimonials');
 Route::post('dashboard/testimonials', 'TestimonialController@store')->name('testimonial.store');
@@ -152,6 +155,7 @@ Route::namespace('Control')->group(function () {
     Route::get('settings/dataplan/{network}', 'DatasController@settings')->name('admin.dataplan');
     Route::post('settings/dataplan/{network}', 'DatasController@newDataPlan')->name('admin.dataplan.new');
     Route::patch('settings/dataplan/{network}/edit', 'DatasController@editDataPlan')->name('admin.dataplan.edit');
+    Route::patch('settings/dataplan/{plan}/delete', 'DatasController@deleteDataPlan')->name('admin.dataplan.delete');
 
     //airtime configurations
     Route::get('settings/airtime/config', 'AirtimesController@settings')->name('admin.airtime.config');
@@ -171,8 +175,9 @@ Route::namespace('Control')->group(function () {
 
     //Users
     Route::get('control/users', 'UsersController@usersIndex')->name('admin.users');
-    Route::post('control/users', 'UsersController@searchUsers')->name('admin.users.search');
     Route::get('control/user/{user}', 'UsersController@viewUser')->name('admin.user.view');
+    Route::post('control/users', 'UsersController@searchUsers')->name('admin.users.search');
+    Route::get('control/users/search', 'UsersController@searchIndex')->name('admin.user.search.index');
     Route::patch('control/user/{user}', 'UsersController@setUserStatus')->name('admin.toggle.user.status');
     Route::patch('control/user/balance/{user}/alter', 'UsersController@alterUserBalance')->name('admin.alter.user.balance');
 });

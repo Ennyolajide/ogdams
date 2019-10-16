@@ -13,8 +13,8 @@ class FundingsController extends ModController
 
     public function show()
     {
-        $transactions = Transaction::where('class_type', 'App\BankTransfer')->whereStatus(!NULL)->orderBy('id', 'desc')->paginate(20);
-
+        $transactions = Transaction::where('class_type', 'App\BankTransfer')->whereNotNull('status')->orderBy('id', 'desc')->paginate(20);
+        //dd($transactions->class->type);
         return view('control.fundings', compact('transactions'));
     }
 
@@ -22,10 +22,11 @@ class FundingsController extends ModController
     {
         if (request()->has('completed')) {
             $transactionStatus = ['status' =>  2];
-            $trans->class->update($transactionStatus);
-            $status = $this->creditUserWallet($trans->user->id, $trans->class->amount);
-            $status ? $trans->update($transactionStatus) : false;
-            $status ? $this->notify($this->creditNotification($trans->class->amount, $trans->method)) : false;
+            $user = $trans->class->update($transactionStatus) ? $trans->user : false;
+            $referralBonus = $user->first_time_funding && $user->referrer ? $this->addReferrerBonus($user) : 0;
+            $status = $this->creditUserWallet($user->id, ($trans->class->amount - $referralBonus));
+            $status ? $trans->update(['status' =>  2, 'balance_after' => ($user->balance + $trans->class->amount  - $referralBonus)]) : false;
+            $status ? $this->notifyUser($user->id, $this->creditNotification($trans->class->amount, $trans->method)) : false;
             $message = $status ? $this->successResponse : $this->failureResponse;
         } else if (request()->has('decline')) {
             $transactionStatus = ['status' =>  0];

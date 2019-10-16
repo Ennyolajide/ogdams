@@ -36,26 +36,21 @@ class InternetController extends BillController
 
         $uniqueReference = $this->getUniqueReference();
 
+        /*
         $status = $this->processInternetTopup($uniqueReference);
 
-        $message = $status ? $this->successResponse : $this->failureResponse;
+        $message = $status ? $this->successResponse : $this->failureResponse; */
 
         //Api response
         if ($isApi) {
-            if (isset($this->responseObject->original['pin_based'])) {
-                $responseObject = $this->responseObject->original;
-                $pins = $responseObject['pin_based'] ? $responseObject['pins'] : false;
-            }
-
             return response()->json([
-                'status' => $status,
-                'message' => $message,
-                'pins' =>  $pins ?? [],
-                'reference' => $status ? $uniqueReference : null,
+                'status' => true,
+                'message' => 'Try again later',
+                'reference' => null,
             ], 200);
         }
 
-        return back()->withNotification($this->clientNotify($message, $status));
+        return back()->withNotification($this->clientNotify('Try again later', false));
     }
 
     /**
@@ -81,7 +76,7 @@ class InternetController extends BillController
 
         if ($subProduct && (Auth::user()->balance >= $subProduct->selling_price)) {
 
-            $status = $subProduct ? $this->topup($subProduct, $details, $uniqueReference) : false;
+            $status = $subProduct ? $this->topup($subProduct, $details, $uniqueReference, 'internet') : false;
 
             $status ? $this->notify($this->tvTopupNotification($details, $uniqueReference, $this->responseObject)) : false;
 

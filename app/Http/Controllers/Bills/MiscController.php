@@ -10,46 +10,58 @@ use Illuminate\Support\Facades\Auth;
 
 class MiscController extends BillController
 {
-    protected $successResponse = ' pin purchase successful';
+
     protected $apiErrorResponse = 'Top failed, Pls try again later';
     protected $failureResponse = 'Insuffient balance, Pls fund your account';
+    protected $successResponse = ' Operation successful Pls check Your inbox for your pin(s)';
+
+
+    /**
+     * get the list of Misc services
+     */
+    public function serviceList()
+    {
+        $services = $this->serviceProductList('Misc')->map(function ($item) {
+            return [
+                'productId' =>  $item['id'],
+                'name' => $item['name'] == "N700 PIN" ? 'WAEC ' . $item['name'] : $item['name'],
+                'service' =>  $item['service'], 'price' => $item->selling_price, 'currency' => 'NGN'
+            ];
+        });
+
+        return response()->json($services, 200);
+    }
+
 
     /**
      * Topup Tv( Dstv|Gotv|Startime)
      */
     public function store()
     {
-        //check is the request is an api request
         $isApi = request()->wantsJson();
 
-        //validate request()
         $this->validate(request(), [
             'email' => $isApi ? 'sometimes|string' : 'required|email',
             'package' => $isApi ? 'sometimes|string' : 'required|json',
             'phone' => $isApi ? 'sometimes|string' : 'required|string|min:10|max:13',
-            'packageId' => $isApi ? ['required', 'numeric', function ($attribute, $value, $fail) {
+            'productId' => $isApi ? ['required', 'numeric', function ($attribute, $value, $fail) {
                 in_array($value, RingoSubProductList::whereService('Misc')->pluck('id')->toArray()) ? false : $fail('Invalid Misc :attribute');
             }] : 'sometimes|numeric',
         ]);
 
         $uniqueReference = $this->getUniqueReference();
-
         $status = $this->processMiscTopup($uniqueReference);
-
         $message = $status ? $this->successResponse : $this->failureResponse;
 
-        ///Api response
         if ($isApi) {
-            if (isset($this->responseObject->original['pin_based'])) {
-                $responseObject = $this->responseObject->original;
-                $pins = $responseObject['pin_based'] ? $responseObject['pins'] : false;
-            }
-
+            $pinBased = $status ? $this->responseObject->original->pin_based : false;
             return response()->json([
-                'status' => $status,
-                'message' => $message,
-                'pins' =>  $pins ?? [],
+                'status' => $status, 'message' => $message,
                 'reference' => $status ? $uniqueReference : null,
+                'target' => $status ? $this->responseObject->original->target : '',
+                'topup_amount' => $pinBased ? $this->responseObject->original->topup_amount : '',
+                'operator' => $pinBased ? $this->responseObject->original->operator_name : '',
+                'pins' => $status ? $this->responseObject->original->pins : '',
             ], 200);
         }
 
@@ -61,7 +73,7 @@ class MiscController extends BillController
      */
     protected function processMiscTopup($uniqueReference)
     {
-        $packageId = request()->wantsJson() ? request()->packageId : json_decode(request()->package, true);
+        $packageId = request()->wantsJson() ? request()->productId : json_decode(request()->package, true);
 
         $packageId = request()->wantsJson() ? $packageId : $packageId['id'] ?? $packageId;
 
@@ -79,7 +91,7 @@ class MiscController extends BillController
 
         if ($subProduct && (Auth::user()->balance >= $subProduct->selling_price)) {
 
-            $status = $subProduct ? $this->topup($subProduct, $details, $uniqueReference) : false;
+            $status = $subProduct ? $this->topup($subProduct, $details, $uniqueReference, 'misc') : false;
 
             $status ? $this->notify($this->miscTopupNotification($details, $uniqueReference, $this->responseObject)) : false;
 

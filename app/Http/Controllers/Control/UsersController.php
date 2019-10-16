@@ -14,14 +14,22 @@ class UsersController extends ModController
 
     public function usersIndex()
     {
-        return view('control.users');
+        $users = User::orderBy('id', 'desc')->paginate(10);
+
+        return view('control.users', compact('users'));
     }
+
+    public function searchIndex()
+    {
+        return view('control.userSearch');
+    }
+
 
     public function searchUsers()
     {
         $this->validate(request(), ['user' => 'required|string|min:3']);
 
-        return User::where('name', 'like', '%' . request()->user . '%')->get();
+        return User::where('email', 'like', '%' . request()->user . '%')->get();
     }
 
     public function viewUser(User $user)

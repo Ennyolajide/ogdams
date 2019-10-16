@@ -35,6 +35,7 @@
                             <i class="fa fa-external-link user-profile-icon"></i>Show My Referral Link
                         </a>
                     </li>
+                    <li><h4>Wallet ID : <span class="text-primary">{{ Auth::user()->wallet_id }}</span></h4></li>
                 </ul>
                 <a href="{{ route('user.profile') }}#tab_content2" class="btn btn-success"><i class="fa fa-edit m-right-xs"></i>Edit Profile</a>
                 <br />
@@ -112,7 +113,7 @@
                                 </div>
                                 <div role="tabpanel" class="tab-pane fade" id="tab_content2" aria-labelledby="profile-tab">
                                     <div class="row">
-                                        <div class="col-sm-12 col-md-12">
+                                        <div class="col-xs-12 col-sm-12 col-md-12">
                                             <form id="change-password-form" class="form-horizontal" action="{{ route('user.password.edit') }}" method="post">
                                                 @csrf
                                                 <br/>
@@ -135,7 +136,7 @@
                                                 <div class="form-group row">
                                                     <label class="col-sm-3 col-xs-12 control-label">Comfirm Password</label>
 
-                                                    <div class="col-sm-10 col-xs-12  form-grouping">
+                                                    <div class="col-sm-9 col-xs-12  form-grouping">
                                                         <input type="password" class="form-control" id="password_confirmation" name="password_confirmation">
                                                     </div>
                                                 </div>
@@ -155,13 +156,13 @@
                                 </div>
                                 <div role="tabpanel" class="tab-pane fade" id="tab_content3" aria-labelledby="bank-tab">
                                     <div class="row">
-                                        <div class="col-sm-12 col-md-12" style="display:none;" id="newBankDiv">
+                                        <div class="col-xs-12 col-sm-12 col-md-12" style="display:none;" id="newBankDiv">
                                             <form id="add-bank-details-form" class="form-horizontal" action="{{ route('user.bank.store') }}" method="POST">
                                                 @csrf
                                                 <br/>
-                                                <div class="form-group">
-                                                    <label class="col-sm-2 control-label">Select Bank</label>
-                                                    <div class="col-sm-10 form-grouping text-bold">
+                                                <div class="form-group row">
+                                                    <label class="col-sm-3 col-xs-12 control-label">Select Bank</label>
+                                                    <div class="col-sm-9 col-xs-12 form-grouping text-bold">
                                                         <select style="height: 40px;" class="form-control" id="banks">
                                                             <option value="" disabled selected><strong>Choose Bank</strong></option>
                                                             @foreach ($banks as $bank)
@@ -175,25 +176,25 @@
                                                     <input type="hidden" id="bankName" name="bankName">
                                                 </div>
                                                 <br/>
-                                                <div class="form-group">
-                                                    <label class="col-sm-2 control-label">Account Number</label>
+                                                <div class="form-group row">
+                                                    <label class="col-sm-3 col-xs-12 control-label">Account Number</label>
 
-                                                    <div class="col-sm-10 form-grouping">
+                                                    <div class="col-sm-9 col-xs-12 form-grouping">
                                                         <input type="text" class="form-control" name="accountNumber" id="accountNumber">
                                                     </div>
                                                 </div>
                                                 <br/>
-                                                <div class="form-group" id="accountNameField"  style="display: none;">
-                                                    <label class="col-sm-2 control-label">Account Name</label>
+                                                <div class="form-group row" id="accountNameField"  style="display: none;">
+                                                    <label class="col-sm-3 col-xs-12 control-label">Account Name</label>
 
-                                                    <div class="col-sm-10 form-grouping">
+                                                    <div class="col-sm-9 col-xs-12 form-grouping">
                                                         <input  type="text" class="form-control name-input" name="accountName" id="accountName" disabled="true">
                                                     </div>
                                                 </div>
-                                                <div class="form-group">
-                                                    <div class="col-sm-offset-2 col-sm-3">
-                                                        <button  id="resolveBankDetails" class="btn btn-danger btn-flat" disabled="true">Proceed</button>
-                                                        <button  id="addBank" type="submit" class="btn btn-danger btn-flat" style="display: none;">Submit</button>
+                                                <div class="form-group row">
+                                                    <div class="col-sm-12 col-xs-12">
+                                                        <button  id="resolveBankDetails" class="btn btn-danger btn-flat pull-right" disabled="true">Proceed</button>
+                                                        <button  id="addBank" type="submit" class="btn btn-danger btn-flat pull-right" style="display: none;">Submit</button>
                                                     </div>
                                                 </div>
                                             </form>
@@ -258,7 +259,7 @@
                         <h4 class="modal-title">My Referral Link</h4>
                     </div>
                     <div class="modal-body">
-                        <p class="text-center"><a href="{{ route('user.register',['referrer' => Auth::user()->wallet_id]) }}"><span class="h3">{{ route('user.register',['referrer' => Auth::user()->wallet_id]) }}</span></a></p>
+                        <p class="text-center"><a href="{{ route('user.register',['referrer' => Auth::user()->wallet_id]) }}#signup"><span class="h3">{{ route('user.register',['referrer' => Auth::user()->wallet_id]) }}#signup</span></a></p>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
@@ -267,6 +268,7 @@
 
             </div>
         </div>
+        <div class="clearfix">.</div>
     @endsection
 
     @section('scripts')
@@ -341,7 +343,7 @@
                         url:'{{ route("paystack.bankDetails") }}',
                         data:{ bankCode : JSON.parse($('#banks').val()).code, bankName : JSON.parse($('#banks').val()).name, accountNumber : $('#accountNumber').val() },
                         success:function(data){
-                            console.log(data);
+                            //console.log(data);
                             clearTimeout(timeOut);
                             data ? addBank(data) : notifyError();
                         }

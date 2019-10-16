@@ -26,6 +26,16 @@ class AirtimeTopupController extends RingoController
     }
 
     /**
+     * Fetch Available Netoworks
+     */
+    public function networks()
+    {
+        $networks = AirtimePercentage::whereAddon(false)->get(['network', 'id']);
+
+        return response()->json($networks, 200);
+    }
+
+    /**
      * Airtime Topup
      */
     public function store()
@@ -33,7 +43,7 @@ class AirtimeTopupController extends RingoController
         $this->validate(request(), [
             'amount' => 'required|numeric',
             'network' => 'required|numeric',
-            'phone' => 'required|min:11|max:13'
+            'phone' => 'required|string|min:11|max:13'
         ]);
 
         $status = $this->processAirtimeTopup();

@@ -11,15 +11,23 @@ class HomeController extends Controller
     //
     public function index()
     {
-        $testimonials = Testimonial::all();
-        $app = (object) config('constants.site');
+        $faq = false;
+        //$app = (object) config('constants.site');
+        $testimonials = Testimonial::get()->unique();
         $dataPlans = DataPlan::all()->groupBy('network_id');
 
-        return view('index', compact('testimonials', 'app', 'dataPlans'));
+        return view('index', compact('testimonials', 'dataPlans', 'faq'));
+    }
+
+    public function faq($faq = true)
+    {
+        //$app = (object) config('constants.site');
+
+        return view('index', compact('faq'));
+    }
+
+    public function contact()
+    {
+        return request()->all();
     }
 }
-
-
-//$networks = DataPlan::orderBy('network_id', 'asc')->distinct()->get(['network', 'network_id']);
-
-        //return $dataPlans->toArray();

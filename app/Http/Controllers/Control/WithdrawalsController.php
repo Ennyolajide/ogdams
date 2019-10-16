@@ -14,7 +14,8 @@ class WithdrawalsController extends ModController
 
     public function show()
     {
-        $transactions = Transaction::where('class_type', 'App\Withdrawal')->whereStatus(1)->orderBy('id', 'desc')->paginate(20);
+        $transactions = Transaction::where('class_type', 'App\Withdrawal')->orderBy('id', 'desc')->paginate(20);
+
         return view('control.withdrawals', compact('transactions'));
     }
 

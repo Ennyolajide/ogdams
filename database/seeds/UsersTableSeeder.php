@@ -23,10 +23,27 @@ class UsersTableSeeder extends Seeder
             'address' => 'no 13 ifelodun',
             'city' => 'abeokuta',
             'state' => 'ogun',
-            'wallet_id' => 'A1b2C3D4xy',
             'created_at' => Carbon::now()->format('Y-m-d H:i:s'),
             'updated_at' => Carbon::now()->format('Y-m-d H:i:s'),
+            'wallet_id' => strtoupper(Str::random('2')) . rand(1, 100) . strtoupper(Str::random(2)),
         ]);
+
+        DB::table('users')->insert([
+            'name' => 'Administrator',
+            'email' => 'support@ogdams.com',
+            'password' => bcrypt('secret'),
+            'role' => 'admin',
+            'permission' => true,
+            'active' => true,
+            'number' => '09066685702',
+            'address' => 'no 13 ifelodun',
+            'city' => 'abeokuta',
+            'state' => 'ogun',
+            'created_at' => Carbon::now()->format('Y-m-d H:i:s'),
+            'updated_at' => Carbon::now()->format('Y-m-d H:i:s'),
+            'wallet_id' => 'OGDAMS',
+        ]);
+
         DB::table('users')->insert([
             'name' => 'Test Man',
             'email' => 'a@a.com',
@@ -37,10 +54,10 @@ class UsersTableSeeder extends Seeder
             'balance' => 10000,
             'city' => 'Moon',
             'state' => 'Universe',
-            'referrer' => 'A1b2C3D4xy',
-            'wallet_id' => Str::random('8') . rand(1, 100) . Str::random(2),
+            'referrer' => 1,
             'created_at' => Carbon::now()->format('Y-m-d H:i:s'),
             'updated_at' => Carbon::now()->format('Y-m-d H:i:s'),
+            'wallet_id' => strtoupper(Str::random('2')) . rand(1, 100) . strtoupper(Str::random(2)),
         ]);
     }
 }

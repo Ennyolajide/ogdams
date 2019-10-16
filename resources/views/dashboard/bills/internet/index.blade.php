@@ -67,7 +67,7 @@
                                         <div class="form-group">
                                             <label class="col-sm-2 col-xs-12 control-label">Smart Card No.</label>
                                             <div class="col-sm-10 col-xs-12 form-grouping">
-                                                <input type="text" id="cardNo" value="7029664775" class="form-control" name="cardNo" placeholder="Smart Card Number">
+                                                <input type="text" id="cardNo" class="form-control" name="cardNo" placeholder="Smart Card Number">
                                             </div>
                                         </div>
                                         <div id="amountDiv" class="form-group" style="display:none;">
@@ -151,12 +151,12 @@
                     highlight: function(element) {
                         $(element)
                             .closest('.form-grouping')
-                            .addClass('orange');
+                            .addClass('has-error');
                     },
                     unhighlight: function(element) {
                         $(element)
                             .closest('.form-grouping')
-                            .removeClass('orange');
+                            .removeClass('has-error');
                     }
                 });
 
@@ -169,7 +169,7 @@
                         phone: { required: true, minlength: 10, maxlength: 13 }
                     },
                     messages: {
-                        package: { required: 'Pls choose your prefered package' },
+                        package: { required: 'Please choose your prefered package' },
                         cardNo: { equired: 'Card number cannot be blank' },
                         amount: { required: 'Bill amount cannot be blank' },
                         email: {

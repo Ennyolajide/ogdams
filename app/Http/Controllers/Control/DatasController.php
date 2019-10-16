@@ -16,7 +16,7 @@ class DatasController extends ModController
     public function show()
     {
 
-        $transactions = Transaction::where('class_type', 'App\Data')->whereStatus(1)->orderBy('id', 'desc')->paginate(20);
+        $transactions = Transaction::where('class_type', 'App\Data')->orderBy('id', 'desc')->paginate(20);
 
         return view('control.datas', compact('transactions'));
     }
@@ -43,17 +43,19 @@ class DatasController extends ModController
 
     public function editDataPlan(Dataplan $network)
     {
-        //validate request
-        $this->validate(request(), [
-            'volume' => 'required|string',
-            'amount' => 'required|numeric',
-            'notification' => 'required|string',
-        ]);
         $status = $network->update([
             'volume' => request()->volume,
             'amount' => request()->amount,
             'notification_content' => request()->notification
         ]);
+        $message = $status ? $this->successResponse : $this->failureResponse;
+
+        return back()->withNotification($this->clientNotify($message, $status));
+    }
+
+    public function deleteDataPlan(Dataplan $plan)
+    {
+        $status = $plan->delete();
         $message = $status ? $this->successResponse : $this->failureResponse;
 
         return back()->withNotification($this->clientNotify($message, $status));

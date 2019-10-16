@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\Auth;
 class  WithdrawalController extends TransactionController
 {
     protected $failureResponse = 'Insuffient balance, Pls fund your account';
-    protected $successResponse = 'Withdraw request successful <br/> Please wait while your request is been proccess';
+    protected $successResponse = 'Withdrawal request successful <br/> Please wait while your request is been proccess';
 
     /**
      * Display Withdraw (if at least one bank account is connected )else( redirect to profile page)

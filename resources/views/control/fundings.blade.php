@@ -1,10 +1,5 @@
 @extends('dashboard.layouts.master')
 
-    @section('css')
-        <!-- DataTables -->
-    <link rel="stylesheet" href="\bower_components/datatables.net-bs/css/dataTables.bootstrap.min.css">
-    @endsection
-
     @section('content-header')
         <div class="page-title">
             <div class="title_left">
@@ -54,7 +49,7 @@
                                     @php
                                         function getStatus($status){
                                             $array = ['Declined','Pending','Success','Canceled'];
-                                            return $array[$status];
+                                            return $status === NULL ? 'Pending' : $array[$status];
                                         }
                                     @endphp
 
@@ -85,6 +80,15 @@
                                     </tr>
                                 </tfoot>
                             </table>
+                            <div class="col-md-12 col-xs-12">
+                                @php $paginator = $transactions; @endphp
+                                <span class="hidden-xs text-bold" style="font-size:16px;">
+                                    {{ $transactions->firstItem() }} - {{ $transactions->lastItem() }}/{{ $transactions->total() }}
+                                </span>
+                                <span class="pull-right">
+                                    @include('dashboard.layouts.pagination')
+                                </span>
+                            </div>
                             @include('dashboard.layouts.errors')
                         </div>
                     </div>
@@ -98,7 +102,9 @@
             <!-- Modal -->
             <div id="{{ $transaction->id }}" class="modal fade" role="dialog">
                 <div class="modal-dialog">
-
+                    @php
+                        $details = json_decode($transaction->class->details,true);
+                    @endphp
                     <!-- Modal content-->
                     <div class="modal-content">
                         <div class="modal-header">
@@ -139,7 +145,16 @@
                                     <small> Status </small>
                                     <p class=""><b> {{ getStatus($transaction->status) }} </b></p>
                                 </div>
+                                <div class="col-md-5 col-xs-5 col-xs-offset-1 col-sm-offset-1 col-md-offset-1">
+                                    <small> Reference : </small>
+                                    <p class=""><b> {{ $details['reference'] }} </b></p>
+                                </div>
+                                <div class="col-md-5 col-xs-6 col-sm-offset-1 col-md-offset-1">
+                                    <small> Remarks </small>
+                                    <p class=""><b> {{ $details['remarks'] }} </b></p>
+                                </div>
                                 <div class="col-md-11 col-xs-11 text-center">
+                                    <p class="text-bold">Depositor : {{ $details['depositor'] }}</p>
                                     <small class="text-bold">Transaction Reference :</small>
                                     <p class="h4"><b> {{ $transaction->reference }} </b></p>
                                 </div>
@@ -147,34 +162,18 @@
                             </div>
                         </div>
                         <div class="modal-footer">
-                            <form method="POST" action="{{ route('admin.fundings.edit',['trans' => $transaction->id] ) }}">
-                                @method('patch')
-                                @csrf
-                                <button type="submit" name="decline" class="btn btn-danger pull-left">Deline</button>
-                                <button type="submit" name="completed" class="btn btn-primary">Completed</button>
-                            </form>
+                            @if($transaction->status == 1)
+                                <form method="POST" action="{{ route('admin.fundings.edit',['trans' => $transaction->id] ) }}">
+                                    @method('patch')
+                                    @csrf
+                                    <button type="submit" name="decline" class="btn btn-danger pull-left">Deline</button>
+                                    <button type="submit" name="completed" class="btn btn-primary">Completed</button>
+                                </form>
+                            @endif
                         </div>
                     </div>
                 </div>
             </div>
             <!-- /Modal -->
         @endforeach
-    @endSection
-
-    @section('scripts')
-        <!-- DataTables -->
-        <script src="\bower_components/datatables.net/js/jquery.dataTables.min.js"></script>
-        <script src="\bower_components/datatables.net-bs/js/dataTables.bootstrap.min.js"></script>
-        <script>
-            $(function () {
-              $('#transactions-table').DataTable({
-                'paging'      : true,
-                'lengthChange': false,
-                'searching'   : false,
-                'ordering'    : true,
-                'info'        : true,
-                'autoWidth'   : false
-              })
-            })
-        </script>
     @endSection
