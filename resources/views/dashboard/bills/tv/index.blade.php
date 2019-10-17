@@ -206,11 +206,8 @@
                     let timeOut = setTimeout(function(){ notifyError(); },10000);
                     $.ajax({
                         type:'POST',
-                        url:'{{ route("bills.tv.validate") }}',
-                        data:{
-                            cardNo : $('#cardNo').val(), amount : $('#amount').val(), email : $('#email').val(),
-                            phone : $('#phone').val() , productId : '{{ $product->id }}', product : package.code
-                        },
+                        url:'{{ route("bills.tv.validate",["provider" => $product->name ]) }}',
+                        data:{ cardNo : $('#cardNo').val() },
                         success:function(data){
                             console.log(data);
                             clearTimeout(timeOut);

@@ -110,11 +110,11 @@ Route::namespace('Bills')->group(function () {
     //post
     Route::post('misc/topup', 'MiscController@store')->name('bills.misc.topup');
     Route::post('dashboard/bills/tv/topup', 'TvController@store')->name('bills.tv.topup');
-    Route::post('tv/validate', 'TvController@validateSmartCard')->name('bills.tv.validate');
+    Route::post('tv/validate/{provider}', 'TvController@validateSmartCard')->name('bills.tv.validate');
     Route::post('internet/topup', 'InternetController@store')->name('bills.internet.topup');
     Route::post('dashboard/airtime/topup', 'AirtimeTopupController@store')->name('airtime.topup');
     Route::post('electricity/topup', 'ElectricityController@store')->name('bills.electricity.topup');
-    Route::post('electricity/validate', 'ElectricityController@validateMeter')->name('bills.electricity.validate');
+    Route::post('electricity/{serviceId}/validate', 'ElectricityController@validateMeter')->name('bills.electricity.validate');
 });
 
 

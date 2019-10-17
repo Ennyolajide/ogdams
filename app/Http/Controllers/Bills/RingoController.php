@@ -107,6 +107,7 @@ class RingoController extends RingoTokenController
 
     public function tvSmartCardValidation($provider, $meterId)
     {
+
         $body = json_encode(['meter' => (string) $meterId]);
 
         $product = RingoProduct::whereName(strtoupper($provider))->whereValidation(true)->first();
@@ -130,9 +131,9 @@ class RingoController extends RingoTokenController
         $endPoint = \config('constants.url.ringo') . $route;
 
         $client = new \GuzzleHttp\Client([
+            'debug' => false,
             'http_errors' => false, 'timeout' => 30, 'connect_timeout' => 30
         ]);
-
         $request = $client->$type($endPoint, ['headers' => $this->headers(), 'body' => $body]);
 
         $status = ($request->getStatusCode() == '200' || $request->getStatusCode() == '201') ? true : false;

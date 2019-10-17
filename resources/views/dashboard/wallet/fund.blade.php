@@ -352,7 +352,7 @@
                         });
                         $('#fund-wallet-form').attr('action','{{ route("wallet.fund.bank") }}').attr('novalidate',true);
                     }else if(gateway == 3){//airtime
-                        $('#fund-wallet-form').attr('action',"{{ route('wallet.fund.airtime')}}");
+                        //$('#fund-wallet-form').attr('action',"{{-- route('wallet.fund.airtime') --}}");
                         $('#amount-field,#ecard-form,#bank-transfer').hide();
                         $('#airtime-form').show();
                         $('#airtimeAmount').keyup(function(){
@@ -373,7 +373,7 @@
                     }else if(gateway == 5){//ecard
                         $('#amount-field,#airtime-form').hide();
                         $('#ecard-form').show();
-                        $('#fund-wallet-form').attr('action','{{ route("wallet.fund.voucher") }}');
+                        //$('#fund-wallet-form').attr('action','{{ route("wallet.fund.voucher") }}');
                     }else{
 
 

@@ -169,8 +169,7 @@
                     },
                     amount: {
                         required: true,
-                        minlength: '{{ strlen($product->min_amount) }}',
-                        maxlength: '{{ strlen($product->max_amount) }}'
+                        range: ['{{ $product->min_amount }}', '{{ $product->max_amount }}']
 
                     },
                     email: {
@@ -194,8 +193,7 @@
                     },
                     amount: {
                         required: 'Bill amount cannot be blank',
-                        minlength: $.validator.format("Minimum of {0} characters required."),
-                        maxlength: $.validator.format("Maximum {0} characters.")
+                        range: jQuery.validator.format("Minimum of ₦{0} Maximum of ₦{1}"),
                     },
                     email: {
                         minlength: $.validator.format("Minimum of {0} characters required."),
@@ -217,11 +215,9 @@
                 $('.overlay').show();
                 let timeOut = setTimeout(function(){ notifyError(); },10000);
                 $.ajax({
-                type:'POST',
-                url:'{{ route("bills.electricity.validate") }}',
-                data:{
-                    cardNo : $('#cardNo').val(), amount : $('#amount').val(), email : $('#email').val(),
-                    phone : $('#phone').val(), productId : '{{ $product->id  }}' },
+                    type:'POST',
+                    url:'{{ route("bills.electricity.validate",['serviceId' => $product->id ]) }}',
+                    data:{meterId : $('#cardNo').val() },
                     success:function(data){
                         clearTimeout(timeOut);
                         data.response ? finalizeBill(data) : notifyError();
