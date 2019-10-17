@@ -74,18 +74,18 @@ class RingoProductsTableSeeder extends Seeder
             'route' => 'electricity.phedc.prepaid'
         ]);
 
-        /* DB::table('ringo_products')->insert([
+        DB::table('ringo_products')->insert([
             'name' => 'Port Harcourt Postpaid',
             'product_id' => 'BPE-NGCABIB-OR',
             'service' => 'Electricity',
             'service_id' => 'electricity',
             'min_amount' => 1000,
             'max_amount' => 50000,
-            'validation' => true,
+            'validation' => false,
             'logo' => 'electricity/phedc.png',
             'route' => 'electricity.phedc.postpaid'
         ]);
- */
+
         /**
          * Tv
          */

@@ -11,6 +11,7 @@ class UsersTableSeeder extends Seeder
      */
     public function run()
     {
+        /*
         DB::table('users')->insert([
             'name' => 'Enny Olajide',
             'email' => 'eniseyinolajide@gmail.com',
@@ -27,6 +28,7 @@ class UsersTableSeeder extends Seeder
             'updated_at' => Carbon::now()->format('Y-m-d H:i:s'),
             'wallet_id' => strtoupper(Str::random('2')) . rand(1, 100) . strtoupper(Str::random(2)),
         ]);
+        */
 
         DB::table('users')->insert([
             'name' => 'Administrator',

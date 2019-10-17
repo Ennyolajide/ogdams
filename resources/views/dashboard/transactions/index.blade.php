@@ -63,8 +63,9 @@
                                                 <td class="hidden-xs">{{ str_limit($transaction->reference, 10, '...') }}</td>
                                                 <td class="text-right">@naira($transaction->amount)</td>
                                                 <td>{{ $transaction->class->type }}</td>
-
-                                                <td>{{ getStatus($transaction->status) }}</td>
+                                                <td>
+                                                    {{ $transaction->class->type == 'Data Topup' ? str_replace('Pending', 'Success', getStatus($transaction->status)) : getStatus($transaction->status) }}
+                                                </td>
                                                 <td class="hidden-xs">{{ $transaction->created_at }}</td>
                                                 <td>
                                                 <a href="#" data-toggle="modal" data-target="#{{ $transaction->id }}">
