@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Control;
 
 use App\User;
+use App\Payment;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Controller;
 
@@ -34,7 +35,9 @@ class UsersController extends ModController
 
     public function viewUser(User $user)
     {
-        return view('control.user', compact('user'));
+        $payments = Payment::where('user_id', $user->id)->get();
+
+        return view('control.user', compact('user', 'payments'));
     }
 
     /**
@@ -71,7 +74,6 @@ class UsersController extends ModController
 
     public function edit(RingoSubProductList $subProduct)
     {
-        //validate request
         $this->validate(request(), ['amount' => 'required|numeric|min:1']);
         $status = $subProduct->update(['selling_price' => request()->amount]);
         $message = $status ? $this->successResponse : $this->failureResponse;

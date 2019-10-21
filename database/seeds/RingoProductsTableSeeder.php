@@ -119,10 +119,9 @@ class RingoProductsTableSeeder extends Seeder
             'product_id' => 'BPD-NGCA-AWA',
             'service' => 'Tv',
             'service_id' => 'dstv',
-            'min_amount' => 1000,
-            'max_amount' => 50000,
-            'multichoice' => true,
             'validation' => true,
+            'multichoice' => true,
+            'product_list' => true,
             'logo' => 'tv/startimes.png',
             'route' => 'tv/startimes'
         ]);

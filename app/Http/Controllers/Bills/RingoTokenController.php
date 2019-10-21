@@ -17,7 +17,9 @@ class RingoTokenController extends TransactionController
         $storage->whereName('Ringo')->get()->count() ? '' : $this->storeToken();
         $tokenObject = $storage->whereName('Ringo')->first();
 
-        return $tokenObject->expires > date('Y-m-d H:i:s', time()) ? $tokenObject->token : $this->storeToken('update');
+        return $tokenObject->expires > date('Y-m-d H:i:s', time())
+            ? $tokenObject->token
+            : $this->storeToken('update');
     }
 
     /**
@@ -25,10 +27,11 @@ class RingoTokenController extends TransactionController
      */
     protected function getRingoToken()
     {
-        $client = new \GuzzleHttp\Client();
+        $client = new \GuzzleHttp\Client(['http_errors' => false]);
+
         $request = $client->post(\config('constants.url.ringo') . 'auth', [
             'headers' => ['Content-Type' => 'application/json'],
-            'body' => '{"username":"' . env('RINGO_USERNAME') . '","password":"' . env('RINGO_PASSWORD') . '"}',
+            'body' => '{"username":"' . \config('constants.ringo.username') . '","password":"' . \config('constants.ringo.password') . '"}',
         ]);
 
         return json_decode($request->getBody()) ?? false;

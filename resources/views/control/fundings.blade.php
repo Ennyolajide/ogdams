@@ -35,6 +35,7 @@
                     <!-- /.box-header -->
                     <div class="x_content">
                         <div class="col-md-12 col-sm-12 col-xs-12">
+                            <br/>
                             <table id="transactions-table" class="table table-bordered table-striped">
                                 <thead>
                                     <tr>

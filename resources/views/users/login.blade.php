@@ -12,6 +12,7 @@
     <div>
         <a class="hiddenanchor" id="signup"></a>
         <a class="hiddenanchor" id="signin"></a>
+        <a class="hiddenanchor" id="reset"></a>
 
         <div class="login_wrapper">
             <div class="animate form login_form">
@@ -36,7 +37,7 @@
                             <input type="password" name="password" class="form-control" placeholder="Password" required="" />
                         </div>
                         <div>
-                            <a class="reset_pass text-15" href="{{ route('user.passwordReset') }}">Lost your password?</a>
+                            <a class="reset_pass text-15" href="{{ route('user.password.reset') }}">Lost your password?</a>
                             <button class="btn btn-rounded btn-success submit pull-right" type="submit">Log in</button>
                         </div>
 

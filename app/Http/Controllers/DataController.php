@@ -45,7 +45,6 @@ class DataController extends TransactionController
      */
     public function store()
     {
-        //validate request
         $this->validate(request(), ['plan' => 'required|numeric|', 'phone' => 'required']);
 
         $dataPlan = DataPlan::whereId(request()->plan)->first();

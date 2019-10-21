@@ -64,7 +64,7 @@
             $(document).ready( () =>{
                 $('#loader').hide();
                 $("#name").keyup(() => {
-                    $('#result').remove;
+                    $('.result_row').remove();
                     let user = $('#name').val();
 
                     if(user.length > 3){
@@ -78,7 +78,7 @@
                             success : (response) => {
                                 $('#loader').hide();
                                 response.forEach((data,index) => {
-                                    $('#result').append(`<tr><th scope="row" class="pull-right col-sm-2">${index+1}</th><td><a href="/control/user/${data.id}">${data.email}</a></td><td>--</td><td><a href="/control/user/${data.id}">${data.name}</a></td> </tr>`);
+                                    $('#result').append(`<tr class="result_row"><th scope="row" class="pull-right col-sm-2">${index+1}</th><td><a href="/control/user/${data.id}">${data.email}</a></td><td>--</td><td><a href="/control/user/${data.id}">${data.name}</a></td> </tr>`);
                                 });
                             }
                         });

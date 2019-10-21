@@ -11,7 +11,7 @@ class TransactionController extends ReferralController
     {
         $rowsPage = request()->wantsJson() ? 50 : 15;
         $transactions = Transaction::where('user_id', Auth::user()->id)->orderBy('id', 'desc')->paginate($rowsPage);
-        //return $transactions;
+
         return request()->wantsJson() ?
             response()->json($transactions, 200) : view('dashboard/transactions/index', compact('transactions'));
     }

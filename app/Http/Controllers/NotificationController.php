@@ -62,6 +62,17 @@ class NotificationController extends  DashboardController
         return $notification;
     }
 
+    protected function dataPurchaseDeclineNotification($trans)
+    {
+        $notification['subject'] = 'Credit Notification';
+        $notification['content'] = 'Your wallet has been credited with ';
+        $notification['content'] .= $this->naira($trans->class->amount) . ' for data topup( ' . $trans->class->phone . ' ) ';
+        $notification['content'] .= 'reversal as a result of technical timeout <br/>';
+        $notification['content'] .= 'We apologize for any inconvenience this may have caused';
+
+        return $notification;
+    }
+
     /**
      * notification for airtimeSwap
      */
@@ -191,11 +202,11 @@ class NotificationController extends  DashboardController
      */
     protected function notifyAdminViaSms($to, $message)
     {
-        $client = new \GuzzleHttp\Client();
+        $client = new \GuzzleHttp\Client(['http_errors' => false]);
         $client->post(\config('constants.url.smartsmssolutions') . '?json', [
             'form_params' => [
-                'sender' => env('SITE_SMS_SENDER_ID'), 'message' => $message, 'to' => $to,
-                'type' => '0', 'routing' => 3, 'token' => env('SMARTSMSSOLUTION_TOKEN')
+                'sender' => \config('constants.sms.sender'), 'message' => $message, 'to' => $to,
+                'type' => '0', 'routing' => 3, 'token' => \config('constants.smartsmssolutions.token')
             ]
         ]);
     }

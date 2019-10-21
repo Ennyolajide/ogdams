@@ -110,7 +110,7 @@
                         <div class="row" style="font-size: 20px;">
                             <div class="col-md-5 col-xs-11  col-xs-offset-1 col-sm-offset-1 col-md-offset-1">
                                 <small>Transaction Reference :</small>
-                                <p class=""><b> {{ '7e38yrb8383hnfj8f8' }} </b></p>
+                                <p class=""><b> {{ $transaction->reference }} </b></p>
                             </div>
                             <div class="col-md-5 col-xs-11 col-xs-offset-1 col-sm-offset-1 col-md-offset-1">
                                 <small>Transaction Type : </small>

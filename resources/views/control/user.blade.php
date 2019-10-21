@@ -46,6 +46,9 @@
                         <li role="presentation" class="active">
                             <a href="#tab_content1" id="home-tab" role="tab" data-toggle="tab" aria-expanded="true">Add Bank(s)</a>
                         </li>
+                        <li role="presentation">
+                            <a href="#tab_content2" id="home-tab" role="tab" data-toggle="tab" aria-expanded="true">Payments</a>
+                        </li>
                     </ul>
                     <div id="myTabContent" class="tab-content">
 
@@ -65,6 +68,44 @@
                                     </div>
                                 </div>
                             </form>
+                        </div>
+
+                        <div role="tabpanel" class="tab-pane" id="tab_content2" aria-labelledby="home-tab">
+                            <br/>
+                            <table id="transactions-table" class="table table-bordered table-striped">
+                                <thead>
+                                    <tr>
+                                        <th class="hidden-xs">Reference</th>
+                                        <th>Amount</th>
+                                        <th>Type</th>
+                                        <th>Status</th>
+                                        <th class="hidden-xs">Date</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @php
+                                        function getStatus($status){
+                                            $array = ['Declined','Pending','Success','Canceled'];
+                                            return $status === NULL ? 'Pending' : $array[$status];
+                                        }
+                                    @endphp
+                                    @foreach ($payments as $item)
+                                        <tr>
+                                            <td class="hidden-xs">{{ $item->reference }}</td>
+                                            <td>@naira($item->amount)</td>
+                                            <td>{{ $item->type }}</td>
+
+                                            <td>{{ getStatus($item->status) }}</td>
+                                            <td class="hidden-xs">{{ $item->created_at }}</td>
+                                            <td>
+                                                <a href="#" data-toggle="modal" data-target="#{{ $item->id }}">
+                                                    <i class="fa fa-eye"></i>view
+                                                </a>
+                                            </td>
+                                        </tr>
+                                    @endforeach
+                                </tbody>
+                            </table>
                         </div>
                     </div>
                 </div>

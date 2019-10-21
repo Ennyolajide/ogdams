@@ -1,6 +1,6 @@
 <?php
 
-
+use Carbon\Carbon;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -18,6 +18,9 @@ class DatabaseSeeder extends Seeder
 
         //Tansaction Seeder
         //factory(App\Transaction::class, 5)->create();
+        for ($i = 20; $i >= 0; $i--) {
+            factory(App\PasswordReset::class)->create(['created_at' => Carbon::now()->subDay($i)]);
+        }
 
         $this->call(UsersTableSeeder::class);
         $this->call(BanksTableSeeder::class);

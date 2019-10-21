@@ -156,10 +156,12 @@
                                 </div>
                                 <div role="tabpanel" class="tab-pane fade" id="tab_content3" aria-labelledby="bank-tab">
                                     <div class="row">
+                                        <h4 class="text-danger text-center"><strong>Charges @naira($addBankCharges) Apply </strong></h3>
                                         <div class="col-xs-12 col-sm-12 col-md-12" style="display:none;" id="newBankDiv">
                                             <form id="add-bank-details-form" class="form-horizontal" action="{{ route('user.bank.store') }}" method="POST">
                                                 @csrf
                                                 <br/>
+
                                                 <div class="form-group row">
                                                     <label class="col-sm-3 col-xs-12 control-label">Select Bank</label>
                                                     <div class="col-sm-9 col-xs-12 form-grouping text-bold">

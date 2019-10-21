@@ -18,10 +18,9 @@ class RegisterController extends Controller
 
     public function index($referrer = null)
     {
-        $app = (object) config('constants.site');
         $referrer = $referrer ? User::where('wallet_id', $referrer)->first() : null;
 
-        return view('users/login', compact('app', 'referrer'));
+        return view('users/login', compact('referrer'));
     }
 
     public function register()
@@ -40,13 +39,14 @@ class RegisterController extends Controller
             return redirect(url()->previous() . '#signup')->withErrors($validator)->withInput();
         }
 
+
         User::create([
             'token'         => $token,
             'email'         => request()->email,
             'number'        => request()->phone,
             'name'          => ucwords(request()->name),
             'password'      => Hash::make(request()->password),
-            'referrer'      => request()->has('referrerId') ? User::find(request()->referrerId)->id : null,
+            'referrer'      => User::where('wallet_id', request()->referrerId)->first()->id ?? null,
             'wallet_id'     => strtoupper(Str::random(2)) . rand(1, 10) . strtoupper(Str::random(1)) . rand(1, 100) . strtoupper(Str::random(2)),
         ]);
 

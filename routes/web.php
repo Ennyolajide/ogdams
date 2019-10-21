@@ -26,8 +26,10 @@ Route::get('/register/{referrer?}', 'RegisterController@index')->name('user.regi
 Route::post('/register/create', 'RegisterController@register')->name('user.register.create');
 
 Route::get('users/verify/{email}/{token}', 'VerificationController@verify');
-Route::get('users/reset', 'PasswordResetController@index')->name('user.passwordReset');
-Route::post('users/reset', 'PasswordResetController@reset')->name('user.passwordReset');
+Route::get('users/reset', 'PasswordResetController@index')->name('user.password.reset');
+Route::post('users/password/reset', 'PasswordResetController@reset')->name('user.password.reset.request');
+Route::get('users/reset/{email}/{token}', 'PasswordResetController@verify')->name('user.password.reset.verify');
+Route::patch('users/reset/{email}/{token}', 'PasswordResetController@change')->name('user.password.reset.change');
 
 
 Route::get('/dashboard', 'DashboardController@dashboardIndex')->name('dashboard.index');
@@ -85,6 +87,7 @@ Route::post('dashboard/wallet/withdraw', 'WithdrawalController@store')->name('wa
 //Paystack
 Route::post('dashboard/payments/card', 'PaystackController@redirectToGateway')->name('paystack.pay');
 Route::get('dashboard/payments/callback', 'PaystackController@handleGatewayCallback')->name('paystack.callback');
+Route::post('control/payments.query', 'PaystackController@queryPaysackTransaction')->name('paystack.transaction.query');
 Route::get('dashboard/paystack/webhook', 'WebhookController@paystack')->name('paystack.webhook');
 
 //Sms
@@ -123,7 +126,7 @@ Route::get('dashboard/transactions', 'TransactionController@transactionIndex')->
 /**
  * Bill Payments
  */
-Route::namespace('Control')->group(function () {
+Route::namespace('Control')->middleware('admin')->group(function () {
     // Controllers Within The "App\Http\Controllers\Control" Namespace
     Route::get('control', 'ModController@index')->name('admin.index');
     Route::get('control/transactions', 'TransactionsController@show')->name('admin.transactions');
@@ -141,6 +144,8 @@ Route::namespace('Control')->group(function () {
     //Fundings Dashboard
     Route::patch('control/fundings/{trans}/edit', 'FundingsController@edit')->name('admin.fundings.edit');
     Route::get('control/fundings', 'FundingsController@show')->name('admin.fundings');
+
+    Route::get('control/paystack/transactions', 'FundingsController@paystackTransactions')->name('admin.paystack.transactions');
 
     //Withdrawal Dashbaord
     Route::patch('control/withdrawals/{trans}/edit', 'WithdrawalsController@edit')->name('admin.withdrawals.edit');

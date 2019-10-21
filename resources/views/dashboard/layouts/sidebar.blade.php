@@ -32,6 +32,7 @@
                     @if(Auth::user()->permission)
                         <li><a href="{{ route('admin.users') }}"><i class="fa fa-user"></i> <span>Users</span></a></li>
                         <li><a href="{{ route('admin.settings') }}"><i class="fa fa-wrench"></i> <span>Settings</span></a></li>
+                        <li><a href="{{ route('admin.paystack.transactions') }}"><i class="fa fa-credit-card"></i> <span>Paystack</span></a></li>
                         <li><a href="{{ route('admin.transactions') }}"><i class="fa fa-gears"></i> <span>Transactions</span></a></li>
                         <li><a href="{{ route('admin.airtimes') }}"><i class="fa fa-gear"></i> <span>Airtimes</span></a></li>
                         <li><a href="{{ route('admin.datas') }}"><i class="fa fa-gear"></i> <span>Data</span></a></li>

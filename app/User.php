@@ -33,6 +33,11 @@ class User extends Authenticatable
         return $this->hasMany(Bank::class);
     }
 
+    public function passwordResets()
+    {
+        return $this->hasMany(PasswordReset::class, 'email', 'email');
+    }
+
     public function messages()
     {
         return $this->hasMany(Message::class);

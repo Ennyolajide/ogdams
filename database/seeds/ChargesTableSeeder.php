@@ -19,7 +19,7 @@ class ChargesTableSeeder extends Seeder
             'amount' => 100,
         ]);
         DB::table('charges')->insert([
-            'service' => 'electricty',
+            'service' => 'electricity',
             'amount' => 100,
         ]);
     }

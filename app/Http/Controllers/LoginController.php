@@ -20,9 +20,8 @@ class LoginController extends Controller
     public function index()
     {
         $referrer = null;
-        $app = (object) config('constants.site');
 
-        return view('users/login', compact('app', 'referrer'));
+        return view('users/login', compact('referrer'));
     }
 
     public function login()

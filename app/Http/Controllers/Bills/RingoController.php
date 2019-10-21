@@ -132,7 +132,7 @@ class RingoController extends RingoTokenController
 
         $client = new \GuzzleHttp\Client([
             'debug' => false,
-            'http_errors' => false, 'timeout' => 30, 'connect_timeout' => 30
+            'http_errors' => false, 'timeout' => 40, 'connect_timeout' => 40
         ]);
         $request = $client->$type($endPoint, ['headers' => $this->headers(), 'body' => $body]);
 

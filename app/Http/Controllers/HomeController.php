@@ -12,7 +12,6 @@ class HomeController extends Controller
     public function index()
     {
         $faq = false;
-        //$app = (object) config('constants.site');
         $testimonials = Testimonial::get()->unique();
         $dataPlans = DataPlan::all()->groupBy('network_id');
 
@@ -21,8 +20,6 @@ class HomeController extends Controller
 
     public function faq($faq = true)
     {
-        //$app = (object) config('constants.site');
-
         return view('index', compact('faq'));
     }
 

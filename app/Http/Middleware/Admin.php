@@ -16,10 +16,11 @@ class Admin
      */
     public function handle($request, Closure $next)
     {
-        /*  $roles = ['developer', 'owner', 'admin', 'moderators'];
-        if (in_array(Auth::user()->role, $roles)) { } else {
-            return redirect('/users/logout');
-        } */
+        $roles = ['developer', 'admin', 'moderators'];
+
+        if (!in_array(Auth::user()->role, $roles)) {
+            return redirect()->route('user.logout');
+        }
         return $next($request);
     }
 }

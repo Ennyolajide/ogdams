@@ -20,6 +20,7 @@ class CreateBanksTable extends Migration
             $table->string('acc_name');
             $table->string('acc_no');
             $table->boolean('status')->default(false);
+            $table->softDeletes();
             $table->timestamps();
         });
     }
