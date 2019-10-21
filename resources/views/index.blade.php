@@ -123,36 +123,61 @@
                 <div class="carousel-inner">
                     <div class="carousel-item active">
                         <img class="d-block w-100" src="\home/img/intro-carousel/1.jpg" alt="First slide">
-                        <div class="carousel-caption d-none d-md-block">
-                            <h5>...</h5>
+                        <div class="carousel-caption visible-xs">
+                            <div class="col-xs-12 col-sm-6 visible-xs">
+                                <a href="{{ route('user.login') }}" class="bt btn-get-started">Login</a>
+                            </div>
+                            <div class="col-xs-12 col-sm-6 visible-xs">
+                                <a href="{{ route('user.login').'#signup' }}" class="bt btn-projects">Get Started</a>
+                            </div>
                             <p>...</p>
                         </div>
                     </div>
                     <div class="carousel-item">
                         <img class="d-block w-100" src="\home/img/intro-carousel/2.jpg" alt="Second slide">
-                        <div class="carousel-caption d-none d-md-block">
-                            <h5>...</h5>
+                        <div class="carousel-caption visible-xs">
+                            <div class="col-xs-12 col-sm-6 visible-xs">
+                                <a href="{{ route('user.login') }}" class="bt btn-get-started">Login</a>
+                            </div>
+                            <div class="col-xs-12 col-sm-6 visible-xs">
+                                <a href="{{ route('user.login').'#signup' }}" class="bt btn-projects">Get Started</a>
+                            </div>
                             <p>...</p>
                         </div>
                     </div>
                     <div class="carousel-item">
                         <img class="d-block w-100" src="\home/img/intro-carousel/3.jpg" alt="Third slide">
-                        <div class="carousel-caption d-none d-md-block">
-                            <h5>...</h5>
+                        <div class="carousel-caption visible-xs">
+                            <div class="col-xs-12 col-sm-6 visible-xs">
+                                <a href="{{ route('user.login') }}" class="bt btn-get-started">Login</a>
+                            </div>
+                            <div class="col-xs-12 col-sm-6 visible-xs">
+                                <a href="{{ route('user.login').'#signup' }}" class="bt btn-projects">Get Started</a>
+                            </div>
                             <p>...</p>
                         </div>
                     </div>
                     <div class="carousel-item">
                         <img class="d-block w-100" src="\home/img/intro-carousel/4.jpg" alt="First slide">
-                        <div class="carousel-caption d-none d-md-block">
-                            <h5>...</h5>
+                        <div class="carousel-caption visible-xs">
+                            <div class="col-xs-12 col-sm-6 visible-xs">
+                                <a href="{{ route('user.login') }}" class="bt btn-get-started">Login</a>
+                            </div>
+                            <div class="col-xs-12 col-sm-6 visible-xs">
+                                <a href="{{ route('user.login').'#signup' }}" class="bt btn-projects">Get Started</a>
+                            </div>
                             <p>...</p>
                         </div>
                     </div>
                     <div class="carousel-item">
                         <img class="d-block w-100" src="\home/img/intro-carousel/5.jpg" alt="Second slide">
-                        <div class="carousel-caption d-none d-md-block">
-                            <h5>...</h5>
+                        <div class="carousel-caption visible-xs">
+                            <div class="col-xs-12 col-sm-6 visible-xs">
+                                <a href="{{ route('user.login') }}" class="bt btn-get-started">Login</a>
+                            </div>
+                            <div class="col-xs-12 col-sm-6 visible-xs">
+                                <a href="{{ route('user.login').'#signup' }}" class="bt btn-projects">Get Started</a>
+                            </div>
                             <p>...</p>
                         </div>
                     </div>

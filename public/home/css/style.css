@@ -226,8 +226,7 @@ h6 {
   text-decoration: underline;
 }
 
-#intro .intro-content .btn-get-started,
-#intro .intro-content .btn-projects {
+.bt {
   font-family: "Raleway", sans-serif;
   font-size: 15px;
   font-weight: bold;
@@ -240,22 +239,22 @@ h6 {
   color: #fff;
 }
 
-#intro .intro-content .btn-get-started {
+.btn-get-started {
   background: #0c2e8a;
   border: 2px solid #0c2e8a;
 }
 
-#intro .intro-content .btn-get-started:hover {
+.btn-get-started:hover {
   background: none;
   color: #0c2e8a;
 }
 
-#intro .intro-content .btn-projects {
+.btn-projects {
   background: #1ABB9C;
   border: 2px solid #1ABB9C;
 }
 
-#intro .intro-content .btn-projects:hover {
+.btn-projects:hover {
   background: none;
   color: #1ABB9C;
 }
@@ -1161,3 +1160,5 @@ body.mobile-nav-active #mobile-nav-toggle {
 .w-100 {
     height: unset!important
 }
+
+
