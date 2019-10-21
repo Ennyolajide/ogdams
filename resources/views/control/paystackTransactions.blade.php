@@ -71,7 +71,7 @@
                                                 @csrf
                                                 <td>{{ $item['customer']['email'] }}
                                                 <td class="hidden-xs">{{ $item['reference'] }}</td>
-                                                <td>@naira($item['amount'] - $item['fees'])</td>
+                                                <td>@naira(($item['amount'] - $item['fees'])/100)</td>
                                                 <td>{{ $item['status'] }}</td>
                                                 <td class="hidden-xs">{{ $item['paidAt'] }}</td>
                                                 <input type="hidden" name="reference" value="{{ $item['reference'] }}">

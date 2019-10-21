@@ -48,7 +48,7 @@ class FundingsController extends ModController
         $transactions = collect(Paystack::getAllTransactions())
             ->where('status', 'success')
             ->where('createdAt', '>=', Carbon::now()->subDay(1));
-        //$transactions;
+
         return view('control.paystackTransactions', compact('transactions'));
     }
 }

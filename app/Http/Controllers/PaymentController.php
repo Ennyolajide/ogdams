@@ -16,7 +16,7 @@ class PaymentController extends TransactionController
     public function storePayment($object, $status)
     {
         return Payment::create([
-            'user_id' => Auth::user()->id, 'amount' => (($object['amount'] - $object['fees']) / 100),
+            'user_id' => $object['customer']['email'], 'amount' => (($object['amount'] - $object['fees']) / 100),
             'object' => json_encode($object, true), 'type' => 'Card Payment', 'class' => 'App\Payment',
             'transaction_type' => 1, 'reference' => $object['reference'], 'status' => $status ? 2 : 0
         ]);
