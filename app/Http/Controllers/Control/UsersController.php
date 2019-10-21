@@ -35,6 +35,7 @@ class UsersController extends ModController
 
     public function viewUser(User $user)
     {
+
         $payments = Payment::where('user_id', $user->id)->get();
 
         return view('control.user', compact('user', 'payments'));
@@ -45,7 +46,6 @@ class UsersController extends ModController
      */
     public function setUserStatus(User $user)
     {
-        //validate request
         $this->validate(request(), ['action' => 'required|boolean']);
         $status = $user->update(['active' => request()->action]);
         $message = $status ? $this->successResponse : $this->failureResponse;
@@ -58,7 +58,6 @@ class UsersController extends ModController
      */
     public function alterUserBalance(User $user)
     {
-        //validate request
         $this->validate(request(), [
             'amount' => 'required|numeric',
             'dedit' => 'sometimes|boolean',

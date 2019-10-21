@@ -38,6 +38,7 @@
                     <input type="hidden" name="action" value="{{ $user->active ? 0 : 1 }}">
                     <button class="btn {{ $user->active ? 'btn-danger' : 'btn-success' }}"><i class="fa fa-edit m-right-xs"></i>{{ $user->active ? 'Block User' : 'Unblock User' }}</button>
                 </form>
+                <a href="{{ route('admin.user.transactions', ['user' => $user->id ]) }}" class="btn btn-primary">Transactions</a>
                 <br />
             </div>
             <div class="col-md-9 col-sm-9 col-xs-12">
@@ -48,6 +49,9 @@
                         </li>
                         <li role="presentation">
                             <a href="#tab_content2" id="home-tab" role="tab" data-toggle="tab" aria-expanded="true">Payments</a>
+                        </li>
+                        <li role="presentation">
+                            <a href="#tab_content3" id="home-tab" role="tab" data-toggle="tab" aria-expanded="true">Transactions</a>
                         </li>
                     </ul>
                     <div id="myTabContent" class="tab-content">
@@ -89,12 +93,43 @@
                                             return $status === NULL ? 'Pending' : $array[$status];
                                         }
                                     @endphp
-                                    @foreach ($payments as $item)
+                                    @foreach ($user->payments as $item)
                                         <tr>
                                             <td class="hidden-xs">{{ $item->reference }}</td>
                                             <td>@naira($item->amount)</td>
                                             <td>{{ $item->type }}</td>
 
+                                            <td>{{ getStatus($item->status) }}</td>
+                                            <td class="hidden-xs">{{ $item->created_at }}</td>
+                                            <td>
+                                                <a href="#" data-toggle="modal" data-target="#{{ $item->id }}">
+                                                    <i class="fa fa-eye"></i>view
+                                                </a>
+                                            </td>
+                                        </tr>
+                                    @endforeach
+                                </tbody>
+                            </table>
+                        </div>
+                        <div role="tabpanel" class="tab-pane" id="tab_content3" aria-labelledby="home-tab">
+                            <br/>
+                            <table id="transactions-table" class="table table-bordered table-striped">
+                                <thead>
+                                    <tr>
+                                        <th class="hidden-xs">Reference</th>
+                                        <th>Amount</th>
+                                        <th>Type</th>
+                                        <th>Status</th>
+                                        <th class="hidden-xs">Date</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+
+                                    @foreach ($user->transactions as $item)
+                                        <tr>
+                                            <td class="hidden-xs">{{ $item->reference }}</td>
+                                            <td>@naira($item->amount)</td>
+                                            <td>{{ $item->class->type }}</td>
                                             <td>{{ getStatus($item->status) }}</td>
                                             <td class="hidden-xs">{{ $item->created_at }}</td>
                                             <td>

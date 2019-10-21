@@ -68,6 +68,11 @@ class User extends Authenticatable
         return $this->hasMany(Testimonial::class);
     }
 
+    public function payments()
+    {
+        return $this->hasMany(Payment::class);
+    }
+
     public function myReferrer()
     {
         return $this->hasOne(User::class, 'id', 'referrer');

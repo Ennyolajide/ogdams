@@ -130,6 +130,7 @@ Route::namespace('Control')->middleware('admin')->group(function () {
     // Controllers Within The "App\Http\Controllers\Control" Namespace
     Route::get('control', 'ModController@index')->name('admin.index');
     Route::get('control/transactions', 'TransactionsController@show')->name('admin.transactions');
+    Route::get('control/transactions/user/{user}', 'TransactionsController@userTransactions')->name('admin.user.transactions');
 
     //Airtime Dashbaord
     Route::patch('control/airtimes/funding/{trans}/edit', 'AirtimesController@funding')->name('admin.airtimes.fundings');

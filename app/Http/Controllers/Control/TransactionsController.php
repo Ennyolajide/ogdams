@@ -21,4 +21,11 @@ class TransactionsController extends ModController
 
         return view('control.transactions', compact('transactions'));
     }
+
+    public function userTransactions(User $user)
+    {
+        $transactions = Transaction::where('user_id', $user->id)->orderBy('id', 'desc')->paginate(20);
+
+        return view('control.userTransactions', compact('user', 'transactions'));
+    }
 }

@@ -3,14 +3,14 @@
     @section('content-header')
         <div class="page-title">
             <div class="title_left">
-                <h3>Transactions</h3>
+                <h3>User Transactions</h3>
             </div>
             <div class="pull-right">
                 <ol class="breadcrumb">
                     <li>
                         <a href="#"><i class="fa fa-dashboard"></i> Dashboard</a>
                     </li>
-                    <li class="active">Transactions</li>
+                    <li class="active">User Transactions</li>
                 </ol>
             </div>
         </div>
@@ -23,12 +23,34 @@
             <div class="col-md-12 col-sm-12 col-xs-12">
                 <div class="x_panel">
                     <div class="x_title">
-                        <h3>Transactions</h3>
+                        <h3>{{ ucwords($user->name) }}  Transactions</h3>
                         <div class="clearfix"></div>
                     </div>
                     <!-- /.box-header -->
                     <div class="x_content">
-                        <div class="col-md-12 col-sm-12 col-xs-12">
+                        <div class="col-md-3 col-sm-3 col-xs-12 profile_left text-center">
+                            <div class="profile_img text-center">
+                                <div id="crop-avatar">
+                                    <img class="avatar-view" src="\images/avatar/{{ $user->avatar }}" alt="Avatar" title="Change the avatar">
+                                </div>
+                            </div>
+                            <h3>{{ $user->name }}</h3>
+                            <ul class="list-unstyled user_data">
+                                <li><h4><i class="fa fa-map-marker user-profile-icon"></i> {{ $user->email }}</h4></li>
+                                <li><h4><i class="fa fa-briefcase user-profile-icon"></i> {{ $user->number }}</h4></li>
+                                <li><h4><i class="fa fa-card user-profile-icon"></i> @naira($user->balance)</h4></li>
+                            </ul>
+
+                            <form action="{{ route('admin.toggle.user.status',['user' => $user->id]) }}" method="post">
+                                @method('patch') @csrf
+                                <input type="hidden" name="action" value="{{ $user->active ? 0 : 1 }}">
+                                <button class="btn {{ $user->active ? 'btn-danger' : 'btn-success' }}"><i class="fa fa-edit m-right-xs"></i>{{ $user->active ? 'Block User' : 'Unblock User' }}</button>
+                            </form>
+                            <a href="{{ route('admin.user.transactions', ['user' => $user->id ]) }}" class="btn btn-primary">Transactions</a>
+                            <br />
+                        </div>
+
+                        <div class="col-md-9 col-sm-9 col-xs-12">
                             <table id="transactions-table" class="table table-bordered table-hover">
                                 <thead>
                                     <tr>
