@@ -8,6 +8,8 @@ use App\PasswordReset;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Mail\PasswordResetMail;
+use App\Http\Controllers\Exception;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
 
 
@@ -41,7 +43,11 @@ class PasswordResetController extends Controller
 
                 $link = route('user.password.reset.verify', ['email' => $user->email, 'token' => $token]);
 
-                $status ? Mail::to($user->email)->send(new PasswordResetMail($user->name, $link)) : false;
+                try {
+                    $status ? Mail::to($user->email)->send(new PasswordResetMail($user->name, $link)) : false;
+                } catch (\Exception $e) {
+                    Log::info('Cound not send Password Reset Email');
+                }
 
                 $response = 'Password Reset Instruction has been sent to your mail';
             } else {

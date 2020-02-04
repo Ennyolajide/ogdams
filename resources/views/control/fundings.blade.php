@@ -167,7 +167,7 @@
                                 <form method="POST" action="{{ route('admin.fundings.edit',['trans' => $transaction->id] ) }}">
                                     @method('patch')
                                     @csrf
-                                    <button type="submit" name="decline" class="btn btn-danger pull-left">Deline</button>
+                                    <button type="submit" name="decline" class="btn btn-danger pull-left">Decline</button>
                                     <button type="submit" name="completed" class="btn btn-primary">Completed</button>
                                 </form>
                             @endif

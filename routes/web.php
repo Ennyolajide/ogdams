@@ -88,7 +88,7 @@ Route::post('dashboard/wallet/withdraw', 'WithdrawalController@store')->name('wa
 Route::post('dashboard/payments/card', 'PaystackController@redirectToGateway')->name('paystack.pay');
 Route::get('dashboard/payments/callback', 'PaystackController@handleGatewayCallback')->name('paystack.callback');
 Route::post('control/payments.query', 'PaystackController@queryPaysackTransaction')->name('paystack.transaction.query');
-Route::get('dashboard/paystack/webhook', 'WebhookController@paystack')->name('paystack.webhook');
+Route::post('payments/paystack/webhook', 'WebhookController@paystackHook')->name('paystack.webhook');
 
 //Sms
 Route::get('dashboard/sms/bulk', 'SmsController@display')->name('sms.bulk');
@@ -130,6 +130,8 @@ Route::namespace('Control')->middleware('admin')->group(function () {
     // Controllers Within The "App\Http\Controllers\Control" Namespace
     Route::get('control', 'ModController@index')->name('admin.index');
     Route::get('control/transactions', 'TransactionsController@show')->name('admin.transactions');
+    Route::post('control/transactions', 'TransactionsController@searchTransactions')->name('admin.transaction.search');
+    Route::get('control/transactions/search', 'TransactionsController@searchIndex')->name('admin.transaction.search.index');
     Route::get('control/transactions/user/{user}', 'TransactionsController@userTransactions')->name('admin.user.transactions');
 
     //Airtime Dashbaord

@@ -46,7 +46,7 @@
                                     </div>
                                 </div>
                                 <div id="form1">
-                                    <form id="tv-bill-form" class="form-horizontal" action="{{ route('bills.tv.topup') }}" method="POST">
+                                    <form id="tv-bill-form" class="form-horizontal form-prevent-multiple-submits" action="{{ route('bills.tv.topup') }}" method="POST">
                                         @csrf
                                         <br/>
                                         <div class="form-group">
@@ -116,7 +116,7 @@
                                         <div class="form-group">
                                             <div class="col-xs-12">
                                                 <button id="continue" class="btn btn-flat btn-success pull-right" disabled="true">Continue</button>
-                                                <button id="submit" type="submit" class="btn btn-flat btn-success pull-right" style="display: none;">Submit</button>
+                                                <button id="submit" type="submit" class="btn btn-flat btn-success pull-right button-prevent-multiple-submits" style="display: none;">Submit</button>
                                             </div>
                                         </div>
                                         <br/><br/>

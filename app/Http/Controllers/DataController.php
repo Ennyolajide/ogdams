@@ -15,10 +15,14 @@ class DataController extends TransactionController
 
     public function create()
     {
-        $dataPlans = DataPlan::all();
-        $networks = DataPlan::whereAvailable(true)->orderBy('network_id', 'asc')->get()->unique('network_id')->values()->all();
+        //$dataPlans = DataPlan::all();
 
-        return view('dashboard.data.buy', compact('dataPlans', 'networks'));
+        //$networks = DataPlan::whereAvailable(true)->orderBy('network_id', 'asc')->get()->unique('network_id')->values();
+        $networks = Dataplan::whereAvailable(true)->get()->mapToGroups(function ($item, $key) {
+            return [$item['network'] => $item];
+        });
+
+        return view('dashboard.data.buy', compact('networks'));
     }
 
     /**

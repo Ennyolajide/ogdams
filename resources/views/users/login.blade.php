@@ -82,12 +82,12 @@
                             </div>
                         @else
                             <div>
-                                <input type="text" name="referrerId" value="" class="form-control" placeholder="Referrer Wallet Id">
+                                <input type="text" name="referrerId" value="" class="form-control" placeholder="Referrer Wallet ID- Ignore if there is no Referrer">
                             </div>
                         @endif
 
                         <div>
-                            <input type="text" name="name" class="form-control" placeholder="Fullname" required="" />
+                            <input type="text" name="name" class="form-control" placeholder="Full Name" required="" />
                         </div>
                         <div>
                             <input type="email" name="email" class="form-control" placeholder="Email" required="" />
@@ -99,7 +99,7 @@
                             <input type="password" name="password" class="form-control" placeholder="Password" required="" />
                         </div>
                         <div>
-                            <input type="password" name="password_confirmation" class="form-control" placeholder="Retype password" required="" />
+                            <input type="password" name="password_confirmation" class="form-control" placeholder="Retype Password" required="" />
                         </div>
                         <div>
                             <button class="btn btn-success submit" type="submit" >Register</a>

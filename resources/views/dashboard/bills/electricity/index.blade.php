@@ -50,7 +50,7 @@
                                     </div>
                                 </div>
                                 <div id="form1">
-                                    <form id="electricity-bill-form" class="form-horizontal" action="{{ route('bills.electricity.topup') }}" method="POST">
+                                    <form id="electricity-bill-form" class="form-horizontal form-prevent-multiple-submits" action="{{ route('bills.electricity.topup') }}" method="POST">
                                         @csrf
                                         <br/>
                                         <input type="hidden" name="packageId" value="{{ $product->id }}">
@@ -91,7 +91,7 @@
                                         <div class="form-group">
                                             <div class="col-xs-12">
                                                 <button id="continue" class="btn btn-flat btn-success pull-right">Continue</button>
-                                                <button id="submit" type="submit" class="btn btn-flat btn-success pull-right" style="display: none;">Submit</button>
+                                                <button id="submit" type="submit" class="btn btn-flat btn-success pull-right button-prevent-multiple-submits" style="display: none;">Submit</button>
                                             </div>
                                         </div>
                                         <br/><br/>

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Bills;
 
 use App\Bill;
+use App\Charge;
 use App\RingoProduct;
 use App\RingoSubProductList;
 use Illuminate\Http\Request;

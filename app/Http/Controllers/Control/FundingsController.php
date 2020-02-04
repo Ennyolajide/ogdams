@@ -32,7 +32,7 @@ class FundingsController extends ModController
             $message = $status ? $this->successResponse : $this->failureResponse;
         } else if (request()->has('decline')) {
             $transactionStatus = ['status' =>  0];
-            $trans->class->update($transactionStatus);
+            $status = $trans->class->update($transactionStatus);
             $status ? $trans->update($transactionStatus) : false;
             $message = $status ? $this->successResponse : $this->failureResponse;
         } else {

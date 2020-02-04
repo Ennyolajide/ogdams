@@ -8,18 +8,18 @@ return [
         'email' => 'support@ogdams.com',
         'phone' => '+234 9066 6857 02',
         'telegram' => 'https://t.me/ogdams',
-        'address' => 'Camp,Abeokuta.Ogun State, Nigeria.',
-        'twitter' => 'https://twitter.com/OgdamsTech',
+        'address' => 'Camp, Abeokuta, Ogun State, Nigeria.',
+        'twitter' => 'https://twitter.com/ogdamstech',
         'facebook' => 'https://facebook.com/ogdams',
         'instagram' => 'https://instagram.com/ogdamstech',
         'google' => '#',
         'linkedin' => '#',
         'bussinessName' => 'Ogdams Technologies',
         'googleMap' => 'https://www.google.com/maps/embed?pb=!1m23!1m12!1m3!1d7916.862982549558!2d3.4318005225864616!3d7.1915070292316345!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!4m8!3e6!4m0!4m5!1s0x103a363bcdd152df%3A0xf3ab70233638c6ec!2sCamp%2C+Abeokuta!3m2!1d7.194497999999999!2d3.4359531!5e0!3m2!1sen!2sng!4v1564561313169!5m2!1sen!2sng',
-        'about' => '©2019 All Rights Reserved. Ogams Techechnogies is a business solution website. Privacy and Terms',
+        'about' => '©2020 Copyright Ogdams Technologies. All Rights Reserved.',
 
         'sms' => [
-            'sender' => env('SITE_SMS_SENDER_ID'),
+            'sender' => env('SITE_SMS_SENDER'),
         ],
 
         'emails' => [
@@ -30,6 +30,10 @@ return [
 
         ]
     ],
+    
+    'api' => [
+        'url' => 'https://documenter.getpostman.com/view/6362674/SVtYTSdn?version=latest'
+    ],
 
     'livechat' => [
         'tawk' => 'https://embed.tawk.to/5d9e09dff82523213dc67a21/default'
@@ -38,7 +42,7 @@ return [
     'fundings' => [
         'paystack' => [
             'min' =>  500,
-            'max' =>  50000,
+            'max' =>  2499,
         ]
     ],
 
@@ -66,13 +70,13 @@ return [
     'charges' => [
         'paystack' => [
             'cappedCharge' => 2000,
-            'addtionalCharge' => 100,
-            'chargePercentage' => 1.53,
+            'addtionalCharge' => 0,
+            'chargePercentage' => 0,
         ],
     ],
 
     'bonuses' => [
-        'referral' => 150,
+        'referral' => 100,
     ],
     env('SMARTSMSSOLUTION_TOKEN')
 

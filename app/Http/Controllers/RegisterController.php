@@ -8,6 +8,8 @@ use Validator;
 use App\Mail\Main;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Exception;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
 
@@ -56,7 +58,12 @@ class RegisterController extends Controller
         $message = 'Please complete your registration by verifing your email, ';
         $message .= 'follow link below to verify your email ' . $link;
 
-        Mail::to(request()->email)->send(new Main($message, $subject, $link));
+        try {
+            Mail::to(request()->email)->send(new Main($message, $subject, $link));
+        } catch (\Exception $e) {
+            Log::info('Cound not send Registration Email');
+        }
+
 
         $response = 'Registration Successful, please check your email inbox or email spam ';
         $response .= 'folder to verify email and complete registration.';

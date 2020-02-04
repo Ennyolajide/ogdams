@@ -134,13 +134,16 @@
                 <div class="modal-body">
                     <div class="row" style="font-size: 20px;">
                         <div class="col-md-5 col-xs-11  col-xs-offset-1 col-sm-offset-1 col-md-offset-1">
-                            <small>Transaction Reference :</small>
-                            <p class="text-justify" style="font-size: 15px;"><b> {{ $transaction->reference }} </b></p>
+                            <small>Transaction Type : </small>
+                            <p class=""><b> {{ $transaction->class->type }}  </b></p>
                         </div>
                         <div class="col-md-5 col-xs-11 col-xs-offset-1 col-sm-offset-1 col-md-offset-1">
-                            <small>Transaction Type : </small>
-                            <p class=""><b> {{ $transaction->class->type }} </b></p>
-
+                            <small>Transaction {{ $transaction->class->type == 'Data Topup' ? 'Object' : 'MEthod' }} </small>
+                            <p class="">
+                                <b>{{ $transaction->class->type == 'Data Topup'
+                                        ? $transaction->class->phone : $transaction->method }}
+                                </b>
+                            </p>
                         </div>
                         <div class="col-md-5 col-xs-11 col-xs-offset-1 col-sm-offset-1 col-md-offset-1">
                            <small>Transaction Amount : </small>
@@ -158,7 +161,10 @@
                             <small>Transaction Status </small>
                             <p class=""><b> {{ getStatus($transaction) }} </b></p>
                         </div>
-
+                        <div class="col-md-12 col-xs-12 text-center">
+                            <small>Transaction Reference </small>
+                            <p class="" style="font-size: 15px;"><b> {{ $transaction->reference }} </b></p>
+                        </div>
 
                     </div>
                 </div>

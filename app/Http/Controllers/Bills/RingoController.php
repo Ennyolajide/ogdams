@@ -25,6 +25,8 @@ class RingoController extends RingoTokenController
 
         $response ? $response->response = true : false;
 
+        Log::info('Refernce : TV -> Response Object' . $this->responseObject);
+
         return  response()->json($response ? $response : ['response' => false]);
     }
 
@@ -55,11 +57,11 @@ class RingoController extends RingoTokenController
 
         $response = $endPoint ? $this->ringo($endPoint, 'post', $meterId) : false;
 
-        Log::info('Refernce : Misc -> Response Object' . $this->responseObject);
-
         $response ? $response->response = true : false;
 
-        return  response()->json($response ? $response : ['response' => false]);
+        Log::info('Refernce : Misc -> Response Object' . $this->responseObject);
+
+        return response()->json($response ? $response : ['response' => false]);
     }
 
 
@@ -78,6 +80,8 @@ class RingoController extends RingoTokenController
         $endPoint = 'billpay/electricity/' . request()->cardNo;
 
         $response = $endPoint ? $this->ringo($endPoint, 'post', $body) : false;
+
+        Log::info('Refernce : Electricity -> Response Object' . $this->responseObject);
 
         $response ? $response->response = true : false;
 
@@ -132,7 +136,7 @@ class RingoController extends RingoTokenController
 
         $client = new \GuzzleHttp\Client([
             'debug' => false,
-            'http_errors' => false, 'timeout' => 40, 'connect_timeout' => 40
+            'http_errors' => false, 'timeout' => 50, 'connect_timeout' => 50
         ]);
         $request = $client->$type($endPoint, ['headers' => $this->headers(), 'body' => $body]);
 

@@ -24,6 +24,7 @@
                 <div class="x_panel">
                     <div class="x_title">
                         <h3>Transactions</h3>
+                        <span class="pull-right"> &nbsp;&nbsp;&nbsp;<a href="{{ route('admin.transaction.search.index') }}" class="btn btn-rounded btn-info pull-right">Search</a></span></h3>
                         <div class="clearfix"></div>
                     </div>
                     <!-- /.box-header -->
