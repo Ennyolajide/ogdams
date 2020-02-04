@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Bank;
+use App\Transaction;
 use App\BankTransfer;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -38,13 +39,13 @@ class BankTransferController extends WalletController
         $transactionRecord = $this->storeBankTransfer();
         $status = $transactionRecord ? true : false;
         $this->modalResponse = $status ? $this->setModalResponse($transactionRecord) : false;
-        $status ? $this->recordTransaction($transactionRecord, $this->getUniqueReference(), false, false, 'Bank', false)->update(['status' => null]) : false;
+        $status ? $this->recordBankTransaction($transactionRecord, $this->getUniqueReference(), false, false, 'Bank', false)->update(['status' => null]) : false;
 
         return $status;
     }
 
     /**
-     * Store AirtimeToCash
+     * Store Bank Transfer
      */
     protected function storeBankTransfer()
     {
@@ -52,6 +53,21 @@ class BankTransferController extends WalletController
             'user_id' => Auth::user()->id, 'amount' => request()->amount, 'bank_id' => request()->bankId,
             'details' => json_encode(['depositor' => request()->depositor, 'reference' => request()->reference, 'remarks' => request()->remarks]),
             'class' => 'App\BankTransfer', 'type' => 'Bank Transfer', 'status' => null,
+        ]);
+    }
+    
+    /**
+     * Record Transaction
+     */
+    protected function recordBankTransaction($transactionRecord, $reference, $status = false, $chargeable = true, $method = false, $isInstant = false)
+    {
+        $balanceAfter = $chargeable ? (Auth::user()->balance - $transactionRecord->amount) : Auth::user()->balance;
+
+        return Transaction::create([
+            'user_id' => $transactionRecord->user_id, 'amount' => $transactionRecord->amount,
+            'balance_before' => Auth::user()->balance, 'balance_after' => $balanceAfter,
+            'class_type' => $transactionRecord->class, 'class_id' => $transactionRecord->id,
+            'reference' => $reference, 'method' => $method ? $method : 'Wallet', 'status' => $status ? 2 : ($isInstant ? 0 : 1)
         ]);
     }
 

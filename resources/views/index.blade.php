@@ -64,15 +64,15 @@
   <section id="topbar" class="d-none d-lg-block">
     <div class="container clearfix">
       <div class="contact-info float-left">
-        <i class="fa fa-envelope-o"></i> <a href="mailto:{{ config('constants.site.email') }}"></a>
-        <i class="fa fa-phone"></i> {{ config('constants.site.phone') }}
+        <!--<i class="fa fa-envelope-o"></i> <a href="mailto:{{ config('constants.site.email') }}"></a> -->
+        <i class="fa fa-telegram"></i> <a href="{{ config('constants.site.telegram') }}">Chat with us on Telegram</a>
       </div>
       <div class="social-links float-right">
-        <a href="{{ config('constants.site.twitter') }}" class="twitter"><i class="fa fa-twitter"></i></a>
+        <!-- <a href="{{ config('constants.site.twitter') }}" class="twitter"><i class="fa fa-twitter"></i></a> -->
+        <a href="{{ config('constants.site.telegram') }}" class="telegram"><i class="fa fa-telegram"></i></a>
+       <!--<a href="{{ config('constants.site.instagram') }}" class="instagram"><i class="fa fa-instagram"></i></a> -->
+        <!--<a href="{{ config('constants.site.google') }}" class="google-plus"><i class="fa fa-google-plus"></i></a> -->
         <a href="{{ config('constants.site.facebook') }}" class="facebook"><i class="fa fa-facebook"></i></a>
-        <a href="{{ config('constants.site.instagram') }}" class="instagram"><i class="fa fa-instagram"></i></a>
-        <a href="{{ config('constants.site.google') }}" class="google-plus"><i class="fa fa-google-plus"></i></a>
-        <a href="{{ config('constants.site.linkedin') }}" class="linkedin"><i class="fa fa-linkedin"></i></a>
       </div>
     </div>
   </section>
@@ -96,9 +96,10 @@
           <li class="menu-active"><a href="#body">Home</a></li>
           <li><a href="#about">About Us</a></li>
           <li><a href="#services">Services</a></li>
-          <li><a href="{{ route('faq') }}">Faq</a></li>
+          <li><a href="{{ config('constants.api.url') }}" target="__bank">API</a></li>
+          <li><a href="{{ route('faq') }}">FAQ's</a></li>
           <li><a href="#contact">Contact</a></li>
-          <li><a href="#dataPlans">DataPlans</a></li>
+          <li><a href="#dataPlans">Data Plans</a></li>
           <li><a href="{{ route('user.login') }}#signup">Register</a></li>
           <li><a href="{{ route('user.login') }}">Login</a></li>
         </ul>
@@ -123,36 +124,61 @@
                 <div class="carousel-inner">
                     <div class="carousel-item active">
                         <img class="d-block w-100" src="\home/img/intro-carousel/1.jpg" alt="First slide">
-                        <div class="carousel-caption d-none d-md-block">
-                            <h5>...</h5>
+                        <div class="carousel-caption visible-xs">
+                            <div class="col-xs-12 col-sm-6 visible-xs">
+                                <a href="{{ route('user.login') }}" class="bt btn-get-started">Login</a>
+                            </div>
+                            <div class="col-xs-12 col-sm-6 visible-xs">
+                                <a href="{{ route('user.login').'#signup' }}" class="bt btn-projects">Get Started</a>
+                            </div>
                             <p>...</p>
                         </div>
                     </div>
                     <div class="carousel-item">
                         <img class="d-block w-100" src="\home/img/intro-carousel/2.jpg" alt="Second slide">
-                        <div class="carousel-caption d-none d-md-block">
-                            <h5>...</h5>
+                        <div class="carousel-caption visible-xs">
+                            <div class="col-xs-12 col-sm-6 visible-xs">
+                                <a href="{{ route('user.login') }}" class="bt btn-get-started">Login</a>
+                            </div>
+                            <div class="col-xs-12 col-sm-6 visible-xs">
+                                <a href="{{ route('user.login').'#signup' }}" class="bt btn-projects">Get Started</a>
+                            </div>
                             <p>...</p>
                         </div>
                     </div>
                     <div class="carousel-item">
                         <img class="d-block w-100" src="\home/img/intro-carousel/3.jpg" alt="Third slide">
-                        <div class="carousel-caption d-none d-md-block">
-                            <h5>...</h5>
+                        <div class="carousel-caption visible-xs">
+                            <div class="col-xs-12 col-sm-6 visible-xs">
+                                <a href="{{ route('user.login') }}" class="bt btn-get-started">Login</a>
+                            </div>
+                            <div class="col-xs-12 col-sm-6 visible-xs">
+                                <a href="{{ route('user.login').'#signup' }}" class="bt btn-projects">Get Started</a>
+                            </div>
                             <p>...</p>
                         </div>
                     </div>
                     <div class="carousel-item">
                         <img class="d-block w-100" src="\home/img/intro-carousel/4.jpg" alt="First slide">
-                        <div class="carousel-caption d-none d-md-block">
-                            <h5>...</h5>
+                        <div class="carousel-caption visible-xs">
+                            <div class="col-xs-12 col-sm-6 visible-xs">
+                                <a href="{{ route('user.login') }}" class="bt btn-get-started">Login</a>
+                            </div>
+                            <div class="col-xs-12 col-sm-6 visible-xs">
+                                <a href="{{ route('user.login').'#signup' }}" class="bt btn-projects">Get Started</a>
+                            </div>
                             <p>...</p>
                         </div>
                     </div>
                     <div class="carousel-item">
                         <img class="d-block w-100" src="\home/img/intro-carousel/5.jpg" alt="Second slide">
-                        <div class="carousel-caption d-none d-md-block">
-                            <h5>...</h5>
+                        <div class="carousel-caption visible-xs">
+                            <div class="col-xs-12 col-sm-6 visible-xs">
+                                <a href="{{ route('user.login') }}" class="bt btn-get-started">Login</a>
+                            </div>
+                            <div class="col-xs-12 col-sm-6 visible-xs">
+                                <a href="{{ route('user.login').'#signup' }}" class="bt btn-projects">Get Started</a>
+                            </div>
                             <p>...</p>
                         </div>
                     </div>
@@ -311,8 +337,7 @@
                                 <p>Data balance code:</p>
 
                                 MTN => *461*4# <br>
-                                9mobile[SME]=> *229*9# <br>
-                                9mobile[Gifting]=> *228# <br>
+                                9mobile => *228# <br>
                                 Glo=> *127*0# <br>
                                 Airtel=> *140# <br>
                         </div>
@@ -363,7 +388,7 @@
                     </div>
                     <div id="collapseEleven" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingEleven">
                         <div class="panel-body">
-                            <p>Sincere apologies about that. We regret the inconvenience caused. Kindly reach out to us on Call/SMS/WhatsApp via 09066685702 or email <a href="mailto:help@ogdams.com">help@ogdams.com</a> with the order details.</p>
+                            <p>Sincere apologies about that. We regret the inconvenience caused. Kindly reach out to us on <a href="https://www.t.me/ogdams">Telegram</a> or email <a href="mailto:support@ogdams.com">support@ogdams.com</a> with the order details.</p>
                         </div>
                     </div>
                 </div>
@@ -405,7 +430,7 @@
                     </div>
                     <div id="collapseFourteen" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingFourteen">
                         <div class="panel-body">
-                            <p>Yes, you can reach out to us on call/sms/whatsapp via 09066685702 or email <a href="mailto=help@ogdams.com">help@ogdams.com</a></p>
+                            <p>Yes, you can reach out to us on  <a href="https://www.t.me/ogdams">Telegram</a> or email <a href="mailto=support@ogdams.com">support@ogdams.com</a></p>
                         </div>
                     </div>
                 </div>
@@ -429,13 +454,13 @@
             <div class="col-lg-6 content">
                 <h2>Why choose us? </h2>
                 <h3>
-                    Ogdams Technologies offers the best deals in Internet Data Subscriptions, Airtime To Cash, Airtime(VTU), CableTV (DStv, GOtv & Startimes), Electricity Bill Payemnt etc
+                    We offer the best deals in Internet Data Subscriptions, Airtime To Cash, Airtime(VTU), CableTV (DStv, GOtv & Startimes), Electricity Bill Payment etc
                 </h3>
 
                 <ul>
                 <li><i class="ion-android-checkmark-circle"></i> 100 % automated secure services.</li>
                 <li><i class="ion-android-checkmark-circle"></i> Instant and secure wallet funding.</li>
-                <li><i class="ion-android-checkmark-circle"></i> Over 7,000 + active users.</li>
+                <li><i class="ion-android-checkmark-circle"></i> Over 170,000 + active users.</li>
                 </ul>
 
             </div>
@@ -452,14 +477,12 @@
             <div class="section-header text-center">
             <h2 class="mx-auto">Services</h2>
             <p>Internet Data Subscription</p>
-            <p>Airtime(VTU)</p>
             <p>Airtime To Cash</p>
+            <p>Airtime(VTU)</p>
             <p>CableTV Subscription</p>
             <p>Electricity Payment</p>
             <p>Bulk SMS</p>
-            <!--p>
-                Ogdams Technologies offers the best deals in Internet Data Subscriptions, Airtime To cash, Airtime(VTU), CableTV (DStv, GOtv & Startimes), Electricity Bill Payemnt etc
-            </p-->
+            
             </div>
 
             <div class="row">
@@ -471,7 +494,7 @@
                     </div>
                 <h4 class="title"><a href="">Send Bulk SMS</a></h4>
                 <p class="description">
-                        Send Bulk SMS to any number In Nigeria for as low as ₦2.00 per unit. Our Bulk SMS service also delivers SMS to numbers on DND list.
+                        Send Bulk SMS to any Number In Nigeria for as low as ₦2.00 per unit. Our Bulk SMS service also delivers SMS to numbers on DND list.
                 </p>
                 </div>
             </div>
@@ -482,7 +505,7 @@
                     <img class="img-fluid mx-auto" src="\home/img/services/data-plan.jpg">
                 </div>
                 <h4 class="title"><a href="">Buy Data Bundle</a></h4>
-                <p class="description">Start enjoying this very low rates for your internet browsing databundle for all networks. We ve got you covered</p>
+                <p class="description">Start enjoying this very low rates for your internet browsing databundle on all Networks. We've got you covered</p>
                 </div>
             </div>
 
@@ -566,8 +589,8 @@
                         </div>
                     </div>
                 @endforeach
-
-            </div>
+ 
+  </div>
 
         </div>
         </section><!-- #dataPlans -->
@@ -580,7 +603,7 @@
                 <div class="section-header">
                 <h2>Our Partners</h2>
                 <p>
-                        We realise that we can’t walk this road alone. So, we have partnered with all these incredible brands to create a seamless user experience for you.</p>
+                        We realise that we can’t walk this road alone. So, we have partnered with all these incredible brands to create seamless user experience just for you.</p>
                 </div>
                 @php
                     $partners = collect([
@@ -606,8 +629,8 @@
             <section id="testimonials" class="wow fadeInUp">
                 <div class="container">
                     <div class="section-header">
-                    <h2>Testimonials</h2>
-                    <p>Hear what about customers/clients are saying about us</p>
+                    <h2>Testimonies</h2>
+                    <p>See what our Customers are saying about us:</p>
                     </div>
                     <div class="owl-carousel testimonials-carousel">
                         @foreach ($testimonials as $item)
@@ -709,11 +732,9 @@
   <footer id="footer">
     <div class="container">
       <div class="copyright">
-        &copy; Copyright <strong>{{ config('constants.site.bussinessName') }}</strong>. All Rights Reserved
+        &copy; 2020 Copyright <strong>{{ config('constants.site.bussinessName') }}</strong>. All Rights Reserved
       </div>
-      <script type="text/javascript">
-        document.write(unescape('%3c%64%69%76%20%63%6c%61%73%73%3d%22%63%72%65%64%69%74%73%22%20%73%74%79%6c%65%3d%22%66%6f%6e%74%2d%73%69%7a%65%3a%20%31%38%70%78%3b%22%3e%0d%0a%20%20%20%20%20%20%20%20%44%65%73%69%67%6e%65%64%20%62%79%20%3c%61%20%68%72%65%66%3d%22%68%74%74%70%73%3a%2f%2f%66%61%63%65%62%6f%6f%6b%2e%63%6f%6d%2f%39%6a%61%6c%6f%61%64%73%22%3e%52%65%64%68%6f%73%74%65%72%3c%2f%61%3e%0d%0a%20%20%20%20%20%20%3c%2f%64%69%76%3e'));
-      </script>
+    
     </div>
   </footer><!-- #footer -->
 

@@ -35,7 +35,6 @@ class  WithdrawalController extends TransactionController
      */
     public function store()
     {
-        //validation
         $this->validate(request(), [
             'amount'  => 'required|numeric',
             'bankId'  => 'required|numeric'

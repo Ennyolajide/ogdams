@@ -25,7 +25,7 @@ class Main extends Mailable
     {
         //
         $this->content = $content;
-        $this->logo = env('APP_URL') . '/home/img/logo.jpg';
+        $this->logo = \config('constants.site.url') . '/home/img/logo.jpg';
         $this->subject = $subject;
         $this->link = $link;
     }
@@ -37,7 +37,7 @@ class Main extends Mailable
      */
     public function build()
     {
-        return $this->from(env('SITE_EMAIL_SENDER'), strtoupper(env('APP_NAME')))
+        return $this->from(\config('constants.site.emails.sender.noreply'), strtoupper(\config('constants.site.name')))
             ->subject($this->subject)
             ->view('emails.main');
     }

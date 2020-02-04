@@ -50,7 +50,7 @@
                                     </div>
                                 </div>
                                 <div id="form1">
-                                    <form id="electricity-bill-form" class="form-horizontal" action="{{ route('bills.electricity.topup') }}" method="POST">
+                                    <form id="electricity-bill-form" class="form-horizontal form-prevent-multiple-submits" action="{{ route('bills.electricity.topup') }}" method="POST">
                                         @csrf
                                         <br/>
                                         <input type="hidden" name="packageId" value="{{ $product->id }}">
@@ -91,7 +91,7 @@
                                         <div class="form-group">
                                             <div class="col-xs-12">
                                                 <button id="continue" class="btn btn-flat btn-success pull-right">Continue</button>
-                                                <button id="submit" type="submit" class="btn btn-flat btn-success pull-right" style="display: none;">Submit</button>
+                                                <button id="submit" type="submit" class="btn btn-flat btn-success pull-right button-prevent-multiple-submits" style="display: none;">Submit</button>
                                             </div>
                                         </div>
                                         <br/><br/>
@@ -169,8 +169,7 @@
                     },
                     amount: {
                         required: true,
-                        minlength: '{{ strlen($product->min_amount) }}',
-                        maxlength: '{{ strlen($product->max_amount) }}'
+                        range: ['{{ $product->min_amount }}', '{{ $product->max_amount }}']
 
                     },
                     email: {
@@ -194,8 +193,7 @@
                     },
                     amount: {
                         required: 'Bill amount cannot be blank',
-                        minlength: $.validator.format("Minimum of {0} characters required."),
-                        maxlength: $.validator.format("Maximum {0} characters.")
+                        range: jQuery.validator.format("Minimum of ₦{0} Maximum of ₦{1}"),
                     },
                     email: {
                         minlength: $.validator.format("Minimum of {0} characters required."),
@@ -217,11 +215,9 @@
                 $('.overlay').show();
                 let timeOut = setTimeout(function(){ notifyError(); },10000);
                 $.ajax({
-                type:'POST',
-                url:'{{ route("bills.electricity.validate") }}',
-                data:{
-                    cardNo : $('#cardNo').val(), amount : $('#amount').val(), email : $('#email').val(),
-                    phone : $('#phone').val(), productId : '{{ $product->id  }}' },
+                    type:'POST',
+                    url:'{{ route("bills.electricity.validate",['serviceId' => $product->id ]) }}',
+                    data:{meterId : $('#cardNo').val() },
                     success:function(data){
                         clearTimeout(timeOut);
                         data.response ? finalizeBill(data) : notifyError();

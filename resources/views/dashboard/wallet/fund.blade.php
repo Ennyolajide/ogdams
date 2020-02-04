@@ -65,20 +65,21 @@
                                             <label class="col-sm-3 col-xs-12 control-label">Depositor</label>
                                             <div class="col-sm-9 col-xs-12 form-grouping">
                                                 <input type="text" class="form-control" name="depositor" value="" required>
-                                                <p class="help-block text-olive">Enter depositor name or account name.</p>
+                                                <p class="help-block text-olive">Enter Your Bank Account Name/Depositor's Name.</p>
                                             </div>
                                         </div>
                                         <div class="form-group" id="chooseBank">
                                             <label class="col-sm-3 col-xs-12 control-label">Bank</label>
                                             <div class="col-sm-9 col-xs-12 ">
-                                                <select class="form-control" id="bank" name="bankId" required>
+                                                <select class="form-control" id="bank" required>
                                                     <option value="" disabled selected>Select Our Bank </option>
                                                     @foreach ($banks as $item)
-                                                        <option value="{{ $item->id }}">
+                                                        <option value="{{ $loop->index }}">
                                                             {{ $item->bank_name }}
                                                         </option>
                                                     @endforeach
                                                 </select>
+                                                <input type="hidden" id="bankId" name="bankId"/>
                                                 <p class="help-block text-olive">Bank to transfer to</p>
                                             </div>
                                             <div class="col-sm-9 col-sm-offset-3 col-xs-12 ">
@@ -212,7 +213,7 @@
                                     <p class="text-primary text-center text-bold visible-xs h4">{{ session('modal')->transferCode }}</p>
                                 </p>
                                 <p class="h4 text-center text-danger">
-                                    You will receive @naira(session('modal')->walletAmount) in your wallet within 5 - 15mins
+                                    You will receive @naira(session('modal')->walletAmount) in your wallet within 5 - 35mins
                                 </p>
                             </section>
                         </div>
@@ -242,17 +243,17 @@
                             <section class="content">
 
                                 <h4 class="text-justify text-primary">
-                                    To complete the bank wallet funding transfer/deposit @naira(session('modal')->amount)
-                                    to the bank Details below and then click the completed button
+                                    To complete your request, kindly Transfer/Deposit @naira(session('modal')->amount)
+                                    to the Bank details provided below. Click the completed button immediately after your Payment only to avoid been barred!!!
                                 </h4>
 
                                 <ul class="list h3 text-center text-olive" style="list-style-type: none;">
                                     <li> Depositor : {{ session('modal')->depositor }} </li>
                                     @if(session('modal')->reference)
-                                        <li> Reference : {{ session('modal')->reference }} </li>
+                                        <li>Phone Number : {{ session('modal')->reference }} </li>
                                     @endif
                                     @if(session('modal')->remarks)
-                                        <li> Remarks : {{ session('modal')->remarks }} </li>
+                                        <li> Remark/Narration/Bank Trans From : {{ session('modal')->remarks }} </li>
                                     @endif
                                 </ul>
 
@@ -267,7 +268,7 @@
                                 </div>
 
                                 <p class="h4 text-center text-danger">
-                                    You will receive @naira(session('modal')->amount) in your wallet within 5 - 15mins
+                                    You will receive @naira(session('modal')->amount) in your wallet within 5 - 35mins
                                 </p>
                             </section>
                         </div>
@@ -306,53 +307,21 @@
                 });
 
                 $('#gateway').change(function() {
+                    let Limit;
                     var gateway = $('#gateway').val();
                     console.log(gateway);
                     if(gateway == 1){
                         $('#ecard-form,#airtime-form,#bank-transfer').hide();
                         $('#atmBankBitcoin-form,#amount-field').show();
                         $('#fund-wallet-form').attr('action','{{ route("paystack.pay") }}');
-
-                        $('#submit').click(function() {
-                            $('#fund-wallet-form').validate({
-                                rules: {
-                                    amount: {
-                                        required: true,
-                                        range: [ {{ config('constants.fundings.paystack.min') }}, {{ config('constants.fundings.paystack.max') }}]
-                                    }
-                                },
-                                messages: {
-                                    amount: {
-                                        required: "Please enter amount.",
-                                        range: jQuery.validator.format("Minimum of ₦{0} Maximum of ₦{1}"),
-                                    }
-
-                                }
-                            });
-                        });
+                        limit = [{{ config('constants.fundings.paystack.min') }},{{ config('constants.fundings.paystack.max') }}];
                     }else if(gateway == 2){
+                        limit = [1000, 50000];
                         $('#ecard-form,#airtime-form').hide();
                         $('#atmBankBitcoin-form,#amount-field,#bank-transfer').show();
-                        $('#submit').click(function() {
-                            $('#fund-wallet-form').validate({
-                                rules: {
-                                    amount: {
-                                        required: true,
-                                        range: [1000, 50000]
-                                    }
-                                },
-                                messages: {
-                                    amount: {
-                                        required: "Please enter amount.",
-                                        range: jQuery.validator.format("Minimum of ₦{0} Maximum of ₦{1}"),
-                                    }
-
-                                }
-                            });
-                        });
                         $('#fund-wallet-form').attr('action','{{ route("wallet.fund.bank") }}').attr('novalidate',true);
                     }else if(gateway == 3){//airtime
-                        $('#fund-wallet-form').attr('action',"{{ route('wallet.fund.airtime')}}");
+                        //$('#fund-wallet-form').attr('action',"{{-- route('wallet.fund.airtime') --}}");
                         $('#amount-field,#ecard-form,#bank-transfer').hide();
                         $('#airtime-form').show();
                         $('#airtimeAmount').keyup(function(){
@@ -373,11 +342,29 @@
                     }else if(gateway == 5){//ecard
                         $('#amount-field,#airtime-form').hide();
                         $('#ecard-form').show();
-                        $('#fund-wallet-form').attr('action','{{ route("wallet.fund.voucher") }}');
+                        //$('#fund-wallet-form').attr('action','{{ route("wallet.fund.voucher") }}');
                     }else{
 
 
                     }
+                    
+                    $('#submit').click(function() {
+                        $('#fund-wallet-form').validate({
+                            rules: {
+                                amount: {
+                                    required: true,
+                                    range: limit
+                                }
+                            },
+                            messages: {
+                                amount: {
+                                    required: "Please enter amount.",
+                                    range: jQuery.validator.format("Minimum of ₦{0} Maximum of ₦{1}"),
+                                }
+
+                            }
+                        });
+                    });
 
                 });
 
@@ -385,7 +372,8 @@
 
                 $('#chooseBank').change(function(){
                     let banks = @json($banks);
-                    let bankDetails = banks[ $('#bank').val() - 1 ];
+                    let bankDetails = banks[ $('#bank').val() ];
+                    $('#bankId').val(bankDetails.id);
                     $('.radio').find('.bankName').text(bankDetails.bank_name);
                     $('.radio').find('.accNo').text(bankDetails.acc_no);
                     $('.radio').find('.accName').text(bankDetails.acc_name);

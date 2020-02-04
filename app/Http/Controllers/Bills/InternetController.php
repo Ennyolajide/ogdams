@@ -19,10 +19,8 @@ class InternetController extends BillController
      */
     public function store()
     {
-        //check is the request is an api request
         $isApi = request()->wantsJson();
 
-        //validate request()
         $this->validate(request(), [
             'email' => $isApi ? 'sometimes|string' : 'required|email',
             'package' => $isApi ? 'sometimes|string' : 'required|json',

@@ -3,25 +3,27 @@
 namespace App\Http\Controllers;
 
 use Paystack;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Auth;
 
 class PaystackController extends PaymentController
 {
     public $url;
 
-    protected $failureResponse = 'Payment failed';
+    protected $failureResponse = 'Funding Complete';
     protected $successResponse = 'Wallet funding successful';
 
 
     /**
      * Auth Headers for Paystack
      */
-    protected function headers()
+    protected function paystackHeaders()
     {
         return [
             'Content-Type' => 'application/json',
-            'Authorization' => 'Bearer ' . env('PAYSTACK_SECRET_KEY'),
+            'Authorization' => 'Bearer ' . \config('constants.paystack.secretkey'),
         ];
     }
 
@@ -32,12 +34,18 @@ class PaystackController extends PaymentController
      */
     public function redirectToGateway()
     {
-        //$originalAmount = request()->amount * 100;
+        $this->validate(request(), [
+            'email' =>  'required|string',
+            'amount'  => 'required|numeric|min:'.config("constants.fundings.paystack.min").'|max:'.config("constants.fundings.paystack.max"),
+        ]);
         $charges = \config('constants.charges.paystack');
-        $additionalCharge = request()->amount < 2500 ? 0 : $charges['addtionalCharge'];
-        $totalTranxCharge = (($charges['chargePercentage'] / 100 * request()->amount) + $additionalCharge);
-        $cappedTranxCharge = $totalTranxCharge < 2000 ? $totalTranxCharge : $charges['cappedCharge'];
-        request()->merge(['amount' => ((request()->amount + $cappedTranxCharge) * 100)]);
+        $charge = $charges['chargePercentage'] / 100 * request()->amount;
+        $charge = request()->amount < 2500 ? $charge : ($charge + $charges['addtionalCharge']);
+        $totalTranxCharge = $charge < 2000 ? $charge : $charges['cappedCharge'];
+        request()->merge([
+            'amount' => ((request()->amount + $totalTranxCharge) * 100),
+            'metadata' => json_encode(['amount' => request()->amount * 100]),
+        ]);
 
         return Paystack::getAuthorizationUrl()->redirectNow();
     }
@@ -48,12 +56,13 @@ class PaystackController extends PaymentController
     public function handleGatewayCallback()
     {
         $paymentDetails = Paystack::getPaymentData();
-        //execute fund user wallet method
         $status = $this->fundUserWallet($paymentDetails['data']);
-        //set success / failure message for user
         $message = $status ? $this->successResponse : $this->failureResponse;
-        //redirect back and show message
-        return redirect(route('wallet.fund'))->withNotification($this->clientNotify($message, $status));
+        if (Auth::user()->role == 'admin') {
+            $message = $status ? 'Wallet funded' : 'Transaction has been completed';
+            return redirect()->route('admin.paystack.transactions')->withNotification($this->clientNotify($message, true));
+        }
+        return redirect(route('wallet.fund'))->withNotification($this->clientNotify($message, true));
     }
 
     /**
@@ -64,6 +73,16 @@ class PaystackController extends PaymentController
         return json_decode($this->getPaystack('bank'));
     }
 
+
+    public function queryPaysackTransaction()
+    {
+        $this->validate(request(), ['reference' => 'required|string|min:5|max:25']);
+        $query = '?trxref=' . request()->reference . '&reference=' . request()->reference;
+
+        return redirect(route('paystack.callback') . $query);
+    }
+
+
     /**
      * Make a paystack call
      */
@@ -71,7 +90,7 @@ class PaystackController extends PaymentController
     {
         $endPoint = \config('constants.url.paystack') . $query;
         $client = new \GuzzleHttp\Client(['http_errors' => false]);
-        $request = $client->get($endPoint, ['headers' => $this->headers()]);
+        $request = $client->get($endPoint, ['headers' => $this->paystackHeaders()]);
         $status = $request->getStatusCode() == '200' ? true : false;
         return $status ? $request->getBody()->getContents() : false;
     }

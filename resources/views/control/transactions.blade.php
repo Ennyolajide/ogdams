@@ -24,6 +24,7 @@
                 <div class="x_panel">
                     <div class="x_title">
                         <h3>Transactions</h3>
+                        <span class="pull-right"> &nbsp;&nbsp;&nbsp;<a href="{{ route('admin.transaction.search.index') }}" class="btn btn-rounded btn-info pull-right">Search</a></span></h3>
                         <div class="clearfix"></div>
                     </div>
                     <!-- /.box-header -->
@@ -110,7 +111,7 @@
                         <div class="row" style="font-size: 20px;">
                             <div class="col-md-5 col-xs-11  col-xs-offset-1 col-sm-offset-1 col-md-offset-1">
                                 <small>Transaction Reference :</small>
-                                <p class=""><b> {{ '7e38yrb8383hnfj8f8' }} </b></p>
+                                <p class="text-justify" style="font-size: 15px;"><b> {{ $transaction->reference }} </b></p>
                             </div>
                             <div class="col-md-5 col-xs-11 col-xs-offset-1 col-sm-offset-1 col-md-offset-1">
                                 <small>Transaction Type : </small>

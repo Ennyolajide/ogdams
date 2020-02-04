@@ -23,11 +23,9 @@ class DashboardController extends Controller
      */
     public function dashboardIndex()
     {
-        $referrals = User::where('referrer', Auth::user()->wallet_id);
-
         $transactions = Transaction::where('user_id', Auth::user()->id)
             ->take(10)->latest()->get();
-        return view('dashboard.index', compact('transactions', 'referrals'));
+        return view('dashboard.index', compact('transactions'));
     }
 
     /**

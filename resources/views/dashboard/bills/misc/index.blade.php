@@ -46,7 +46,7 @@
                                     </div>
                                 </div>
                                 <div id="form1">
-                                    <form id="misc-bill-form" class="form-horizontal" action="{{ route('bills.misc.topup') }}" method="POST">
+                                    <form id="misc-bill-form" class="form-horizontal form-prevent-multiple-submits" action="{{ route('bills.misc.topup') }}" method="POST">
                                         @csrf
                                         <br/>
                                         <div class="form-group">
@@ -86,7 +86,7 @@
                                         <br/>
                                         <div class="form-group">
                                             <div class="col-xs-12">
-                                                <button id="submit" type="submit" class="btn btn-flat btn-success pull-right">Submit</button>
+                                                <button id="submit" type="submit" class="btn btn-flat btn-success pull-right button-prevent-multiple-submits">Submit</button>
                                             </div>
                                         </div>
                                         <br/><br/>

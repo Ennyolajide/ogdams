@@ -19,7 +19,6 @@ class BankController extends PaystackController
      */
     protected function resolveBankDetails()
     {
-        //validate request()
         $this->validate(request(), [
             'bankName' => 'required|string',
             'bankCode' => 'required|min:3|max:5',
@@ -38,8 +37,10 @@ class BankController extends PaystackController
         $charges = Charge::whereService('addbank')->first()->amount;
 
         $bankDetails = $this->resolveBankDetails()['data'] ?? false;
+        $accountExist = $this->accountExist();
 
-        if (!$this->accountExist()) {
+        if (!$accountExist) {
+
             if ($bankDetails && Auth::user()->balance >= $charges) {
                 $status = $this->addBank($bankDetails) ? $this->debitWallet($charges) : false;
                 $status ? $this->notify($this->addBankDetailsNotification($charges)) : false;
@@ -49,8 +50,19 @@ class BankController extends PaystackController
                 $message = $this->failureResponse;
             }
         } else {
-            $status = false;
-            $message = $this->existResponse;
+            if ($accountExist->deleted_at) {
+                if ($bankDetails && Auth::user()->balance >= $charges) {
+                    $status = $accountExist->restore() ? $this->debitWallet($charges) : false;
+                    $status ? $this->notify($this->addBankDetailsNotification($charges)) : false;
+                    $message = $status ? $this->successResponse : $this->errorResponse;
+                } else {
+                    $status = false;
+                    $message = $this->failureResponse;
+                }
+            } else {
+                $status = false;
+                $message = $this->existResponse;
+            }
         }
 
         return back()->withNotification($this->clientNotify($message, $status));
@@ -72,7 +84,7 @@ class BankController extends PaystackController
      */
     protected function accountExist()
     {
-        return Bank::where('acc_no', request()->accountNumber)
+        return Bank::withTrashed()->where('acc_no', request()->accountNumber)
             ->where('user_id', Auth::user()->id)
             ->first();
     }
@@ -88,13 +100,5 @@ class BankController extends PaystackController
             'acc_no' => $bankDetails['account_number'],
             'acc_name' => $bankDetails['account_name'],
         ]);
-    }
-
-    /**
-     * Get the charges for the Adding a new Bank Account
-     */
-    protected function addBankDetailsCharges()
-    {
-        return 100;
     }
 }

@@ -33,7 +33,7 @@ class SmsChargesController extends ModController
     public function editChargesConfig(Charge $service)
     {
         //validate request
-        $this->validate(request(), ['amount' => 'required|numeric|min:1']);
+        $this->validate(request(), ['amount' => 'required|numeric']);
         $status = $service->update(['amount' => request()->amount]);
         $message = $status ? $this->successResponse : $this->failureResponse;
 

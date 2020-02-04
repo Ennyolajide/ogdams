@@ -12,6 +12,7 @@
     <div>
         <a class="hiddenanchor" id="signup"></a>
         <a class="hiddenanchor" id="signin"></a>
+        <a class="hiddenanchor" id="reset"></a>
 
         <div class="login_wrapper">
             <div class="animate form login_form">
@@ -36,7 +37,7 @@
                             <input type="password" name="password" class="form-control" placeholder="Password" required="" />
                         </div>
                         <div>
-                            <a class="reset_pass text-15" href="{{ route('user.passwordReset') }}">Lost your password?</a>
+                            <a class="reset_pass text-15" href="{{ route('user.password.reset') }}">Lost your password?</a>
                             <button class="btn btn-rounded btn-success submit pull-right" type="submit">Log in</button>
                         </div>
 
@@ -81,12 +82,12 @@
                             </div>
                         @else
                             <div>
-                                <input type="text" name="referrerId" value="" class="form-control" placeholder="Referrer Wallet Id">
+                                <input type="text" name="referrerId" value="" class="form-control" placeholder="Referrer Wallet ID- Ignore if there is no Referrer">
                             </div>
                         @endif
 
                         <div>
-                            <input type="text" name="name" class="form-control" placeholder="Fullname" required="" />
+                            <input type="text" name="name" class="form-control" placeholder="Full Name" required="" />
                         </div>
                         <div>
                             <input type="email" name="email" class="form-control" placeholder="Email" required="" />
@@ -98,7 +99,7 @@
                             <input type="password" name="password" class="form-control" placeholder="Password" required="" />
                         </div>
                         <div>
-                            <input type="password" name="password_confirmation" class="form-control" placeholder="Retype password" required="" />
+                            <input type="password" name="password_confirmation" class="form-control" placeholder="Retype Password" required="" />
                         </div>
                         <div>
                             <button class="btn btn-success submit" type="submit" >Register</a>

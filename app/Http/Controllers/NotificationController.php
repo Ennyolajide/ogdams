@@ -5,7 +5,10 @@ namespace App\Http\Controllers;
 use Twilio\Rest\Client;
 use Faker\Generator as Faker;
 use App\Mail\OrderNotification;
+use Illuminate\Support\Facades\Log;
+use App\Http\Controllers\Exception;
 use Illuminate\Support\Facades\Mail;
+use function GuzzleHttp\json_decode;
 
 class NotificationController extends  DashboardController
 {
@@ -58,6 +61,17 @@ class NotificationController extends  DashboardController
         $notification['subject'] = 'Debit Notification';
         $notification['content'] = 'Your wallet has been debited with ';
         $notification['content'] .= $this->naira($dataPlan->amount) . ' for data topup to ' . request()->phone;
+
+        return $notification;
+    }
+
+    protected function dataPurchaseDeclineNotification($trans)
+    {
+        $notification['subject'] = 'Credit Notification';
+        $notification['content'] = 'Your wallet has been credited with ';
+        $notification['content'] .= $this->naira($trans->class->amount) . ' for data topup( ' . $trans->class->phone . ' ) ';
+        $notification['content'] .= 'reversal as a result of technical timeout <br/>';
+        $notification['content'] .= 'We apologize for any inconvenience this may have caused';
 
         return $notification;
     }
@@ -126,33 +140,21 @@ class NotificationController extends  DashboardController
 
     protected function miscTopupNotification($details, $uniqueReference, $responseObject)
     {
-        $responseObject = $responseObject->original;
-        $notification['subject'] = 'Debit Notification';
-        $notification['content'] = 'Your wallet has been debited with ' . $this->naira($details['amount']);
-        $notification['content'] .= ' for ' . $details['product'] . '(' . $details['type'] . ') .... Reference : ' . $uniqueReference;
-        $notification['content'] .= $responseObject->pin_based ? '<br/><br/><pre>' . json_encode($responseObject->pins[0]) . '</pre>' : '';
-
+        try {
+            $amount = $this->naira($details['amount']);
+            $responseObject = $responseObject->original;
+            $notification['subject'] = 'Debit Notification';
+            $notification['content'] = 'Your wallet has been debited with ' . $amount;
+            $notification['content'] .= ' for ' . $details['product'] . '(' . $details['type'] . ')';
+            $notification['content'] .= 'Transaction Reference : <span class="text-primary">' . $uniqueReference.'</span><br/><br/>';
+            $notification['content'] .= $responseObject->pin_based ? '<pre class="text-success">'.json_encode($responseObject->pins).'</pre>' : '';
+        } catch (\Exception $e) {
+            Log::info('Cound not Format Misc Topup Notification');
+        }
         return $notification;
     }
 
 
-    protected function addBankDetailsNotification($charges)
-    {
-        $notification['subject'] = 'Debit Notification';
-        $notification['content'] = 'Your wallet has been debited with ';
-        $notification['content'] .= $this->naira($charges) . ' for adding a new bank account to your profile';
-
-        return $notification;
-    }
-
-    protected function referralBonusNotification($user, $amount)
-    {
-        $notification['subject'] = 'Credit Notification';
-        $notification['content'] = 'Your wallet has been Credit with with ';
-        $notification['content'] .= $this->naira($amount) . ' As referral bonus for the referred user ' . $user->name;
-
-        return $notification;
-    }
 
     /**
      * Notify Client of something that happend
@@ -183,7 +185,11 @@ class NotificationController extends  DashboardController
      */
     protected function notifyAdminViaEmail($subject, $content, $toEmail)
     {
-        Mail::to($toEmail)->send(new OrderNotification($subject, $content));
+        try {
+            Mail::to($toEmail)->send(new OrderNotification($subject, $content));
+        } catch (\Exception $e) {
+            Log::info('Cound not send Admin Notification Email');
+        }
     }
 
     /**
@@ -191,12 +197,16 @@ class NotificationController extends  DashboardController
      */
     protected function notifyAdminViaSms($to, $message)
     {
-        $client = new \GuzzleHttp\Client();
-        $client->post(\config('constants.url.smartsmssolutions') . '?json', [
-            'form_params' => [
-                'sender' => env('SITE_SMS_SENDER_ID'), 'message' => $message, 'to' => $to,
-                'type' => '0', 'routing' => 3, 'token' => env('SMARTSMSSOLUTION_TOKEN')
-            ]
-        ]);
+        try {
+            $client = new \GuzzleHttp\Client(['http_errors' => false]);
+            $client->post(\config('constants.url.smartsmssolutions') . '?json', [
+                'form_params' => [
+                    'sender' => \config('constants.site.sms.sender'), 'message' => $message, 'to' => $to,
+                    'type' => '0', 'routing' => 3, 'token' => \config('constants.smartsmssolutions.token')
+                ]
+            ]);
+        } catch (\Exception $e) {
+            Log::info('Cound not send Admin Notification Sms');
+        }
     }
 }

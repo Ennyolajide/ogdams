@@ -51,9 +51,14 @@
                                     </thead>
                                     <tbody>
                                         @php
-                                            function getStatus($status){
+                                            function getStatus($transaction){
                                                 $array = ['Declined','Pending','Success','Canceled'];
-                                                return $status === NULL ? 'Pending' : $array[$status];
+                                                $status = $transaction->status === NULL ? 'Pending' : $array[$transaction->status];
+                                                if($transaction->class->type == 'Data Topup'){
+                                                    $status = $transaction->class->network == '9mobile Gifting' ? $status : str_replace('Pending', 'Success', $status);
+                                                }
+                                                return $status;
+
                                             }
                                         @endphp
 
@@ -63,8 +68,7 @@
                                                 <td class="hidden-xs">{{ str_limit($transaction->reference, 10, '...') }}</td>
                                                 <td class="text-right">@naira($transaction->amount)</td>
                                                 <td>{{ $transaction->class->type }}</td>
-
-                                                <td>{{ getStatus($transaction->status) }}</td>
+                                                <td>{{ getStatus($transaction) }} </td>
                                                 <td class="hidden-xs">{{ $transaction->created_at }}</td>
                                                 <td>
                                                 <a href="#" data-toggle="modal" data-target="#{{ $transaction->id }}">
@@ -130,13 +134,16 @@
                 <div class="modal-body">
                     <div class="row" style="font-size: 20px;">
                         <div class="col-md-5 col-xs-11  col-xs-offset-1 col-sm-offset-1 col-md-offset-1">
-                            <small>Transaction Reference :</small>
-                            <p class=""><b> {{ $transaction->reference }} </b></p>
+                            <small>Transaction Type : </small>
+                            <p class=""><b> {{ $transaction->class->type }}  </b></p>
                         </div>
                         <div class="col-md-5 col-xs-11 col-xs-offset-1 col-sm-offset-1 col-md-offset-1">
-                            <small>Transaction Type : </small>
-                            <p class=""><b> {{ $transaction->class->type }} </b></p>
-
+                            <small>Transaction {{ $transaction->class->type == 'Data Topup' ? 'Object' : 'MEthod' }} </small>
+                            <p class="">
+                                <b>{{ $transaction->class->type == 'Data Topup'
+                                        ? $transaction->class->phone : $transaction->method }}
+                                </b>
+                            </p>
                         </div>
                         <div class="col-md-5 col-xs-11 col-xs-offset-1 col-sm-offset-1 col-md-offset-1">
                            <small>Transaction Amount : </small>
@@ -152,9 +159,12 @@
                         </div>
                         <div class="col-md-5 col-xs-11 col-xs-offset-1 col-sm-offset-1 col-md-offset-1">
                             <small>Transaction Status </small>
-                            <p class=""><b> {{ getStatus($transaction->status) }} </b></p>
+                            <p class=""><b> {{ getStatus($transaction) }} </b></p>
                         </div>
-
+                        <div class="col-md-12 col-xs-12 text-center">
+                            <small>Transaction Reference </small>
+                            <p class="" style="font-size: 15px;"><b> {{ $transaction->reference }} </b></p>
+                        </div>
 
                     </div>
                 </div>

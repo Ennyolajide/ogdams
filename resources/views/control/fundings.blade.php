@@ -35,6 +35,7 @@
                     <!-- /.box-header -->
                     <div class="x_content">
                         <div class="col-md-12 col-sm-12 col-xs-12">
+                            <br/>
                             <table id="transactions-table" class="table table-bordered table-striped">
                                 <thead>
                                     <tr>
@@ -166,7 +167,7 @@
                                 <form method="POST" action="{{ route('admin.fundings.edit',['trans' => $transaction->id] ) }}">
                                     @method('patch')
                                     @csrf
-                                    <button type="submit" name="decline" class="btn btn-danger pull-left">Deline</button>
+                                    <button type="submit" name="decline" class="btn btn-danger pull-left">Decline</button>
                                     <button type="submit" name="completed" class="btn btn-primary">Completed</button>
                                 </form>
                             @endif

@@ -26,8 +26,10 @@ Route::get('/register/{referrer?}', 'RegisterController@index')->name('user.regi
 Route::post('/register/create', 'RegisterController@register')->name('user.register.create');
 
 Route::get('users/verify/{email}/{token}', 'VerificationController@verify');
-Route::get('users/reset', 'PasswordResetController@index')->name('user.passwordReset');
-Route::post('users/reset', 'PasswordResetController@reset')->name('user.passwordReset');
+Route::get('users/reset', 'PasswordResetController@index')->name('user.password.reset');
+Route::post('users/password/reset', 'PasswordResetController@reset')->name('user.password.reset.request');
+Route::get('users/reset/{email}/{token}', 'PasswordResetController@verify')->name('user.password.reset.verify');
+Route::patch('users/reset/{email}/{token}', 'PasswordResetController@change')->name('user.password.reset.change');
 
 
 Route::get('/dashboard', 'DashboardController@dashboardIndex')->name('dashboard.index');
@@ -58,9 +60,9 @@ Route::post('/dashboard/data/buy', 'DataController@store')->name('data.buy');
 //Route::post('dashboard/airtime/cash', 'AirtimeController@airtime2cash')->name('airtime.toCash');
 
 
-Route::get('dashboard/airtime/swap', 'AirtimeSwapController@index')->name('airtime.swap'); //not in use
-Route::post('dashboard/airtime/swap', 'AirtimeSwapController@store')->name('airtime.swap'); //not in use
-Route::patch('dashboard/airtime/swap/{airtimeRecord}', 'AirtimeSwapController@completed')->name('airtime.swap.completed'); // not in use
+//Route::get('dashboard/airtime/swap', 'AirtimeSwapController@index')->name('airtime.swap'); //not in use
+//Route::post('dashboard/airtime/swap', 'AirtimeSwapController@store')->name('airtime.swap'); //not in use
+//Route::patch('dashboard/airtime/swap/{airtimeRecord}', 'AirtimeSwapController@completed')->name('airtime.swap.completed'); // not in use
 Route::get('dashboard/airtime/cash', 'AirtimeToCashController@index')->name('airtime.cash');
 Route::post('dashboard/airtime/cash', 'AirtimeToCashController@store')->name('airtime.cash');
 Route::patch('dashboard/airtime/cash/{airtimeRecord}', 'AirtimeToCashController@completed')->name('airtime.cash.completed');
@@ -68,9 +70,9 @@ Route::patch('dashboard/airtime/cash/{airtimeRecord}', 'AirtimeToCashController@
 Route::get('dashboard/wallet/fund', 'WalletController@index')->name('wallet.fund');
 Route::post('dashboard/wallet/fund', 'WalletController@store')->name('wallet.fund');
 
-Route::get('dashboard/wallet/fund/airtime', 'AirtimeFundingController@display')->name('wallet.fund.airtime');
-Route::post('dashboard/wallet/fund/airtime', 'AirtimeFundingController@store')->name('wallet.fund.airtime');
-Route::patch('dashboard/wallet/fund/airtime/{airtimeRecord}', 'AirtimeFundingController@scompleted')->name('wallet.fund.airtime.completed');
+//Route::get('dashboard/wallet/fund/airtime', 'AirtimeFundingController@display')->name('wallet.fund.airtime');// not in use
+//Route::post('dashboard/wallet/fund/airtime', 'AirtimeFundingController@store')->name('wallet.fund.airtime');// not in use
+//Route::patch('dashboard/wallet/fund/airtime/{airtimeRecord}', 'AirtimeFundingController@scompleted')->name('wallet.fund.airtime.completed');// not in use
 
 Route::post('dashboard/wallet/fund/bank', 'BankTransferController@store')->name('wallet.fund.bank');
 Route::patch('dashboard/wallet/fund/bank/{bankTransferRecord}', 'BankTransferController@completed')->name('wallet.fund.bank.completed');
@@ -85,7 +87,8 @@ Route::post('dashboard/wallet/withdraw', 'WithdrawalController@store')->name('wa
 //Paystack
 Route::post('dashboard/payments/card', 'PaystackController@redirectToGateway')->name('paystack.pay');
 Route::get('dashboard/payments/callback', 'PaystackController@handleGatewayCallback')->name('paystack.callback');
-Route::get('dashboard/paystack/webhook', 'WebhookController@paystack')->name('paystack.webhook');
+Route::post('control/payments.query', 'PaystackController@queryPaysackTransaction')->name('paystack.transaction.query');
+Route::post('payments/paystack/webhook', 'WebhookController@paystackHook')->name('paystack.webhook');
 
 //Sms
 Route::get('dashboard/sms/bulk', 'SmsController@display')->name('sms.bulk');
@@ -110,11 +113,11 @@ Route::namespace('Bills')->group(function () {
     //post
     Route::post('misc/topup', 'MiscController@store')->name('bills.misc.topup');
     Route::post('dashboard/bills/tv/topup', 'TvController@store')->name('bills.tv.topup');
-    Route::post('tv/validate', 'TvController@validateSmartCard')->name('bills.tv.validate');
+    Route::post('tv/validate/{provider}', 'TvController@validateSmartCard')->name('bills.tv.validate');
     Route::post('internet/topup', 'InternetController@store')->name('bills.internet.topup');
     Route::post('dashboard/airtime/topup', 'AirtimeTopupController@store')->name('airtime.topup');
     Route::post('electricity/topup', 'ElectricityController@store')->name('bills.electricity.topup');
-    Route::post('electricity/validate', 'ElectricityController@validateMeter')->name('bills.electricity.validate');
+    Route::post('electricity/{serviceId}/validate', 'ElectricityController@validateMeter')->name('bills.electricity.validate');
 });
 
 
@@ -123,10 +126,13 @@ Route::get('dashboard/transactions', 'TransactionController@transactionIndex')->
 /**
  * Bill Payments
  */
-Route::namespace('Control')->group(function () {
+Route::namespace('Control')->middleware('admin')->group(function () {
     // Controllers Within The "App\Http\Controllers\Control" Namespace
     Route::get('control', 'ModController@index')->name('admin.index');
     Route::get('control/transactions', 'TransactionsController@show')->name('admin.transactions');
+    Route::post('control/transactions', 'TransactionsController@searchTransactions')->name('admin.transaction.search');
+    Route::get('control/transactions/search', 'TransactionsController@searchIndex')->name('admin.transaction.search.index');
+    Route::get('control/transactions/user/{user}', 'TransactionsController@userTransactions')->name('admin.user.transactions');
 
     //Airtime Dashbaord
     Route::patch('control/airtimes/funding/{trans}/edit', 'AirtimesController@funding')->name('admin.airtimes.fundings');
@@ -141,6 +147,8 @@ Route::namespace('Control')->group(function () {
     //Fundings Dashboard
     Route::patch('control/fundings/{trans}/edit', 'FundingsController@edit')->name('admin.fundings.edit');
     Route::get('control/fundings', 'FundingsController@show')->name('admin.fundings');
+
+    Route::get('control/paystack/transactions', 'FundingsController@paystackTransactions')->name('admin.paystack.transactions');
 
     //Withdrawal Dashbaord
     Route::patch('control/withdrawals/{trans}/edit', 'WithdrawalsController@edit')->name('admin.withdrawals.edit');
@@ -171,7 +179,7 @@ Route::namespace('Control')->group(function () {
     Route::patch('settings/bills/{subProduct}/edit', 'BillsController@edit')->name('admin.bill.config.edit');
 
     //Banks
-    Route::get('settings/banks', 'BanksController@bankSettings')->name('admin.banks');
+    //Route::get('settings/banks', 'BanksController@bankSettings')->name('admin.banks'); // not in use
 
     //Users
     Route::get('control/users', 'UsersController@usersIndex')->name('admin.users');

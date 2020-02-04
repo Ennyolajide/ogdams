@@ -61,7 +61,7 @@ class MiscController extends BillController
                 'target' => $status ? $this->responseObject->original->target : '',
                 'topup_amount' => $pinBased ? $this->responseObject->original->topup_amount : '',
                 'operator' => $pinBased ? $this->responseObject->original->operator_name : '',
-                'pins' => $status ? $this->responseObject->original->pins : '',
+                'pins' => $pinBased ? $this->responseObject->original->pins  : '',
             ], 200);
         }
 
@@ -97,5 +97,6 @@ class MiscController extends BillController
 
             return $status;
         }
+        return false;
     }
 }

@@ -42,7 +42,7 @@
                                     </div>
                                 </div>
                                 <br />
-                                <form id="airtime-topup-form" class="form-horizontal" action="{{ route('airtime.topup') }}" method="post">
+                                <form id="airtime-topup-form" class="form-horizontal form-prevent-multiple-submits" action="{{ route('airtime.topup') }}" method="post">
                                     @csrf
                                     <div class="form-group" id="choose-wallet-type">
                                         <label for="inputWallet" class="control-label col-md-2 col-sm-2 col-xs-12">Network </label>
@@ -74,14 +74,14 @@
                                         <div class="form-group">
                                             <label class="col-sm-2 col-xs-12 control-label">Amount</label>
                                             <div class="col-sm-10 col-xs-12 form-grouping">
-                                                <input type="text" class="form-control" name="amount" placeholder="Please Enter Phone Number">
+                                                <input type="text" class="form-control" name="amount" placeholder="Please Enter Amount">
                                             </div>
                                         </div>
                                     </div>
                                     <br/>
                                     <div class="form-group">
                                         <div class="col-xs-12">
-                                            <button id="submit" class="btn btn-flat btn-success pull-right">&nbsp;&nbsp;&nbsp;&nbsp;Topup&nbsp;&nbsp;&nbsp;&nbsp;</button>
+                                            <button id="submit" class="btn btn-flat btn-success pull-right button-prevent-multiple-submits">&nbsp;&nbsp;&nbsp;&nbsp;Topup&nbsp;&nbsp;&nbsp;&nbsp;</button>
                                         </div>
                                     </div>
                                 </form>

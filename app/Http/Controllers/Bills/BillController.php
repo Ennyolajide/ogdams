@@ -45,26 +45,14 @@ class BillController extends RingoController
         } else if ($service === 'electricity') {
             $this->responseObject = $this->electricityTopup($product);
         }
-        Log::info('Refernce : ' . $uniqueReference . ' -> Response Object' . $this->responseObject);
+        Log::info('Refernce : ' . $uniqueReference . ' ' . $service . '-> Response Object' . $this->responseObject);
         $status = $this->responseObject ? $this->debitWallet($details['amount'] + $this->charges) : false;
         $this->failureResponse = $this->responseObject ? $this->failureResponse : $product->name . ' ' . $this->apiErrorResponse;
         $topupRecord = $this->storeTopup($details, $status);
-        $transaction = $this->recordTransaction($topupRecord, $uniqueReference, $status, $status, false, true);
+        $this->recordTransaction($topupRecord, $uniqueReference, $status, $status, false, true);
 
         return $status;
     }
-
-
-
-    /**
-     * Bill Validator api
-     */
-    /*     public function billValidator($service, $productId)
-    {
-        $this->validate(request(), ['serviceId' => 'numeric|min:1', 'meterId' => 'string|min:8']);
-
-        return $this->billValidation(request()->serviceId, request()->meterId);
-    } */
 
 
     /**

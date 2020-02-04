@@ -19,7 +19,7 @@
 
     @section('content')
         <!-- Main content -->
-        <div class="row">
+        <div class="row" id="content">
             <div class="col-md-12 col-sm-12 col-xs-12">
                 <div class="x_panel">
                     <div class="x_title">
@@ -38,69 +38,62 @@
                                 <div class="row">
                                     <div class="col-xs-12 col-md-12">
                                         <br/>
-                                        <!--img style="height: 60px; width:50px; display:none; margin-right:5px;" id="network-image" class="img-responsive pull-right"-->
+                                        <img v-if="networkImage" v-bind:src="networkImage" style="height: 60px; width:50px; margin-right:5px;" class="img-responsive pull-right">
                                     </div>
                                 </div>
-                                <form id="data-purchase-form" class="form-horizontal" action="{{ route('data.buy') }}" method="post">
+                                <form id="data-purchase-form" class="form-horizontal form-prevent-multiple-submits" action="{{ route('data.buy') }}" method="post">
                                     @csrf
                                     <br/>
                                     <div class="form-group" id="choose-wallet-type">
-                                        <label for="inputWallet" class="col-sm-2 col-xs-12 control-label">network</label>
+                                        <label class="col-sm-2 col-xs-12 control-label">Network</label>
 
-                                        <div class="col-sm-10 col-xs-12 ">
-                                            <select class="form-control" id="network">
-                                                <option value="" disabled selected>Select network Type</option>
-                                                @foreach ($networks as $network)
-                                                    @if($network->available == false) @continue @endif
-                                                    <option value="{{ $network->network_id }}">
-                                                        {{ strtoupper($network->network) }}
-                                                    </option>
-                                                @endforeach
+                                        <div class="col-sm-10 col-xs-12 form-grouping">
+                                            <select class="form-control"  v-model="dataPlans"  v-on:change="showPlans">
+                                                <option value="" disabled>Select Network Type</option>
+                                                <option v-for="network in networks" v-bind:value="network">
+                                                    ${ network[0].network.toUpperCase() }
+                                                </option>
                                             </select>
                                         </div>
                                     </div>
                                     <br/>
-                                    <div id="other-fields" style="display:none;">
+                                    <div id="other-fields">
                                         <div class="form-group" id="data-plan">
-                                            <label class="col-sm-2 col-xs-12 control-label" >Choose data plan</label>
-                                            <div class="col-sm-10 col-xs-12 ">
-                                                @foreach ($networks as $network)
-                                                    <select class="form-control plans {{ str_replace(' ', '' ,strtolower($network->network)) }}" name="plan" style="display:none;">
-                                                        <option value="" disabled selected>Choose a data plan</option>
-                                                        @foreach ($network->plans as $plan)
-                                                            <option value="{{ $plan->id }}">
-                                                                {{ $plan->volume }} =  @naira($plan->amount)
-                                                            </option>
-                                                        @endforeach
-                                                    </select>
-                                                @endforeach
+                                            <label class="col-sm-2 col-xs-12 control-label" >Choose Data Plan</label>
+                                            <div class="col-sm-10 col-xs-12  form-grouping">
+                                                <select class="form-control" name="plan" v-model="dataPlan">
+                                                    <option value="" disabled>Choose a Data Plan</option>
+                                                    <option v-for="dataPlan in dataPlans" v-bind:value="dataPlan.id">
+                                                        ${ dataPlan.volume } = ₦ ${ dataPlan.amount }
+                                                    </option>
+                                                </select>
                                             </div>
                                         </div>
                                         <br/>
                                         <div class="form-group">
                                             <label class="col-sm-2 col-xs-12 control-label">Phone Number</label>
                                             <div class="col-sm-10 col-xs-12 form-grouping">
-                                                <input type="text" class="form-control" name="phone" placeholder="Pls Eneter Phone Number">
+                                                <input type="text" class="form-control" name="phone" placeholder="Please Enter Phone Number">
                                             </div>
                                         </div>
                                         <br/>
                                         <div class="form-group">
                                             <div class="col-x-12">
-                                                <button id="submit" class="btn btn-flat btn-success pull-right">&nbsp;&nbsp;&nbsp;&nbsp;Submit&nbsp;&nbsp;&nbsp;&nbsp;</button>
+                                                <button id="submit" class="btn btn-flat btn-success pull-right button-prevent-multiple-submits">&nbsp;&nbsp;&nbsp;&nbsp;Submit&nbsp;&nbsp;&nbsp;&nbsp;</button>
                                             </div>
                                             <br/>
                                         </div>
                                     </div>
                                 </form>
                                 <br/><br/>
-                                <div class="form-grouping" id="network-images">
+                                <div class="form-grouping">
                                     <div class="row">
                                         @foreach ($networks as $network)
-                                            @if ($loop->iteration > 4)
+                                            @if ($network[0]->addon)
                                                 @continue
                                             @endif
                                             <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
-                                                <img src="\images/networks/{{ strtolower($network->network) }}.png" class="img-responsive">
+                                                <img src="\images/networks/{{ strtolower($network[0]->network) }}.png" class="img-responsive">
                                             </div>
                                         @endforeach
                                     </div>
@@ -124,8 +117,7 @@
 
         <script src="https://ajax.aspnetcdn.com/ajax/jquery.validate/1.16.0/jquery.validate.min.js"></script>
         <script>
-            $(document).ready(function(){
-                $('#mtnImage,#airtelImage,#gloImage,#9mobileImage').hide();
+           $(document).ready(function(){
 
                 $.validator.setDefaults({
                     errorClass: 'help-block',
@@ -146,29 +138,62 @@
                         phone: {
                             required: true,
                             number: true
+                        },
+                        plan: {
+                            required: true,
                         }
                     },
                     messages: {
                         phone: {
                             required: "Please enter phone number.",
                             number:  "Phone numbers only "
+                        },
+                        plan: {
+                            required: "Please select a dataplan",
                         }
 
                     }
                 });
 
-                $('#network').change(function() {
+               /*  $('#network').change(function() {
                     console.log($('#network').val());
                     $('#network-images,#data-plan,.plans').hide();
                     $('#other-fields,#network-image').show();
                     let networks = @json($networks);
                     let networkId = $('#network').val();
+                    console.log(networks);
                     let network = networks.splice((networkId-1),1)[0].network.toLowerCase().replace(/ /g,'');
                     $('#data-plan,.'+network).show();
                     $('#network-image').attr('src','\images/networks/'+network+'.png');
-                });
+                }); */
 
             });
 
+
+            new Vue({
+                delimiters: ['${', '}'],
+                el : '#content',
+                data : {
+                    dataPlan : '',
+                    dataPlans : '',
+                    networkImage : false,
+                    networks: @json($networks),
+                },
+                methods : {
+                    showPlans : function () {
+                        if(this.dataPlans.length > 0){
+                            if(this.dataPlans[0].network == '9mobile Gifting') {
+                                this.networkImage = '/images/networks/9mobile.png';
+                            }else{
+                                this.networkImage = `/images/networks/${this.dataPlans[0].network.toLowerCase()}.png`;
+                                console.log(this.networkImage);
+                            }
+                        }
+                    },
+
+
+                }
+
+            });
         </script>
     @endSection

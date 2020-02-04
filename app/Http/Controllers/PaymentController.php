@@ -4,19 +4,21 @@ namespace App\Http\Controllers;
 
 use App\User;
 use App\Payment;
+use App\Transaction;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
-class PaymentController extends TransactionController
+
+class PaymentController extends Controller
 {
     protected $user;
     /**
      * Record Payment
      */
-    public function storePayment($object, $status)
+    public function storePayment($object, $user, $status)
     {
         return Payment::create([
-            'user_id' => Auth::user()->id, 'amount' => (($object['amount'] - $object['fees']) / 100),
+            'user_id' => $user->id, 'amount' => ($object['metadata']['amount'] / 100),
             'object' => json_encode($object, true), 'type' => 'Card Payment', 'class' => 'App\Payment',
             'transaction_type' => 1, 'reference' => $object['reference'], 'status' => $status ? 2 : 0
         ]);
@@ -27,7 +29,6 @@ class PaymentController extends TransactionController
      */
     protected function fundUserWallet($object)
     {
-        //dd($object);
         //check if status does not exist in the db
         $doesNotExist = $this->referenceDoesNotExist($object);
         //check the status of the payment object and also make sure reference doest not exist in db
@@ -35,8 +36,8 @@ class PaymentController extends TransactionController
         //get User( transaction owner)
         $user = User::whereEmail($object['customer']['email'])->first();
         //Record payments of reference does not exist in db
-        $amount = (($object['amount'] - $object['fees']) / 100);
-        $paymentRecord = $doesNotExist ? $this->storePayment($object, $status) : false;
+        $amount = ($object['metadata']['amount'] / 100);
+        $paymentRecord = $doesNotExist ? $this->storePayment($object, $user, $status) : false;
         //Credit Referral Bonus
         $referralBonus = $user->first_time_funding && $user->referrer ? $this->addReferrerBonus($user) : 0;
         //record transaction it reference doest not exist in db
@@ -56,5 +57,29 @@ class PaymentController extends TransactionController
     {
         $referenceExist = Payment::whereReference($object['reference'])->first();
         return $referenceExist ? false : true;
+    }
+
+    /**
+     * Record Payment Transaction
+     */
+    protected function recordPaystackTransaction($user, $referralBonus, $transactionRecord, $reference, $status = false, $method = false, $isInstant = false)
+    {
+        $balanceAfter = $user->balance + ($transactionRecord->amount - $referralBonus);
+
+        return Transaction::create([
+            'user_id' => $transactionRecord->user_id, 'amount' => $transactionRecord->amount,
+            'balance_before' => $user->balance, 'balance_after' => $balanceAfter,
+            'class_type' => $transactionRecord->class, 'class_id' => $transactionRecord->id,
+            'reference' => $reference, 'method' => $method ? $method : 'Wallet', 'status' => $status ? 2 : ($isInstant ? 0 : 1)
+        ]);
+    }
+
+    protected function cardPaymentNotification($amount)
+    {
+        $notification['subject'] = 'Credit Notification';
+        $notification['content'] = 'Your wallet has been credited with ' . $this->naira($amount);
+        $notification['content'] .= ' using Card Payment ';
+
+        return $notification;
     }
 }

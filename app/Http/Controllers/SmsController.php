@@ -9,6 +9,7 @@ use function GuzzleHttp\json_decode;
 
 class SmsController extends TransactionController
 {
+    protected $amountPerUnit;
     protected $modalResponse;
     protected $failureResponse;
     protected $charactersPerPage = 160;
@@ -37,7 +38,9 @@ class SmsController extends TransactionController
         ]);
 
         $routeId = json_decode(request()->route)->id;
-        $smsConfig = BulkSmsConfig::whereId($routeId)->first();
+        $smsConfigs = BulkSmsConfig::all();
+        $smsConfig = $smsConfigs->find($routeId);
+        $this->amountPerUnit = $smsConfigs->first()->amount_per_unit;
         $this->failureResponse = $smsConfig ? $this->errorResponse : false;
         $status = $smsConfig ? $this->processBulkSms($smsConfig) : false;
         $this->modalResponse = $status ? $this->setModalResponse($status) : false;
@@ -53,7 +56,7 @@ class SmsController extends TransactionController
         $isSufficientBalance = Auth::user()->balance >= ($unitRequired * $smsConfig->amount_per_unit / 100);
         $body = $this->setFormParamters(request()->senderId, request()->message, $recipientList, $smsConfig->routing);
         $response = $isSufficientBalance  ? $this->sendSms($body) : false;
-        $response->units_used ? $this->debitWallet($response->units_used * $smsConfig->amount_per_unit / 100) : false;
+        $response->units_used ? $this->debitWallet($response->units_used * $this->amountPerUnit / 100) : false;
 
         return $response;
     }
@@ -65,7 +68,7 @@ class SmsController extends TransactionController
     {
         $client = new \GuzzleHttp\Client();
         $url = \config('constants.url.smartsmssolutions');
-        $request = $client->get($url . '?checkbalance=1&token=' . env('SMARTSMSSOLUTION_TOKEN'));
+        $request = $client->get($url . '?checkbalance=1&token=' . \config('constants.smartsmssolutions.token'));
         $status = ($request->getStatusCode() == '200' || $request->getStatusCode() == '201') ? true : false;
 
         return $status ? $request->getBody()->getContents() : false;
@@ -103,14 +106,14 @@ class SmsController extends TransactionController
         return [
             'sender' => urlencode($senderId), 'to' => $to, 'message' => $message,
             'type' => '0', 'routing' => $routing, 'ref_id' => $this->getUniqueReference(),
-            'token' => env('SMARTSMSSOLUTION_TOKEN')
+            'token' => \config('constants.smartsmssolutions.token')
         ];
     }
 
 
     protected function sendSms($body)
     {
-        $client = new \GuzzleHttp\Client();
+        $client = new \GuzzleHttp\Client(['http_errors' => false]);
         $url = \config('constants.url.smartsmssolutions');
         $request = $client->post($url . '?json', ['form_params' => $body]);
         $status = ($request->getStatusCode() == '200' || $request->getStatusCode() == '201') ? true : false;

@@ -35,7 +35,7 @@
                     <div class="x_content">
                         <div class="row">
                             <div class="col-xs-12 col-sm-7 col-md-7 col-lg-7">
-                                <form id="airtime-swap-form" class="form-horizontal" method="post">
+                                <form id="airtime-swap-form" class="form-horizontal form-prevent-multiple-submits" method="post">
                                     <br/> @csrf
                                     <div class="form-group">
                                         <label class="col-sm-2 control-label hidden-xs">&nbsp;</label>
@@ -85,7 +85,7 @@
                                         <div class="col-sm-10 col-xs-12 form-grouping">
                                             <input type="text" id="amount" class="form-control" name="amount" disabled="true">
                                             <label id="amount-info" style="font-size:15px; display:none;" class="text-primary" for="amount"></label>
-                                            <!--p class="help-block">Enter amount you want to fund.</p-->
+                                            <!--p class="help-block">Enter the amount you want to transfer.</p-->
                                         </div>
                                     </div>
                                     <div id="wallet-amount" class="form-group" style="display:none;">
@@ -98,7 +98,7 @@
                                     <div class="form-group">
                                         <label class="col-sm-2 col-xs-12 control-label" ></label>
                                         <div class="col-sm-10 col-xs-12">
-                                            <button id="submit" class="btn btn-flat btn-success pull-right">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Cash&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</button>
+                                            <button id="submit" class="btn btn-flat btn-success pull-right button-prevent-multiple-submits">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Cash&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</button>
                                         </div>
                                     </div>
                                 </form>
@@ -128,7 +128,7 @@
                     <h4 class="modal-title">Airtime To Cash</h4>
                     </div>
                     <div class="modal-body">
-                        <p class="h3 text-center text-success"><i class="fa fa-check"></i>Airtime  Request Accepted</p>
+                        <p class="h3 text-center text-success"><i class="fa fa-check"></i>You are almost there.</p>
                         <section class="content">
 
                             <h4 class="text-justify text-info">
@@ -152,7 +152,7 @@
                                 <p class="text-primary text-bold visible-xs">{{ session('modal')->transferCode }}</p>
                             </p>
                             <p class="h4 text-center text-danger">
-                                Please use/click the Completed button only after you have transfered the airtime to avoid been barred
+                                Please CLICK the Completed button only after you have transferred the airtime to avoid being barred.
                             </p>
                         </section>
                     </div>

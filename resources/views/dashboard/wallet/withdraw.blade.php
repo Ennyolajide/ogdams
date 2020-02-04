@@ -69,7 +69,7 @@
                                             @endforeach
                                         </select>
                                         <input type="hidden" id="bankId" name="bankId">
-                                        <p class="help-block blue font-size:14px;">Select an account for withdraw</p>
+                                        <p class="help-block blue font-size:14px;">Select an account for withdrawal</p>
                                     </div>
                                     <div class="col-sm-9  col-xs-12 col-sm-offset-3">
                                         <div class="radio" style="display:none; border: 2px solid #605ca8;">
@@ -128,7 +128,7 @@
                     amount: {
                         required: true,
                         min: 500,
-                        max: 500000
+                        max: 50000
                     }
                 },
                 messages: {

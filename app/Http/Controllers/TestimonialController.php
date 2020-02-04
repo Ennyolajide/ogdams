@@ -14,7 +14,7 @@ class TestimonialController extends ReferralController
 
     public function index()
     {
-        return view('dashboard.testimonial.index', compact('testimony'));
+        return view('dashboard.testimonial.index');
     }
 
 

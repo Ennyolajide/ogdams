@@ -8,6 +8,8 @@ use Validator;
 use App\Mail\Main;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Exception;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
 
@@ -18,10 +20,9 @@ class RegisterController extends Controller
 
     public function index($referrer = null)
     {
-        $app = (object) config('constants.site');
         $referrer = $referrer ? User::where('wallet_id', $referrer)->first() : null;
 
-        return view('users/login', compact('app', 'referrer'));
+        return view('users/login', compact('referrer'));
     }
 
     public function register()
@@ -40,13 +41,14 @@ class RegisterController extends Controller
             return redirect(url()->previous() . '#signup')->withErrors($validator)->withInput();
         }
 
+
         User::create([
             'token'         => $token,
             'email'         => request()->email,
             'number'        => request()->phone,
             'name'          => ucwords(request()->name),
             'password'      => Hash::make(request()->password),
-            'referrer'      => request()->has('referrerId') ? User::find(request()->referrerId)->id : null,
+            'referrer'      => User::where('wallet_id', request()->referrerId)->first()->id ?? null,
             'wallet_id'     => strtoupper(Str::random(2)) . rand(1, 10) . strtoupper(Str::random(1)) . rand(1, 100) . strtoupper(Str::random(2)),
         ]);
 
@@ -56,7 +58,12 @@ class RegisterController extends Controller
         $message = 'Please complete your registration by verifing your email, ';
         $message .= 'follow link below to verify your email ' . $link;
 
-        Mail::to(request()->email)->send(new Main($message, $subject, $link));
+        try {
+            Mail::to(request()->email)->send(new Main($message, $subject, $link));
+        } catch (\Exception $e) {
+            Log::info('Cound not send Registration Email');
+        }
+
 
         $response = 'Registration Successful, please check your email inbox or email spam ';
         $response .= 'folder to verify email and complete registration.';

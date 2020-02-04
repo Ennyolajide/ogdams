@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers\Control;
 
+use Paystack;
+use Carbon\Carbon;
 use App\Transaction;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Controller;
@@ -14,7 +16,7 @@ class FundingsController extends ModController
     public function show()
     {
         $transactions = Transaction::where('class_type', 'App\BankTransfer')->whereNotNull('status')->orderBy('id', 'desc')->paginate(20);
-        //dd($transactions->class->type);
+
         return view('control.fundings', compact('transactions'));
     }
 
@@ -30,7 +32,7 @@ class FundingsController extends ModController
             $message = $status ? $this->successResponse : $this->failureResponse;
         } else if (request()->has('decline')) {
             $transactionStatus = ['status' =>  0];
-            $trans->class->update($transactionStatus);
+            $status = $trans->class->update($transactionStatus);
             $status ? $trans->update($transactionStatus) : false;
             $message = $status ? $this->successResponse : $this->failureResponse;
         } else {
@@ -39,5 +41,14 @@ class FundingsController extends ModController
         }
 
         return back()->withNotification($this->clientNotify($message, $status));
+    }
+
+    public function paystackTransactions()
+    {
+        $transactions = collect(Paystack::getAllTransactions())
+            ->where('status', 'success')
+            ->where('createdAt', '>=', Carbon::now()->subDay(1));
+
+        return view('control.paystackTransactions', compact('transactions'));
     }
 }

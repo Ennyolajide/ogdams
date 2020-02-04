@@ -14,7 +14,7 @@ class BankTransfer extends Model
 
     public function bank()
     {
-        return $this->hasOne('App\Bank', 'id', 'bank_id');
+        return $this->hasOne('App\Bank', 'id', 'bank_id')->withTrashed();
     }
 
     public function transaction()
