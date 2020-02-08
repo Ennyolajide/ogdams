@@ -30,7 +30,7 @@ return [
 
         ]
     ],
-    
+
     'api' => [
         'url' => 'https://documenter.getpostman.com/view/6362674/SVtYTSdn?version=latest'
     ],
@@ -78,7 +78,10 @@ return [
     'bonuses' => [
         'referral' => 100,
     ],
-    env('SMARTSMSSOLUTION_TOKEN')
+
+    'hostedSims' => [
+        'apiToken' => env('SINGLE_HOSTED_SIM_API_TOKEN'),
+    ]
 
 
 

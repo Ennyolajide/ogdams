@@ -93,11 +93,36 @@ class DatasController extends ModController
         return back()->withNotification($this->clientNotify($message, $status));
     }
 
-    public function editDataPlanNotification(Dataplan $network)
+    public function editDataPlanSwitchSettings(Dataplan $network)
     {
         //validate request
         $this->validate(request(), [
+            'hostedSimStatus' => 'sometimes|string',
             'availabilityStatus' => 'sometimes|string',
+        ]);
+        // get and instance of the data plan
+        $dataPlan = DataPlan::where('network_id', $network->network_id);
+        $planIds = $dataPlan->pluck('id');
+
+
+        //update the instance of the dataplan
+        $status = Dataplan::whereIn('id', $planIds)->update([
+            'available' => request()->has('availabilityStatus'),
+            'hosted_sim_status' => request()->has('hostedSimStatus'),
+        ]);
+
+        $message = $status ? $this->successResponse : $this->failureResponse;
+
+        return back()->withNotification($this->clientNotify($message, $status));
+    }
+
+    public function editDataPlanNotification(Dataplan $network)
+    {
+        //return request()->all();
+        //validate request
+        $this->validate(request(), [
+            'hostedSimApiToken' => 'sometimes|string|nullable',
+            'hostedSimServerToken' => 'sometimes|string|nullable',
             'email' => 'sometimes|email', 'emailNotificationStatus' => 'sometimes|string',
             'phone' => 'sometimes|string', 'phoneNotificationStatus' => 'sometimes|string',
         ]);
@@ -107,15 +132,17 @@ class DatasController extends ModController
 
         //update the instance of the dataplan
         $status = Dataplan::whereIn('id', $planIds)->update([
-            'available' => request()->has('availabilityStatus'),
             'phone_notification_status' => request()->has('phoneNotificationStatus'),
             'email_notification_status' => request()->has('emailNotificationStatus'),
             'notification_phone' => request()->phone ?? $dataPlan->first()->notification_phone,
             'notification_email' => request()->email ?? $dataPlan->first()->notification_email,
+            'hosted_sim_api_token' => request()->hostedSimApiToken ?? $dataPlan->first()->hostedSimApiToken,
+            'hosted_sim_server_token' => request()->hostedSimServerToken ?? $dataPlan->first()->hostedSimServerToken,
         ]);
 
         $message = $status ? $this->successResponse : $this->failureResponse;
 
         return back()->withNotification($this->clientNotify($message, $status));
     }
+
 }

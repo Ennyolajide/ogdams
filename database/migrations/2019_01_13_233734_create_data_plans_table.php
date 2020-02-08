@@ -25,6 +25,9 @@ class CreateDataPlansTable extends Migration
             $table->boolean('phone_notification_status')->default(false);
             $table->string('notification_email')->default('test@test.com');
             $table->boolean('email_notification_status')->default(false);
+            $table->boolean('hosted_sim_status')->default(false);
+            $table->string('hosted_sim_api_token')->nullable();
+            $table->string('hosted_sim_server_token')->nullable();
             $table->unsignedInteger('amount');
             $table->timestamps();
         });

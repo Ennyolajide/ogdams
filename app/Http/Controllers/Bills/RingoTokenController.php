@@ -3,9 +3,9 @@
 namespace App\Http\Controllers\Bills;
 
 use App\Token;
-use App\Http\Controllers\TransactionController;
+use App\Http\Controllers\HostedSimController;
 
-class RingoTokenController extends TransactionController
+class RingoTokenController extends HostedSimController
 {
 
     /**

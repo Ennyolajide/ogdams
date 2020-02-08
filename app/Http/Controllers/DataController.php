@@ -8,7 +8,7 @@ use App\DataPlan;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
-class DataController extends TransactionController
+class DataController extends HostedSimController
 {
     protected $successResponse = 'Data Topup successful';
     protected $failureResponse = 'Insuffient balance, Pls fund your account';

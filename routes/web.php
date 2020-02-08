@@ -13,8 +13,7 @@
 
 //Auth
 //Auth::routes();
-//Route::get('/test', 'HomeController@index')->name('index');
-
+Route::get('/test', 'TestController@index')->name('test');
 Route::get('/', 'HomeController@index')->name('index');
 Route::get('/faq', 'HomeController@faq')->name('faq');
 Route::get('/contact', 'HomeController@contact')->name('contact');
@@ -159,11 +158,13 @@ Route::namespace('Control')->middleware('admin')->group(function () {
     Route::get('settings', 'SettingsController@index')->name('admin.settings');
 
     //Data configurations
-    Route::patch('settings/data/{network}/edit', 'DatasController@editDataPlanNotification')->name('admin.data.edit');
+
     Route::get('settings/dataplan/{network}', 'DatasController@settings')->name('admin.dataplan');
     Route::post('settings/dataplan/{network}', 'DatasController@newDataPlan')->name('admin.dataplan.new');
     Route::patch('settings/dataplan/{network}/edit', 'DatasController@editDataPlan')->name('admin.dataplan.edit');
     Route::patch('settings/dataplan/{plan}/delete', 'DatasController@deleteDataPlan')->name('admin.dataplan.delete');
+    Route::patch('settings/data/{network}/edit', 'DatasController@editDataPlanNotification')->name('admin.data.edit');
+    Route::patch('settings/data/switch/{network}/edit', 'DatasController@editDataPlanSwitchSettings')->name('admin.data.switch.edit');
 
     //airtime configurations
     Route::get('settings/airtime/config', 'AirtimesController@settings')->name('admin.airtime.config');
