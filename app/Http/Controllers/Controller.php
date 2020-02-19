@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\User;
 use App\Message;
+use Twilio\Rest\Client as Twilio;
 use App\Http\Controllers\Exception;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Auth;
@@ -155,4 +156,18 @@ class Controller extends BaseController
 
         return $notification;
     }
+
+    /**
+     * Send Sms using Twilo as the sms gateway
+     */
+    protected function sendSmsViaTwilio($content, $to, $from=NULL){
+        $twilio = new Twilio(
+            config('constants.twilio.sid'),
+            config('constants.twilio.token')
+        );
+        return $twilio->messages->create($to, [
+            'body' =>  $content,'from' => $from ?? \config('constants.twilio.number'),
+        ]);
+    }
+
 }

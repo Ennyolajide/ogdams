@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Bvn;
 use App\User;
 use App\Bank;
 use App\Charge;
@@ -20,8 +21,10 @@ class ProfileController extends PaystackController
      */
     public function profileIndex()
     {
+        $user = User::find(Auth::user()->id);
+        $myBanks = $user->banks;  //get User's bank List
+        $user->bvnDetails ?? Bvn::create(['user_id' => Auth::user()->id]);
         $banks = $this->bankList()->data; //get the list of all available banks
-        $myBanks = Bank::where('user_id', Auth::user()->id)->get();  //get User's bank List
         $addBankCharges = Charge::whereService('addbank')->first()->amount;
         $messages = Message::where('user_id', Auth::user()->id)->orderBy('id', 'desc')->paginate(10);
 

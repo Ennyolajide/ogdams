@@ -23,7 +23,7 @@
             <div class="col-md-3 col-sm-3 col-xs-12 profile_left text-center">
                 <div class="profile_img text-center">
                     <div id="crop-avatar">
-                        <img class="avatar-view" src="\images/avatar/{{ Auth::user()->avatar }}" alt="Avatar" title="Change the avatar">
+                        <img class="avatar-view" src="\images/avatar/{{ Auth::user()->avatar ?? 'default.png' }}" alt="Avatar" title="Change the avatar">
                     </div>
                 </div>
                 <h3>{{ Auth::user()->name }}</h3>
@@ -37,7 +37,7 @@
                     </li>
                     <li><h4>Wallet ID : <span class="text-primary">{{ Auth::user()->wallet_id }}</span></h4></li>
                 </ul>
-                <a href="{{ route('user.profile') }}#tab_content2" class="btn btn-success"><i class="fa fa-edit m-right-xs"></i>Edit Profile</a>
+                <a href="{{ route('user.profile') }}#profile" class="btn btn-success"><i class="fa fa-edit m-right-xs"></i>Edit Profile</a>
                 <br />
             </div>
             <div class="col-md-9 col-sm-9 col-xs-12">
@@ -46,17 +46,20 @@
                         <div class="" role="tabpanel" data-example-id="togglable-tabs">
                             <ul id="myTab" class="nav nav-tabs bar_tabs" role="tablist">
                                 <li role="presentation" class="active">
-                                    <a href="#tab_content1" id="inbox-tab" role="tab" data-toggle="tab" aria-expanded="true">Inbox</a>
+                                    <a href="#inbox" id="inbox-tab" role="tab" data-toggle="tab" aria-expanded="true">Inbox</a>
                                 </li>
                                 <li role="presentation" class="">
-                                    <a href="#tab_content2" role="profile-tab" id="profile-tab" data-toggle="tab" aria-expanded="false">Profile</a>
+                                    <a href="#profile" role="profile-tab" id="profile-tab" data-toggle="tab" aria-expanded="false">Profile</a>
                                 </li>
                                 <li role="presentation" class="">
-                                    <a href="#tab_content3" role="bank-tab" id="inbox" data-toggle="tab" aria-expanded="false">Bank(s)</a>
+                                    <a href="#bank" role="bank-tab" id="bank-tab" data-toggle="tab" aria-expanded="false">Bank(s)</a>
+                                </li>
+                                <li role="presentation" class="">
+                                    <a href="#verify" role="verify-tab" id="verify-tab" data-toggle="tab" aria-expanded="false">Verification</a>
                                 </li>
                             </ul>
                             <div id="myTabContent" class="tab-content">
-                                <div role="tabpanel" class="tab-pane fade active in" id="tab_content1" aria-labelledby="inbox-tab">
+                                <div role="tabpanel" class="tab-pane fade active in" id="inbox" aria-labelledby="inbox-tab">
                                     <div class="mailbox-messages">
                                         <table class="table table-hover table-striped">
                                             <tbody>
@@ -111,7 +114,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div role="tabpanel" class="tab-pane fade" id="tab_content2" aria-labelledby="profile-tab">
+                                <div role="tabpanel" class="tab-pane fade" id="profile" aria-labelledby="profile-tab">
                                     <div class="row">
                                         <div class="col-xs-12 col-sm-12 col-md-12">
                                             <form id="change-password-form" class="form-horizontal" action="{{ route('user.password.edit') }}" method="post">
@@ -149,12 +152,10 @@
                                                     <br/><br/>
                                                 </div>
                                             </form>
-
-
                                         </div>
                                     </div>
                                 </div>
-                                <div role="tabpanel" class="tab-pane fade" id="tab_content3" aria-labelledby="bank-tab">
+                                <div role="tabpanel" class="tab-pane fade" id="bank" aria-labelledby="bank-tab">
                                     <div class="row">
                                         <h4 class="text-danger text-center"><strong>Charges @naira($addBankCharges) Apply </strong></h3>
                                         <div class="col-xs-12 col-sm-12 col-md-12" style="display:none;" id="newBankDiv">
@@ -244,6 +245,60 @@
                                         </div>
                                     </div>
                                 </div>
+                                <div role="tabpanel" class="tab-pane fade" id="verify" aria-labelledby="verify-tab">
+                                    <div class="row">
+                                        <div class="col-xs-12 col-sm-12 col-md-12">
+                                            @if(session('otp'))
+                                                <form id="otp-verification-input-form" class="form-horizontal" action="{{ route('user.bvn.otp.verify') }}" method="post">
+                                                    @csrf
+                                                    <br/>
+                                                    <div class="form-group row">
+                                                        <label class="col-sm-2 col-xs-12 control-label">OTP</label>
+                                                        <div class="col-sm-7 col-xs-12 form-grouping">
+                                                            <input type="text" class="form-control" name="otp" placeholder="Enter the OTP sent to your phone number">
+                                                        </div>
+                                                    </div>
+                                                    <br/>
+                                                    <div class="form-group row">
+                                                        <label class="col-sm-2 col-xs-12 control-label">Date of Birth</label>
+                                                        <div class="col-sm-7 col-xs-12 form-grouping">
+                                                            <input type="date" class="form-control" name="dob">
+                                                        </div>
+                                                    </div>
+                                                    <br/>
+                                                    <div class="form-group row">
+                                                        <div class="col-xs-12 col-sm-9">
+                                                            <button type="submit" class="btn btn-danger btn-flat pull-right">Submit</button>
+                                                        </div>
+                                                        <br/><br/>
+                                                    </div>
+                                                </form>
+                                            @else
+                                                <form id="bvn-verification-input-form" class="form-horizontal form-prevent-multiple-submits" action="{{ route('user.bvn.details') }}" method="post">
+                                                    @csrf
+                                                    <br/>
+                                                    <div class="form-group row">
+                                                        <label class="col-sm-2 col-xs-12 control-label">BVN</label>
+                                                        <div class="col-sm-7 col-xs-12 form-grouping">
+                                                            <input type="text" class="form-control" name="bvn" placeholder="Enter your Bank Verification Number" {{ Auth::user()->bvn_verified ? 'disabled' : '' }}>
+                                                        </div>
+                                                    </div>
+                                                    <br/>
+                                                    <div class="form-group row">
+                                                        <div class="col-xs-12 col-sm-9">
+                                                            <button type="submit" class="btn btn-danger btn-flat pull-right {{ Auth::user()->bvn_verified ? 'disabled' : '' }}">Submit</button>
+                                                        </div>
+                                                        <br/>
+                                                    </div>
+                                                </form>
+                                            @endif
+
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-8 col-sm-8 col-xs-8">
+                                    @include('dashboard.layouts.errors')
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -284,12 +339,12 @@
                     highlight: function (element) {
                         $(element)
                             .closest('.form-grouping')
-                            .addClass('orange');
+                            .addClass('has-error');
                     },
                     unhighlight: function (element) {
                         $(element)
                             .closest('.form-grouping')
-                            .removeClass('orange');
+                            .removeClass('has-error');
                     }
                 });
 
@@ -312,6 +367,30 @@
 
                     }
 
+                });
+
+                $('#otp-verification-input-form').validate({
+                    rules: {
+                        otp: { required: true, },
+                        dob: { required: true, date: true}
+                    },
+                    messages: {
+                        otp: { required: 'Enter the otp sent to your BVN mobile number' },
+                        dob: { required: 'Enter your date of birth' }
+                    }
+                });
+
+                $('#bvn-verification-input-form').validate({
+                    rules: {
+                        bvn: {
+                            required: true,
+                        },
+                    },
+                    messages: {
+                        bvn: {
+                            required: 'Enter your Bank verification number',
+                        }
+                    }
                 });
 
                 $('#add-bank-details-form').validate({

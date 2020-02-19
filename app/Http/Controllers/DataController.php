@@ -87,10 +87,26 @@ class DataController extends HostedSimController
         $reference = $this->getUniqueReference();
         $dataRecord = $this->storeTopup($dataPlan);
         $status = $dataRecord ? $this->debitWallet($dataPlan->amount) : false;
-        $status ? $this->notifyAdmin($dataPlan, $reference) : false;
+        $status ? $this->hostedSimRequestOrNotifyAdmin($dataPlan, $reference) : false;
         $dataRecord ? $this->recordTransaction($dataRecord, $reference, false, true, false, false) : false;
 
         return $status;
+    }
+
+    /**
+     *
+     */
+    protected function hostedSimRequestOrNotifyAdmin($dataPlan, $reference){
+        $dataPlan->hosted_sim_status ? $this->ussd($dataPlan) : $this->notifyAdmin($dataPlan, $reference);
+    }
+
+    /**
+     *
+     */
+    protected function ussd($dataPlan){
+        $simServerToken = $dataPlan->hosted_sim_server_token;
+        $ussd = $content = str_replace('number', request()->phone, $dataPlan->notification_content);
+        $this->hostedSimRequest($ussd, $simServerToken, $dataPlan->hosted_sim_api_token, 'USSD');
     }
 
     /**

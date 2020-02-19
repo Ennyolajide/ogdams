@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\User;
 use App\Bank;
 use App\Airtime;
+use App\Setting;
 use App\Transaction;
 use App\AirtimePercentage;
 use Illuminate\Http\Request;
@@ -20,9 +21,15 @@ class AirtimeToCashController extends TransactionController
 
     public function index()
     {
+        $bvnVerificationSettings = Setting::whereName('bvn_verification')->first()->status;
+
+        $verification = $bvnVerificationSettings ? Auth::user()->bvn_verified : true;
+
         $networks = AirtimePercentage::where('airtime_to_cash_percentage_status', true)->whereAddon(false)->get();
 
-        return view('dashboard.airtime.cash', compact('networks'));
+        return $verification ?
+            view('dashboard.airtime.cash', compact('networks')) :
+            redirect(route('user.profile').'#verify')->withNotification($this->clientNotify('Please verify your account', false));
     }
 
     /**
@@ -106,7 +113,6 @@ class AirtimeToCashController extends TransactionController
 
     public function completed(Airtime $airtimeRecord)
     {
-
         $status = $airtimeRecord->update(['status' => 1]) ? true : false;
 
         $status ? $airtimeRecord->transaction->first()->update(['status' => 1]) : false;

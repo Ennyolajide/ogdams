@@ -1,5 +1,7 @@
 <?php
 
+use Illuminate\Support\Facades\Route;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -11,8 +13,6 @@
 |
 */
 
-//Auth
-//Auth::routes();
 Route::get('/test', 'TestController@index')->name('test');
 Route::get('/', 'HomeController@index')->name('index');
 Route::get('/faq', 'HomeController@faq')->name('faq');
@@ -39,7 +39,8 @@ Route::post('/dashboard/bank/add', 'BankController@storeBank')->name('user.bank.
 Route::patch('/dashboard/bank/{bank}/delete', 'BankController@deleteBank')->name('user.bank.delete');
 Route::post('/dashboard/bank/details', 'BankController@resolveBankDetails')->name('paystack.bankDetails');
 Route::post('/dashboard/profile/password/edit', 'ProfileController@editPassword')->name('user.password.edit');
-
+Route::post('/dashboard/profile/bvn/verify', 'BvnVerificationController@resolveBvnDetails')->name('user.bvn.details');
+Route::post('/dashboard/profile/bvn/verify/otp', 'BvnVerificationController@verifyOtpAndDob')->name('user.bvn.otp.verify');
 
 //Message
 Route::get('/dashboard/inbox', 'MessageController@messageIndex')->name('messages.inbox');
@@ -156,6 +157,7 @@ Route::namespace('Control')->middleware('admin')->group(function () {
 
     //Configuaration index
     Route::get('settings', 'SettingsController@index')->name('admin.settings');
+    Route::patch('settings/config/{setting}', 'SettingsController@edit')->name('admin.settings.edit');
 
     //Data configurations
 
@@ -169,6 +171,7 @@ Route::namespace('Control')->middleware('admin')->group(function () {
     //airtime configurations
     Route::get('settings/airtime/config', 'AirtimesController@settings')->name('admin.airtime.config');
     Route::patch('settings/airtime/{network}/edit', 'AirtimesController@editConfig')->name('admin.airtime.config.edit');
+    Route::patch('settings/airtime/switch/{network}/edit', 'AirtimesController@configSwitch')->name('admin.airtime.switch.edit');
 
     //sms & service charges configurations
     Route::get('settings/charges/config', 'SmsChargesController@show')->name('admin.charges.config');

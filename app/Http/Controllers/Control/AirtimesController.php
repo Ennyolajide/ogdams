@@ -53,10 +53,12 @@ class AirtimesController extends ModController
 
     public function editConfig(AirtimePercentage $network)
     {
+        //dd(request()->all());
         //validate request
         $this->validate(request(), [
-            'percentage' => 'required|numeric', 'swapNumber1' => 'required|string', 'swapNumber2' => 'sometimes|nullable',
-            'processTime' => 'required|numeric', 'transferCode' => 'required|string', 'topupPercentage' => 'required|numeric'
+            'hostedSimServerToken' => 'sometimes|nullable', 'percentage' => 'required|numeric', 'swapNumber1' => 'required|string',
+            'swapNumber2' => 'sometimes|nullable', 'processTime' => 'required|numeric', 'transferCode' => 'sometimes|string',
+            'topupPercentage' => 'required|numeric', 'airtimeTopupUssdCode' => 'sometimes|nullable', 'hostedSimApiToken' => 'sometimes|nullable',
         ]);
         //save confif to DB
         $status = $network->update([
@@ -64,10 +66,31 @@ class AirtimesController extends ModController
             'transfer_code' => request()->transferCode,
             'airtime_swap_percentage' => request()->percentage,
             'airtime_to_cash_percentage' => request()->percentage,
+            'hosted_sim_api_token' =>request()->hostedSimApiToken,
             'airtime_topup_percentage' => request()->topupPercentage,
+            'airtime_topup_ussd_code' => request()->airtimeTopupUssdCode,
+            'hosted_sim_server_token' => request()->hostedSimServerToken,
             'airtime_swap_percentage_status' => request()->has('swapStatus'),
             'airtime_to_cash_percentage_status' => request()->has('cashStatus'),
             'airtime_to_cash_phone_numbers' => json_encode([request()->swapNumber1, request()->swapNumber2])
+        ]);
+
+        $message = $status ? $this->successResponse : $this->failureResponse;
+
+        return back()->withNotification($this->clientNotify($message, $status));
+    }
+
+    public function configSwitch(AirtimePercentage $network)
+    {
+        //validate request
+        $this->validate(request(), [
+            'airtimeTopupStatus' => 'sometimes|string',
+            'airtimeTopupSimRoute' => 'sometimes|string',
+        ]);
+        //save confif to DB
+        $status = $network->update([
+            'airtime_topup_status' => request()->has('airtimeTopupStatus'),
+            'airtime_topup_sim_route' => request()->has('airtimeTopupSimRoute'),
         ]);
 
         $message = $status ? $this->successResponse : $this->failureResponse;

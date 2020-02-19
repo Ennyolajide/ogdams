@@ -41,34 +41,76 @@
                     </div>
                     <!-- /.box-header -->
                     <div class="x_content">
-                        <div class="col-md-12 col-sm-12 col-xs-12">
-                            @include('dashboard.layouts.errors')
-                            <table id="transactons-table" class="table table-striped table-hover table-bordered table-responsive">
-                                <thead class="bg-green">
-                                    <tr>
-                                        <th class="hidden-xs">id</th>
-                                        <th>Network</th>
-                                        <th>Swap %</th>
-                                        <th>Topup %</th>
-                                        <th class="hidden-xs">Transfer Code</th>
-                                        <th>Action</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @foreach ($networks as $item)
+                        @include('dashboard.layouts.errors')
+                        <table id="transactons-table" class="table table-striped table-hover table-bordered table-responsive">
+                            <thead class="bg-orange">
+                                <tr>
+                                    <th class="hidden-xs"><small>id</small></th>
+                                    <th><small>Network</small></th>
+                                    <th><small>Topup Status</small></th>
+                                    <th><small>Hosted Sim Route</small></th>
+                                    <th><small>Action</small></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach ($networks as $item)
+                                    <form method="POST" action="{{ route('admin.airtime.switch.edit',['network' => $item->id ] ) }}">
+                                        @method('patch') @csrf
                                         <tr>
                                             <td class="hidden-xs">{{ $item->id }}</td>
-                                            <td><img src="\images/networks/{{ strtolower($item->network).'.png'  }}" style="max-height: 50px; display:inline-block;"></td>
-                                            <td>{{ $item->airtime_swap_percentage }}%</td>
-                                            <td>{{ $item->airtime_topup_percentage }}%</td>
-                                            <td class="hidden-xs text-primary">{{ $item->transfer_code }}</td>
-                                            <td><a href="" data-toggle="modal" data-target="#{{ $item->id }}" class="btn btn-info btn-xs"><i class="fa fa-edit"></i> Edit</a></td>
+                                            <td><img src="\images/networks/{{ strtolower($item->network).'.png'  }}" style="max-height: 32px; display:inline-block;"></td>
+                                            <td><input type="checkbox" name="airtimeTopupStatus" class="js-switch" {{ $item->airtime_topup_status ? 'checked' : '' }} data-switchery="true" style="display: none;"></td>
+                                            <td><input type="checkbox" name="airtimeTopupSimRoute" class="js-switch" {{ $item->airtime_topup_sim_route ? 'checked' : '' }} data-switchery="true" style="display: none;"></td>
+                                            <td><button type="submit" class="btn btn-success btn-xs"><i class="fa fa-check"></i>&nbsp;Adjust</button></td>
                                         </tr>
-                                    @endforeach
-                                </tbody>
-                            </table>
-                            <!-- /.box-body -->
+                                    </form>
+                                @endforeach
+                            </tbody>
+                        </table>
+                            {{-- <form method="POST" action="{{ route('admin.data.switch.edit',['network' => $network->id ] ) }}">
+                                @method('patch') @csrf
+                                <div class="form-group row text-center">
+                                    <!--label class="col-sm-2 control-label">Availability : </label-->
+                                    <div class="col-sm-4 form-grouping availability-status">
+                                        <input type="checkbox" name="availabilityStatus" class="js-switch" {{ $networks->airtime_topup_status ? 'checked' : '' }} data-switchery="true" style="display: none;">
+                                        <span class="help-block text-bold">Availability</p>
+                                    </div>
+                                    <!--label class="col-sm-2 control-label">Availability : </label-->
+                                    <div class="col-sm-4 form-grouping hosted-sim-status">
+                                        <input type="checkbox" name="hostedSimStatus" class="js-switch" {{ $networks->airtime_topup_sim_route ? 'checked' : '' }} data-switchery="true" style="display: none;"
+                                        {{ $networks->airtime_topup_sim_route ? '' : 'disabled'}}
+                                        >
+                                        <span class="help-block text-bold">Hosted Sim Status</p>
+                                    </div>
+                                    <button type="submit" class="btn btn-sm btn-success btn-flat">Adjust</button>
+                                </div>
+                            </form> --}}
                         </div>
+                        <table id="transactons-table" class="table table-striped table-hover table-bordered table-responsive">
+                            <thead class="bg-green">
+                                <tr>
+                                    <th class="hidden-xs"><small>id</small></th>
+                                    <th><small>Network</small></th>
+                                    <th><small>Swap %</small></th>
+                                    <th><small>Topup %</small></th>
+                                    <th class="hidden-xs"><small>Transfer Code</small></th>
+                                    <th><small>Action</small></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach ($networks as $item)
+                                    <tr>
+                                        <td class="hidden-xs"><small>{{ $item->id }}</small></td>
+                                        <td><img src="\images/networks/{{ strtolower($item->network).'.png'  }}" style="max-height: 32px; display:inline-block;"></td>
+                                        <td><small>{{ $item->airtime_swap_percentage }}%</small></td>
+                                        <td><small>{{ $item->airtime_topup_percentage }}%</small></td>
+                                        <td class="hidden-xs text-primary"><small>{{ $item->transfer_code }}</small></td>
+                                        <td><a href="" data-toggle="modal" data-target="#{{ $item->airtime_topup_status ? $item->id : '' }}" class="btn btn-info btn-xs" {{ $item->airtime_topup_status ? '' : 'disabled'}}><i class="fa fa-edit"></i> Edit</a></td>
+                                    </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                        <!-- /.box-body -->
                     </div>
                 </div>
                 <!-- /.col -->
@@ -94,7 +136,7 @@
                     <form method="POST" action="{{ route('admin.airtime.config.edit',['network' => $item->id ] ) }}">
                         @method('patch') @csrf
                         <div class="modal-body">
-                            <div class="row">
+                            <div class="row text-center">
                                 <div class="col-md-6 col-sm-6 col-xs-6">
                                     <label>
                                         Swap
@@ -154,7 +196,7 @@
                                 @endforeach
                             </div>
                             <br/>
-                            <div class="row">
+                            <div class="row" style="display:{{ $item->airtime_topup_sim_route ? 'none;' : '' }}">
                                 <div class="col-sm-12 col-xs-12">
                                     <div class="form-group">
                                         <label class="col-sm-3 col-xs-12 control-label">Transfer Code </label>
@@ -165,6 +207,41 @@
                                 </div>
                             </div>
                             <br/>
+                            <div class="row" style="display:{{ $item->airtime_topup_sim_route ? '' : 'none;' }}">
+                                <p class=""><strong>Hosted Sims</strong></p>
+                                <hr class="">
+                                <div class="row">
+                                    <div class="form-group row text-center">
+                                        <div class="col-sm-12 col-xs-12">
+                                            <label class="col-sm-3 col-xs-12 control-label">Sim Api Token</label>
+                                            <div class="col-sm-8 col-xs-12 form-grouping">
+                                                <input type="text" class="form-control" name="hostedSimApiToken" value="{{ $item->hosted_sim_api_token }}" {{ config('constants.hostedSims.apiToken') ?  'disabled' : ''}}>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="form-group row text-center">
+                                        <div class="col-sm-12 col-xs-12">
+                                            <label class="col-sm-3 col-xs-12 control-label">Sim Server Token</label>
+                                            <div class="col-sm-8 col-xs-12 form-grouping">
+                                                <input type="text" class="form-control" name="hostedSimServerToken" value="{{ $item->hosted_sim_server_token }}">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="form-group row text-center">
+                                        <div class="col-sm-12 col-xs-12">
+                                            <label class="col-sm-3 col-xs-12 control-label">Ussd Code </label>
+                                            <div class="col-sm-8 col-xs-12 form-grouping">
+                                                <input type="text" class="form-control" name="airtimeTopupUssdCode" value="{{ $item->airtime_topup_ussd_code }}">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <br/>
+                            </div>
                         </div>
                         <div class="modal-footer">
                             <button type="button"  data-dismiss="modal" class="btn btn-danger pull-left">Deline</button>
@@ -182,21 +259,4 @@
 
     @section('scripts')
         <script src="\plugins/switchery/dist/switchery.min.js"></script>
-        {{-- <!-- iCheck -->
-        <script src="\plugins/iCheck/icheck.min.js"></script> --}}
-       {{--  <script>
-            $(function () {
-                $('input').iCheck({
-                checkboxClass: 'icheckbox_square-blue',
-                radioClass: 'iradio_square-blue',
-                increaseArea: '20%' /* optional */
-                });
-            });
-        </script> --}}
-
-        <script>
-
-
-        </script>
-
     @endSection

@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use Paystack;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Auth;
+use Unicodeveloper\Paystack\Facades\Paystack;
 
 class PaystackController extends PaymentController
 {
@@ -91,6 +91,18 @@ class PaystackController extends PaymentController
         $endPoint = \config('constants.url.paystack') . $query;
         $client = new \GuzzleHttp\Client(['http_errors' => false]);
         $request = $client->get($endPoint, ['headers' => $this->paystackHeaders()]);
+        $status = $request->getStatusCode() == '200' ? true : false;
+        return $status ? $request->getBody()->getContents() : false;
+    }
+
+    /**
+     *
+     */
+    protected function getTestBvn(){
+        //$endPoint = 'https://e21260cd.ngrok.io/api/bvn';
+        $endPoint = \config('constants.url.paystack').'api/bvn';
+        $client = new \GuzzleHttp\Client(['http_errors' => true]);
+        $request = $client->get($endPoint,['headers' => ['Content-Type' => 'application/json']]);
         $status = $request->getStatusCode() == '200' ? true : false;
         return $status ? $request->getBody()->getContents() : false;
     }

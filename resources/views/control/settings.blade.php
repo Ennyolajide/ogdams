@@ -1,5 +1,12 @@
 @extends('dashboard.layouts.master')
 
+    @section('css')
+    {{-- <!-- iCheck -->
+    <link rel="stylesheet" href="\plugins/iCheck/square/blue.css"> --}}
+    <!-- switchery -->
+    <link href="\plugins/switchery/dist/switchery.min.css" rel="stylesheet">
+    @endsection
+
     @section('content-header')
         <div class="page-title">
             <div class="title_left">
@@ -34,6 +41,41 @@
                         <div class="clearfix"></div>
                     </div>
                     <div class="x_content">
+                        <div class="row">
+                            <div class="col-md-12 col-sm-12 col-xs-12">
+                                <fieldset>
+                                    <legend>
+                                        Settings
+                                    </legend>
+                                    <div class="row">
+                                        <table id="transactons-table" class="table table-striped table-hover table-bordered table-responsive">
+                                            <thead class="bg-success">
+                                                <tr>
+                                                    <th class="hidden-xs"><small>id</small></th>
+                                                    <th><small>Name</small></th>
+                                                    <th><small>Status</small></th>
+                                                    <th><small>Action</small></th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @foreach ($settings as $item)
+                                                    <form method="POST" action="{{ route('admin.settings.edit',['setting' => $item->id ] ) }}">
+                                                        @method('patch') @csrf
+                                                        <tr>
+                                                            <td>#</td>
+                                                            <td>{{ ucwords(str_replace('_', ' ', $item->name)) }}</td>
+                                                            <td><input type="checkbox" name="status" class="js-switch" {{ $item->status ? 'checked' : '' }} data-switchery="true" style="display: none;"></td>
+                                                            <td><button type="submit" class="btn btn-success btn-xs"><i class="fa fa-check"></i>&nbsp;Adjust</button></td>
+                                                        </tr>
+                                                    </form>
+                                                @endforeach
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </fieldset>
+                                <hr>
+                            </div>
+                        </div>
                         <div class="row">
                             <div class="col-md-6 col-sm-6 col-xs-12">
                                 <fieldset>
@@ -133,5 +175,11 @@
         <!-- /.content -->
 
     @endSection
+
+    @section('scripts')
+        <script src="\plugins/switchery/dist/switchery.min.js"></script>
+    @endSection
+
+
 
 

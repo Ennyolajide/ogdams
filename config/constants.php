@@ -80,9 +80,15 @@ return [
     ],
 
     'hostedSims' => [
+        'url' => 'https://ussd.simhosting.ng/api/?',
         'apiToken' => env('SINGLE_HOSTED_SIM_API_TOKEN'),
+
+    ],
+
+    'twilio' => [
+        'sid' => env('TWILIO_SID'),
+        'token' => env('TWILIO_TOKEN'),
+        'number' => env('TWILIO_NUMBER'),
     ]
-
-
 
 ];

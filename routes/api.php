@@ -1,6 +1,8 @@
 <?php
 
+
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Route;
 
 /*
 |--------------------------------------------------------------------------
@@ -44,4 +46,23 @@ Route::namespace('Bills')->group(function () {
     Route::get('/bills/tv/{provider}/packages', 'TvController@tvPackages'); //
     Route::post('/bills/tv/{serviceId}/validate', 'tvController@validateSmartCard'); //
 
+});
+
+Route::any('/bvn', function(){
+    return [
+        "status" =>  true,
+        "message" => "BVN resolved",
+        "data" => [
+            "first_name" => "OLAJIDE",
+            "last_name" => "ENISEYIN",
+            "dob" => "31-Aug-91",
+            "formatted_dob" => "1991-08-31",
+            "mobile" => "07063637002",
+            "bvn" => "22185705901"
+        ],
+        "meta" => [
+            "calls_this_month" => 1,
+            "free_calls_left" => 9
+        ]
+    ];
 });

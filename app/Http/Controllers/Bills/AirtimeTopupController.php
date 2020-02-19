@@ -68,7 +68,7 @@ class AirtimeTopupController extends RingoController
 
             $network = AirtimePercentage::find(request()->network);
 
-            $status = $network ? $this->topup($network) : false;
+            $status = $network && $network->airtime_topup_status ? $this->topup($network) : false;
 
             $status ? $this->notify($this->airtimeTopupNotification()) : false;
 
@@ -83,7 +83,9 @@ class AirtimeTopupController extends RingoController
     {
         $reference = $this->getUniqueReference(); // generate a unique reference number
         $discount = $network->airtime_topup_percentage / 100; // get the percentage discount
-        $response = $this->executeTopup($this->formatPhoneNumber(request()->phone), $reference);
+        $response = $network->airtime_topup_sim_route ?
+            $this->HostedSimTopup($network)
+            : $this->executeTopup($this->formatPhoneNumber(request()->phone), $reference);
         $this->failureResponse = $response ? $this->failureResponse : $this->apiErrorResponse;
         $status = $response ? $this->debitWallet(request()->amount * $discount) : false;
         $airtimeRecord = $this->storeTopup($status);
@@ -126,5 +128,14 @@ class AirtimeTopupController extends RingoController
         }';
 
         return isset($product->product_id) ? $body : false;
+    }
+
+    /**
+     *
+     */
+    protected function hostedSimTopup($network){
+        $ussd =  $network->airtime_topup_ussd_code;
+        $ussd =  str_replace('number', request()->phone,str_replace('amount', request()->amount, $ussd));
+        return $this->hostedSimRequest($ussd, $network->hosted_sim_server_token, $network->airtime_topup_ussd_code, 'USSD');
     }
 }

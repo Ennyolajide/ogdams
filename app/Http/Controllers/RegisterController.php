@@ -4,14 +4,15 @@ namespace App\Http\Controllers;
 
 
 use App\User;
-use Validator;
 use App\Mail\Main;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Exception;
+use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Validator;
 
 class RegisterController extends Controller
 {
@@ -38,7 +39,7 @@ class RegisterController extends Controller
 
         ]);
         if ($validator->fails()) {
-            return redirect(url()->previous() . '#signup')->withErrors($validator)->withInput();
+            return redirect(URL::previous() . '#signup')->withErrors($validator)->withInput();
         }
 
 
@@ -68,6 +69,6 @@ class RegisterController extends Controller
         $response = 'Registration Successful, please check your email inbox or email spam ';
         $response .= 'folder to verify email and complete registration.';
 
-        return redirect(url()->previous() . '#signup')->with('response', $response);
+        return redirect(URL::previous() . '#signup')->with('response', $response);
     }
 }

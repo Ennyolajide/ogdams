@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use Twilio\Rest\Client;
+
 use Faker\Generator as Faker;
 use App\Mail\OrderNotification;
 use Illuminate\Support\Facades\Log;
@@ -154,7 +154,16 @@ class NotificationController extends  DashboardController
         return $notification;
     }
 
+    /* Control Notification */
 
+    protected function controlWithdrawalNotification($amount)
+    {
+        $notification['subject'] = 'Withdral Notification';
+        $notification['content'] = 'Your withdral request of ' . $this->naira($amount) . ' has been ';
+        $notification['content'] .= request()->has('completed') ? 'proccessed' : 'canceled';
+
+        return $notification;
+    }
 
     /**
      * Notify Client of something that happend
@@ -165,18 +174,6 @@ class NotificationController extends  DashboardController
             'message' => $message,
             'status' => $status ? $status : false,
         ];
-    }
-
-
-    /* Control Notification */
-
-    protected function controlWithdrawalNotification($amount)
-    {
-        $notification['subject'] = 'Withdral Notification';
-        $notification['content'] = 'Your withdral request of ' . $this->naira($amount) . ' has been ';
-        $notification['content'] .= request()->has('completed') ? 'proccessed' : 'canceled';
-
-        return $notification;
     }
 
 
@@ -209,4 +206,5 @@ class NotificationController extends  DashboardController
             Log::info('Cound not send Admin Notification Sms');
         }
     }
+
 }

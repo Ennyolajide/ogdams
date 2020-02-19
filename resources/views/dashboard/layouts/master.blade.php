@@ -42,8 +42,7 @@
                 font-size: 15px;
             } */
         </style>
-
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.6.10/vue.common.dev.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/vue@2.6.11"></script>
         <!--Start of Tawk.to Script-->
         <script type="text/javascript">
             var Tawk_API=Tawk_API||{}, Tawk_LoadStart=new Date();
@@ -111,7 +110,7 @@
         @endif
 
         @yield('scripts')
-        
+
         <script>
             $('.form-prevent-multiple-submits').on('submit', function(){
                 $('.button-prevent-multiple-submits').attr('disabled', true);
