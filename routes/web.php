@@ -91,8 +91,8 @@ Route::post('control/payments.query', 'PaystackController@queryPaysackTransactio
 Route::post('payments/paystack/webhook', 'WebhookController@paystackHook')->name('paystack.webhook');
 
 //Sms
-Route::get('dashboard/sms/bulk', 'SmsController@display')->name('sms.bulk');
-Route::post('dashboard/sms/bulk', 'SmsController@send')->name('sms.bulk');
+Route::get('dashboard/sms/bulk/view', 'SmsController@display')->name('sms.bulk');
+Route::post('dashboard/sms/bulk/send', 'SmsController@send')->name('sms.bulk');
 Route::get('dashboard/sms/test', 'SmsController@test');
 //Testimonials
 Route::get('dashboard/testimonials', 'TestimonialController@index')->name('testimonials');
