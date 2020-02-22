@@ -16,6 +16,7 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::post('user/auth', 'LoginController@login'); //working
+Route::post('user/signup', 'RegisterController@register');
 Route::get('/user/info', 'DashboardController@info');
 Route::get('/user/balance', 'DashboardController@balance');
 Route::get('user/transactions', 'TransactionController@transactionIndex');

@@ -41,6 +41,8 @@ class LoginController extends Controller
             'active'    => true
         ];
 
+        //return response()->json($userData, 201);
+
         if (Auth::attempt($userData, request()->has('remember'))) {
 
             $user = User::where('email', request()->email)->first();
@@ -52,7 +54,9 @@ class LoginController extends Controller
 
             $response = $user->active ? 'Invalid Username/Password' : $inactiveResponse;
 
-            return back()->with('response', $response);
+            return request()->wantsJson() ?
+                response()->json([ 'status' => false, 'response' => $response ],200) : back()->with('response', $response);
+
         }
     }
 

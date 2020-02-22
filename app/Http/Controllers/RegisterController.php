@@ -36,12 +36,12 @@ class RegisterController extends Controller
             'name'      => 'required|string|min:5|max:75',
             'phone'    => 'required|string|min:11|max:13',
             'password'  => 'required|string|min:5|confirmed',
-
         ]);
-        if ($validator->fails()) {
-            return redirect(URL::previous() . '#signup')->withErrors($validator)->withInput();
-        }
 
+        if ($validator->fails()) {
+            return request()->wantsJson() ? response()->json(['errors' => $validator->errors()], 200) :
+            redirect(URL::previous() . '#signup')->withErrors($validator)->withInput();
+        }
 
         User::create([
             'token'         => $token,
@@ -65,10 +65,11 @@ class RegisterController extends Controller
             Log::info('Cound not send Registration Email');
         }
 
-
         $response = 'Registration Successful, please check your email inbox or email spam ';
         $response .= 'folder to verify email and complete registration.';
 
-        return redirect(URL::previous() . '#signup')->with('response', $response);
+        return request()->wantsJson() ?
+            response()->json([ 'status' => true, 'response' => $response]) :
+            redirect(URL::previous() . '#signup')->with('response', $response);
     }
 }
