@@ -21,14 +21,14 @@ class ProfileController extends PaystackController
      */
     public function profileIndex()
     {
+        $charges = Charge::all();
         $user = User::find(Auth::user()->id);
         $myBanks = $user->banks;  //get User's bank List
         $user->bvnDetails ?? Bvn::create(['user_id' => Auth::user()->id]);
         $banks = $this->bankList()->data; //get the list of all available banks
-        $addBankCharges = Charge::whereService('addbank')->first()->amount;
         $messages = Message::where('user_id', Auth::user()->id)->orderBy('id', 'desc')->paginate(10);
 
-        return view('dashboard.profile.index', compact('banks', 'myBanks', 'addBankCharges', 'messages'));
+        return view('dashboard.profile.index', compact('banks', 'myBanks','messages','charges'));
     }
 
     /**
@@ -40,6 +40,22 @@ class ProfileController extends PaystackController
         $isValidCurrentPassword = password_verify($request->currentPassword, Auth::user()->password); //Verify current password
         $status = $isValidCurrentPassword ? User::find(Auth::user()->id)->update(['password' => bcrypt($request->password)]) : false; //update password
         $message = $status ? $this->successResponse : ($isValidCurrentPassword ? $this->failureResponse : $this->errorResponse);
+
+        return request()->wantsJson() ?
+            response()->json(['status' => $status, 'message' => $message ], 201) : back()->withNotification($this->clientNotify($message, $status));
+    }
+
+    /**
+     * Edit/Change user Phone Number
+     */
+    public function editProfile()
+    {
+        $this->validate(request(), [
+            'name' => 'required|string|min:5|max:25',
+            'phone' => 'required|string|nullable|min:11|max:13'
+        ]);
+        $status = Auth::user()->update(['number' => request()->phone, 'name' => request()->name]);
+        $message = $status ? 'Operation Successful' : 'Operation failed';
 
         return back()->withNotification($this->clientNotify($message, $status));
     }

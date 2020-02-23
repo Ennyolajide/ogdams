@@ -79,7 +79,10 @@ class BvnVerificationController extends PaystackController
         $dobStatus = Carbon::parse($bvnDetails->dob)->format('Y-m-d') === request()->dob;
 
         if($expiryStatus){
-            $update = ['bvn_verified' => true];
+            $update = [
+                'bvn_verified' => true,
+                'name' => $bvnDetails->first_name.' '.$bvnDetails->last_name
+            ];
             $status = $otpStatus && $dobStatus ? $user->update($update) : false;
             $response = $status ? 'Verification succesful' : 'Invalid OTP / Date of Birth';
         }else{
@@ -89,7 +92,6 @@ class BvnVerificationController extends PaystackController
 
         return redirect(route('user.profile').'#verify')
                 ->withNotification($this->clientNotify($response,$status));
-
     }
 
 }

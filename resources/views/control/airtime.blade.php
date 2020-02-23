@@ -189,7 +189,7 @@
                                         <div class="form-group">
                                             <label class="col-sm-4 col-xs-12 control-label">Swap Number {{ $loop->iteration }}</label>
                                             <div class="col-sm-6 col-xs-12 form-grouping">
-                                                <input type="text" class="form-control" name="swapNumber{{ $loop->iteration }}" value="{{ $swapNumber }}" {{ $loop->first ? 'required' : '' }}">
+                                                <input type="text" class="form-control" name="swapNumber{{ $loop->iteration }}" value="{{ $swapNumber }}" {{ $loop->first ? 'required' : '' }}>
                                             </div>
                                         </div>
                                     </div>

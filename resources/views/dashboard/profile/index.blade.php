@@ -1,5 +1,43 @@
 @extends('dashboard.layouts.master')
 
+    @section('title')Profile @endsection
+
+    @section('style')
+        <style>
+            @import url(https://fonts.googleapis.com/css?family=Titillium+Web:400,200,200italic,300,300italic,900,700italic,700,600italic,600,400italic);
+            .countdown-body{
+                font-family: 'Titillium Web', cursive;
+                width: auto;
+                text-align: center;
+                color: white;
+                background: #222;
+                font-weight: 70;
+            }
+            .countdown-div {
+                display: inline-block;
+                line-height: 1;
+                padding: 8px;
+                font-size: 40px;
+            }
+            .countdown-span {
+                display: block;
+                font-size: 12px;
+                color: white;
+            }
+            .instructions-span{
+                margin-bottom: 5px;
+            }
+            #minutes {
+                font-size: 25px;
+                color: #f6da74;
+            }
+            #seconds {
+                font-size: 20px;
+                color: #abcd58;
+            }
+        </style>
+    @endsection
+
     @section('content-header')
         <div class="page-title">
             <div class="title_left">
@@ -157,7 +195,7 @@
                                 </div>
                                 <div role="tabpanel" class="tab-pane fade" id="bank" aria-labelledby="bank-tab">
                                     <div class="row">
-                                        <h4 class="text-danger text-center"><strong>Charges @naira($addBankCharges) Apply </strong></h3>
+                                        <h4 class="text-danger text-center"><strong>Charges @naira($charges->where('service','addbank')->first()->amount) Apply </strong></h3>
                                         <div class="col-xs-12 col-sm-12 col-md-12" style="display:none;" id="newBankDiv">
                                             <form id="add-bank-details-form" class="form-horizontal" action="{{ route('user.bank.store') }}" method="POST">
                                                 @csrf
@@ -252,6 +290,24 @@
                                                 <form id="otp-verification-input-form" class="form-horizontal" action="{{ route('user.bvn.otp.verify') }}" method="post">
                                                     @csrf
                                                     <br/>
+                                                    <div class="row text-center">
+                                                        <div class="col-sm-offset-3 col-xs-offset-1 col-sm-5 col-xs-10">
+                                                            <div class="countdown-body">
+                                                                <div class="countdown-span" id="timer">
+                                                                    <div class="countdown-div" id="days" style="display: none;"></div>
+                                                                    <div class="countdown-div" id="hours" style="display: none;"></div>
+                                                                    <div class="countdown-div" id="minutes"></div>
+                                                                    <div class="countdown-div" id="seconds"></div>
+                                                                </div>
+                                                            </div>
+                                                            <span class="help-block text-warning instructions"> OTP expires in 10 minute</span>
+                                                        </div>
+                                                    </div>
+                                                    <script>
+                                                        let timeNow = new Date();
+                                                        timeNow.setMinutes(timeNow.getMinutes() + 10);
+                                                        setInterval(function() { makeTimer(timeNow); }, 1000);
+                                                    </script>
                                                     <div class="form-group row">
                                                         <label class="col-sm-2 col-xs-12 control-label">OTP</label>
                                                         <div class="col-sm-7 col-xs-12 form-grouping">
@@ -274,23 +330,28 @@
                                                     </div>
                                                 </form>
                                             @else
-                                                <form id="bvn-verification-input-form" class="form-horizontal form-prevent-multiple-submits" action="{{ route('user.bvn.details') }}" method="post">
-                                                    @csrf
-                                                    <br/>
-                                                    <div class="form-group row">
-                                                        <label class="col-sm-2 col-xs-12 control-label">BVN</label>
-                                                        <div class="col-sm-7 col-xs-12 form-grouping">
-                                                            <input type="text" class="form-control" name="bvn" placeholder="Enter your Bank Verification Number" {{ Auth::user()->bvn_verified ? 'disabled' : '' }}>
-                                                        </div>
-                                                    </div>
-                                                    <br/>
-                                                    <div class="form-group row">
-                                                        <div class="col-xs-12 col-sm-9">
-                                                            <button type="submit" class="btn btn-danger btn-flat pull-right {{ Auth::user()->bvn_verified ? 'disabled' : '' }}">Submit</button>
+                                                @if(Auth::user()->bvn_verified)
+                                                    <h5 class="text-center text-success"> User Account has been verified</h5>
+                                                @else
+
+                                                    <form id="bvn-verification-input-form" class="form-horizontal form-prevent-multiple-submits" action="{{ route('user.bvn.details') }}" method="post">
+                                                        @csrf
+                                                        <br/><h4 class="text-danger text-center"><strong>Charges @naira($charges->where('service','bvn')->first()->amount) Applies </strong></h3>
+                                                        <div class="form-group row">
+                                                            <label class="col-sm-2 col-xs-12 control-label">BVN</label>
+                                                            <div class="col-sm-7 col-xs-12 form-grouping">
+                                                                <input type="text" class="form-control" name="bvn" placeholder="Enter your Bank Verification Number" {{ Auth::user()->bvn_verified ? 'disabled' : '' }}>
+                                                            </div>
                                                         </div>
                                                         <br/>
-                                                    </div>
-                                                </form>
+                                                        <div class="form-group row">
+                                                            <div class="col-xs-12 col-sm-9">
+                                                                <button type="submit" class="btn btn-danger btn-flat pull-right {{ Auth::user()->bvn_verified ? 'disabled' : '' }}">Submit</button>
+                                                            </div>
+                                                            <br/>
+                                                        </div>
+                                                    </form>
+                                                @endif
                                             @endif
 
                                         </div>
@@ -446,6 +507,38 @@
 
             });
 
+        </script>
+
+        <script>
+            function makeTimer(endTime) {
+
+                endTime = (Date.parse(endTime) / 1000);
+                var now = new Date();
+                now = (Date.parse(now) / 1000);
+
+                var timeLeft = endTime - now;
+
+                var days = Math.floor(timeLeft / 86400);
+                var hours = Math.floor((timeLeft - (days * 86400)) / 3600);
+                var minutes = Math.floor((timeLeft - (days * 86400) - (hours * 3600 )) / 60);
+                var seconds = Math.floor((timeLeft - (days * 86400) - (hours * 3600) - (minutes * 60)));
+
+                if (hours < "10") { hours = "0" + hours; }
+                if (minutes < "10") { minutes = "0" + minutes; }
+                if (seconds < "10") { seconds = "0" + seconds; }
+
+                $("#days").html(days + "<span class='countdown-span'>Days</span>");
+                $("#hours").html(hours + "<span class='countdown-span'>Hours</span>");
+                $("#minutes").html(minutes + "<span class='countdown-span'>Minutes</span>");
+                $("#seconds").html(seconds + "<span class='countdown-span'>Seconds</span>");
+
+                if(endTime <= now){
+                    $('.countdown-body').hide();
+                    $('.instructions').html("<span class='text-danger'>OTP has expired</span>");
+                    $('#otp-verification-input-form').find('input').attr('disabled',true);
+                    $('#otp-verification-input-form').find('button').attr('disabled',true);
+                }
+            }
         </script>
 
         <script>

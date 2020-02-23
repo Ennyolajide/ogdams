@@ -99,8 +99,7 @@ class PaystackController extends PaymentController
      *
      */
     protected function getTestBvn(){
-        //$endPoint = 'https://e21260cd.ngrok.io/api/bvn';
-        $endPoint = \config('constants.url.paystack').'api/bvn';
+        $endPoint = \config('constants.site.url').'/api/bvn';
         $client = new \GuzzleHttp\Client(['http_errors' => true]);
         $request = $client->get($endPoint,['headers' => ['Content-Type' => 'application/json']]);
         $status = $request->getStatusCode() == '200' ? true : false;
