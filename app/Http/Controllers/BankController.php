@@ -65,7 +65,9 @@ class BankController extends PaystackController
             }
         }
 
-        return back()->withNotification($this->clientNotify($message, $status));
+        return request()->wantsJson() ?
+            response()->json([ 'status' => $status, 'response' => $message])
+            : back()->withNotification($this->clientNotify($message, $status));
     }
 
     /**
@@ -76,7 +78,9 @@ class BankController extends PaystackController
         $status = $bank->delete();
         $message = $status ? 'Operation successful' : 'Operation failed';
 
-        return back()->withNotification($this->clientNotify($message, $status));
+        return request()->wantsJson() ?
+            response()->json([ 'status' => $status, 'response' => $message])
+            : back()->withNotification($this->clientNotify($message, $status));
     }
 
     /**

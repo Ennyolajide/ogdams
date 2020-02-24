@@ -32,7 +32,8 @@ class BvnVerificationController extends PaystackController
         $this->validate(request(), ['bvn' => 'required|string|min:8|max:12']);
         if(Auth::user()->balance >= $charge){
             $query = 'bank/resolve_bvn/'.request()->bvn;
-            $bvnDetails = json_decode($this->getPaystack($query));
+            $bvnDetails = $this->getPaystack($query);
+            $bvnDetails = $bvnDetails ? json_decode($bvnDetails) : false;
             $bvnDetails = isset($bvnDetails->status) ? $bvnDetails->data : false;
             $user = User::find(Auth::user()->id); $this->debitWallet($charge);
             $otpToken = $bvnDetails ? $this->sendBvnOTp($bvnDetails->mobile) : false;

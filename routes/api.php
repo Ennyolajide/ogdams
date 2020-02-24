@@ -29,6 +29,9 @@ Route::post('/data/purchase', 'DataController@store');
 Route::post('/wallet/withdrawal', 'WithdrawalController@store');
 
 
+Route::post('/user/bank/add', 'BankController@storeBank');
+Route::post('/user/bank/{bank}/delete', 'BankController@deleteBank');
+
 Route::get('/airtime/cash/networks','AirtimeToCashController@index');
 Route::post('/airtime/cash','AirtimeToCashController@store');
 Route::post('/airtime/cash/{airtimeRecord}','AirtimeToCashController@completed');

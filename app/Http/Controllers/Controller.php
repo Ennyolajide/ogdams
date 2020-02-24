@@ -171,7 +171,7 @@ class Controller extends BaseController
                 'from' => $from ?? \config('constants.twilio.number'),
             ]);
         } catch (\Exception $e) {
-            Log::info('Cound not Send Sms to  ' . $to .' using Twilio') ;
+            Log::info($e) ;
         }
         return $response ?? false;
     }
