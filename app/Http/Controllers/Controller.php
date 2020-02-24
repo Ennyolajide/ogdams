@@ -165,9 +165,15 @@ class Controller extends BaseController
             config('constants.twilio.sid'),
             config('constants.twilio.token')
         );
-        return $twilio->messages->create($to, [
-            'body' =>  $content,'from' => $from ?? \config('constants.twilio.number'),
-        ]);
+        try {
+            $response = $twilio->messages->create($to, [
+                'body' =>  $content,
+                'from' => $from ?? \config('constants.twilio.number'),
+            ]);
+        } catch (\Exception $e) {
+            Log::info('Cound not Send Sms to  ' . $to .' using Twilio') ;
+        }
+        return $response ?? false;
     }
 
 }

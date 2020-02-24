@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Bvn;
 use App\User;
-use App\Bank;
 use App\Charge;
 use App\Message;
 use Illuminate\Http\Request;

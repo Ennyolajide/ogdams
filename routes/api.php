@@ -15,16 +15,23 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::post('user/auth', 'LoginController@login'); //working
-Route::post('user/signup', 'RegisterController@register');
+Route::post('/user/auth', 'LoginController@login'); //working
+Route::post('/user/signup', 'RegisterController@register');
 Route::get('/user/info', 'DashboardController@info');
+Route::get('/user/banks', 'DashboardController@myBanks');
 Route::get('/user/balance', 'DashboardController@balance');
-Route::get('user/transactions', 'TransactionController@transactionIndex');
-Route::get('user/transaction/{reference}', 'TransactionController@reference');
+Route::get('/user/transactions', 'TransactionController@transactionIndex');
+Route::get('/user/transaction/{reference}', 'TransactionController@reference');
 
 
 Route::get('/data/plans', 'DataController@DataPlans');
 Route::post('/data/purchase', 'DataController@store');
+Route::post('/wallet/withdrawal', 'WithdrawalController@store');
+
+
+Route::get('/airtime/cash/networks','AirtimeToCashController@index');
+Route::post('/airtime/cash','AirtimeToCashController@store');
+Route::post('/airtime/cash/{airtimeRecord}','AirtimeToCashController@completed');
 
 
 Route::namespace('Bills')->group(function () {
@@ -45,7 +52,7 @@ Route::namespace('Bills')->group(function () {
     Route::post('/bills/tv/topup', 'TvController@store'); //
     Route::get('/bills/tv/services', 'TvController@tvProviders'); //
     Route::get('/bills/tv/{provider}/packages', 'TvController@tvPackages'); //
-    Route::post('/bills/tv/{serviceId}/validate', 'tvController@validateSmartCard'); //
+    Route::post('/bills/tv/{serviceId}/validate', 'TvController@validateSmartCard'); //
 
 });
 

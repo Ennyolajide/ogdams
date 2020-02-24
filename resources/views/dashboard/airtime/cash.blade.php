@@ -167,6 +167,38 @@
             </div>
         </div>
         <!-- /Modal -->
+        @else
+             <!-- Modal -->
+            <div id="info-modal" class="modal fade" role="dialog">
+                <div class="modal-dialog">
+                    <!-- Modal content-->
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                            <h4 class="modal-title text-orange text-bold">Important Info</h4>
+                        </div>
+                        <div class="modal-body">
+                            <p class="text-danger">
+                                <strong>NOTE:</strong> You are responsible for any Airtime you sell to us. By selling to us, you can confirm that it rightfully belongs to you and that it was gotten through a legitimate source.
+                            </p>
+                            <p class="text-danger">
+                                <span class="text-success"><strong>Ogdams Technologies</strong></span> will not be held responsible for any fraudulent airtime being sold to her.
+                            </p>
+                            <p class="text-danger">
+                                In a situation where fraudulent cases arise as a result of the airtime you sold to us, we would be compelled to give out your transaction details to the bodies involved for necessary investigation.
+                            </p>
+                            <p  class="text-danger">
+                                 In a situation where a client allows his transaction to pass through another client before getting to us, Ogdams Technologies wishes to state it categorically that the last person that had the direct contact with us will bear the full responsibility of the airtime he sent. If by any means the airtime involved is faulted, we might be obligated to give out your details to the relevant authorities.
+                            </p>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+            <!-- /Modal -->
         @endif
     @section('scripts')
 
@@ -248,4 +280,11 @@
             });
 
         </script>
+        @if(!session('modal') && !session('notification'))
+            <script>
+                $(document).ready(function() {
+                    $('#info-modal').modal('show');
+                });
+            </script>
+        @endif
     @endSection

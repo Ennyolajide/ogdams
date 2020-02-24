@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\User;
 use App\Bank;
 use App\Airtime;
-use App\Setting;
 use App\Transaction;
 use App\AirtimePercentage;
 use Illuminate\Http\Request;
@@ -21,15 +20,16 @@ class AirtimeToCashController extends TransactionController
 
     public function index()
     {
-        $bvnVerificationSettings = Setting::whereName('bvn_verification')->first()->status;
-
-        $verification = $bvnVerificationSettings ? Auth::user()->bvn_verified : true;
-
         $networks = AirtimePercentage::where('airtime_to_cash_percentage_status', true)->whereAddon(false)->get();
 
-        return $verification ?
-            view('dashboard.airtime.cash', compact('networks')) :
-            redirect(route('user.profile').'#verify')->withNotification($this->clientNotify('Please verify your account', false));
+        $networks->makeHidden([
+            'addon','group_network','has_addon','alternate_name','created_at',
+            'airtime_swap_percentage','airtime_swap_percentage_status','updated_at',
+            'airtime_to_cash_percentage_status','airtime_topup_ussd_code','airtime_topup_status',
+            'airtime_topup_sim_route','airtime_topup_percentage','hosted_sim_api_token','hosted_sim_server_token',
+        ]);
+
+        return request()->wantsJson() ? response()->json($networks, 200) : view('dashboard.airtime.cash', compact('networks'));
     }
 
     /**
@@ -39,11 +39,9 @@ class AirtimeToCashController extends TransactionController
     {
 
         $network = AirtimePercentage::find(request()->network);
-
         if (!$network) {
-            return back();
+            return request()->wantsJson() ? response()->json(['status' => false, 'response' => 'Invalid Network'],200) : back();
         }
-
         //validation
         $this->validate(request(), [
             'network' => 'required|numeric',
@@ -53,7 +51,12 @@ class AirtimeToCashController extends TransactionController
 
         $status = $this->processAirtimeToCash($network) ? true : false;
 
-        return $status ? back()->withModal($this->modalResponse) : back()->withNotification($this->clientNotify($this->failureResponse, $status));
+        if(request()->wantsJson()){
+            return response()->json(['status' => $status, 'response' => $status ? $this->modalResponse : $this->failureResponse ],200);
+        }else{
+            return $status ? back()->withModal($this->modalResponse) : back()->withNotification($this->clientNotify($this->failureResponse, $status));
+        }
+
     }
 
     /**
@@ -119,6 +122,7 @@ class AirtimeToCashController extends TransactionController
 
         $message = $status ? $this->successResponse : $this->failureResponse;
 
-        return back()->withNotification($this->clientNotify($message, $status));
+        return request()->wantsJson() ?
+            response()->json(['status' => $status, 'response' => $message ]) : back()->withNotification($this->clientNotify($message, $status));
     }
 }

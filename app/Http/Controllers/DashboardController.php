@@ -28,9 +28,7 @@ class DashboardController extends Controller
         return view('dashboard.index', compact('transactions'));
     }
 
-    /**
-     * Get User's Balance
-     */
+
     public function balance()
     {
         return response()->json([
@@ -52,5 +50,19 @@ class DashboardController extends Controller
         ]);
 
         return response()->json(Auth::user(), 200);
+    }
+
+    /**
+     * Get Users's bank List
+     */
+    public function myBanks()
+    {
+        $banks = User::find(Auth::user()->id)->banks;
+        $banks->makeHidden([
+            'user_id', 'status',
+            'deleted_at', 'created_at', 'updated_at'
+        ]);
+
+        return response()->json($banks, 200);
     }
 }

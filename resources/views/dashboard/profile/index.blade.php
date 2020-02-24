@@ -300,7 +300,7 @@
                                                                     <div class="countdown-div" id="seconds"></div>
                                                                 </div>
                                                             </div>
-                                                            <span class="help-block text-warning instructions"> OTP expires in 10 minute</span>
+                                                            <span class="help-block text-info instructions"> OTP expires in 10 minute</span>
                                                         </div>
                                                     </div>
                                                     <script>
