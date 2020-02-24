@@ -41,21 +41,19 @@ class LoginController extends Controller
             'active'    => true
         ];
 
-        //return response()->json($userData, 201);
-
         if (Auth::attempt($userData, request()->has('remember'))) {
 
             $user = User::where('email', request()->email)->first();
             $token = request()->wantsJson() ? $user->createToken('bearer')->accessToken : false; //;
 
-            return $token ? response()->json($token, 200) : redirect('/dashboard');
+            return $token ? response()->json($token, 201) : redirect('/dashboard');
         } else {
             $user = User::where('email', request()->email)->first();
 
             $response = $user->active ? 'Invalid Username/Password' : $inactiveResponse;
 
             return request()->wantsJson() ?
-                response()->json([ 'status' => false, 'response' => $response ],200) : back()->with('response', $response);
+                response()->json([ 'status' => false, 'response' => $response ], 200) : back()->with('response', $response);
 
         }
     }

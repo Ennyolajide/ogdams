@@ -13,17 +13,23 @@ class MessageController extends NotificationController
 
     public function messageIndex()
     {
-        $messages = Message::where('user_id', Auth::user()->id)->orderBy('id', 'desc')->paginate(10);
+        $messages = request()->wantsJson() ?
+            Message::where('user_id', Auth::user()->id)->orderBy('id', 'desc')->take(25)->get()
+            : Message::where('user_id', Auth::user()->id)->orderBy('id', 'desc')->paginate(10);
 
-        return view('dashboard.messages.inbox', compact('messages'));
+        request()->wantsJson() ? $messages->makeHidden(['user_id','sender_id','reply', 'updated_at']) : false;
+
+        return request()->wantsJson() ? response()->json($messages) : view('dashboard.messages.inbox', compact('messages'));
     }
 
     public function showMessage(Message $message)
     {
-        $messages = Auth::user()->messages->sortByDesc('id');
         $message->update(['read' => true]);
+        $messages = request()->wantsJson() ? Auth::user()->messages->sortByDesc('id') : '';
+        request()->wantsJson() ? $message->makeHidden(['user_id','sender_id','reply', 'updated_at']) : false;
 
-        return view('dashboard.messages.message', compact('message', 'messages'));
+        return request()->wantsJson() ?
+            response()->json($message) : view('dashboard.messages.message', compact('message', 'messages'));
     }
 
     public function createMessages()

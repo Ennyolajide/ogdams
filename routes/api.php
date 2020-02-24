@@ -23,6 +23,9 @@ Route::get('/user/balance', 'DashboardController@balance');
 Route::get('/user/transactions', 'TransactionController@transactionIndex');
 Route::get('/user/transaction/{reference}', 'TransactionController@reference');
 
+Route::get('/user/inbox', 'MessageController@messageIndex');
+Route::get('/user/inbox/{message}', 'MessageController@showMessage');
+
 
 Route::get('/data/plans', 'DataController@DataPlans');
 Route::post('/data/purchase', 'DataController@store');
