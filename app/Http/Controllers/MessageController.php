@@ -25,7 +25,7 @@ class MessageController extends NotificationController
     public function showMessage(Message $message)
     {
         $message->update(['read' => true]);
-        $messages = request()->wantsJson() ? Auth::user()->messages->sortByDesc('id') : '';
+        $messages = request()->wantsJson() ?  '' : Auth::user()->messages->sortByDesc('id');
         request()->wantsJson() ? $message->makeHidden(['user_id','sender_id','reply', 'updated_at']) : false;
 
         return request()->wantsJson() ?
