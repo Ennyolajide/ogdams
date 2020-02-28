@@ -182,13 +182,13 @@
                                 <strong>NOTE:</strong> You are responsible for any Airtime you sell to us. By selling to us, you can confirm that it rightfully belongs to you and that it was gotten through a legitimate source.
                             </p>
                             <p class="text-danger">
-                                <span class="text-success"><strong>Ogdams Technologies</strong></span> will not be held responsible for any fraudulent airtime being sold to her.
+                                <span class="text-success"><strong>{{ config('constants.site.bussinessName') }}</strong></span> will not be held responsible for any fraudulent airtime being sold to her.
                             </p>
                             <p class="text-danger">
                                 In a situation where fraudulent cases arise as a result of the airtime you sold to us, we would be compelled to give out your transaction details to the bodies involved for necessary investigation.
                             </p>
                             <p  class="text-danger">
-                                 In a situation where a client allows his transaction to pass through another client before getting to us, Ogdams Technologies wishes to state it categorically that the last person that had the direct contact with us will bear the full responsibility of the airtime he sent. If by any means the airtime involved is faulted, we might be obligated to give out your details to the relevant authorities.
+                                 In a situation where a client allows his transaction to pass through another client before getting to us, {{ config('constants.site.bussinessName') }} wishes to state it categorically that the last person that had the direct contact with us will bear the full responsibility of the airtime he sent. If by any means the airtime involved is faulted, we might be obligated to give out your details to the relevant authorities.
                             </p>
                         </div>
                         <div class="modal-footer">
@@ -237,7 +237,7 @@
                     let amount = $('#amount').val();
                     let networks = @json($networks);
                     let network = $('#network').val();
-                    let returnAmount = networks[(network-1)].airtime_swap_percentage / 100 * amount;
+                    let returnAmount = networks[(network-1)].airtime_to_cash_percentage / 100 * amount;
                     amount.length > 2 ? $('#wallet-amount').show().find('input').val(returnAmount) : false;
                     amount.length > 2 ? $('.bank').show() : false;
 
