@@ -123,6 +123,7 @@ class AirtimeToCashController extends TransactionController
         $message = $status ? $this->successResponse : $this->failureResponse;
 
         return request()->wantsJson() ?
-            response()->json(['status' => $status, 'response' => $message ]) : back()->withNotification($this->clientNotify($message, $status));
+            response()->json(['status' => $status, 'response' => $message ])
+            : back()->withNotification($this->clientNotify($message, $status));
     }
 }

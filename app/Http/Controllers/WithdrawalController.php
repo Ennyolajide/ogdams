@@ -10,7 +10,7 @@ use App\Withdrawal;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
-class  WithdrawalController extends TransactionController
+class WithdrawalController extends TransactionController
 {
     protected $failureResponse = 'Insuffient balance, Pls fund your account';
     protected $successResponse = 'Withdrawal request successful <br/> Please wait while your request is been proccess';
