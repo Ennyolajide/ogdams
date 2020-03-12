@@ -61,7 +61,7 @@ Route::namespace('Bills')->group(function () {
     Route::post('/bills/tv/{serviceId}/validate', 'TvController@validateSmartCard'); //
 
 });
-
+/*
 Route::any('/bvn', function(){
     return [
         "status" =>  true,
@@ -79,4 +79,4 @@ Route::any('/bvn', function(){
             "free_calls_left" => 9
         ]
     ];
-});
+}); */
