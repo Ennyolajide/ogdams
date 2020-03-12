@@ -31,7 +31,7 @@ class WithdrawalController extends TransactionController
                 $charge = Charge::whereService('withdrawals')->first()->amount;
                 return view('dashboard.wallet.withdraw', compact('banks', 'charge'));
             } else {
-                $message = 'Pls Add at least one Bank to your Profile';
+                $message = 'Please Add at least one Bank to your Profile';
                 return redirect(route('user.profile').'#bank')->withNotification($this->clientNotify($message, false));
             }
         }else{

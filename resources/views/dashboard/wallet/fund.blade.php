@@ -35,7 +35,7 @@
                                     <div id="atmBankBitcoin-form">
                                         <div class="form-group" id="gateway-type">
                                             <label for="inputWallet" class="col-sm-3 col-xs-12 control-label">Payment Method</label>
-                                            <div class="col-sm-9 col-xs-12 ">
+                                            <div class="col-sm-9 col-xs-12 form-grouping">
                                                 <select class="form-control" id="gateway" name="gateway" required>
                                                     <option value="" disabled selected>Select Payment Method</option>
                                                     @foreach ($gateways as $gateway)
@@ -44,18 +44,23 @@
                                                         </option>
                                                     @endforeach
                                                 </select>
+                                                <p class="help-block text-olive">Select your desired payment method</p>
                                             </div>
-
                                         </div>
                                         <input type="hidden" name="email" value="{{ Auth::user()->email }}">
                                     </div>
-                                    <br/>
                                     <div id="amount-field" style="display:none;">
                                         <div class="form-group">
                                             <label class="col-sm-3 col-xs-12 control-label">Amount</label>
                                             <div class="col-sm-9 col-xs-12 form-grouping">
-                                                <input type="text" class="form-control" name="amount" required>
-                                                <p class="help-block text-olive">Enter the amount you want to fund.</p>
+                                                <input type="text" class="form-control" name="amount" placeholder="Enter the amount you want to fund" required>
+                                                <p id="atm-component" class="help-block text-olive" style="display:none;">
+                                                    Payment Advice : Use Bank transfer option for payment above ₦2499
+                                                    as payment above ₦2499 will attract ₦100 charges
+                                                </p>
+                                                <p id="bank-component" class="help-block text-olive" style="display:none;">
+                                                    Minimum of ₦5000 , Maximum of ₦50000
+                                                </p>
                                             </div>
                                         </div>
                                     </div>
@@ -70,7 +75,7 @@
                                         </div>
                                         <div class="form-group" id="chooseBank">
                                             <label class="col-sm-3 col-xs-12 control-label">Bank</label>
-                                            <div class="col-sm-9 col-xs-12 ">
+                                            <div class="col-sm-9 col-xs-12 form-grouping">
                                                 <select class="form-control" id="bank" required>
                                                     <option value="" disabled selected>Select Our Bank </option>
                                                     @foreach ($banks as $item)
@@ -307,18 +312,18 @@
                 });
 
                 $('#gateway').change(function() {
-                    let Limit;
                     var gateway = $('#gateway').val();
-                    console.log(gateway);
                     if(gateway == 1){
-                        $('#ecard-form,#airtime-form,#bank-transfer').hide();
-                        $('#atmBankBitcoin-form,#amount-field').show();
+                        validateCardFunding();
+                        $('#ecard-form,#airtime-form,#bank-transfer,#bank-component').hide();
+                        $('#atmBankBitcoin-form,#amount-field,#atm-component').show();
                         $('#fund-wallet-form').attr('action','{{ route("paystack.pay") }}');
-                        limit = [{{ config('constants.fundings.paystack.min') }},{{ config('constants.fundings.paystack.max') }}];
+                        $('#amount-field').find(':input').keyup((val) => validateCardFunding(val) );
                     }else if(gateway == 2){
-                        limit = [1000, 50000];
-                        $('#ecard-form,#airtime-form').hide();
-                        $('#atmBankBitcoin-form,#amount-field,#bank-transfer').show();
+                        validateBankTransfer();
+                        $('#ecard-form,#airtime-form,#atm-component').hide();
+                        $('#atmBankBitcoin-form,#amount-field,#bank-transfer,#bank-component').show();
+                        $('#amount-field').find(':input').keyup(() => validateBankTransfer());
                         $('#fund-wallet-form').attr('action','{{ route("wallet.fund.bank") }}').attr('novalidate',true);
                     }else if(gateway == 3){//airtime
                         //$('#fund-wallet-form').attr('action',"{{-- route('wallet.fund.airtime') --}}");
@@ -344,31 +349,8 @@
                         $('#ecard-form').show();
                         //$('#fund-wallet-form').attr('action','{{ route("wallet.fund.voucher") }}');
                     }else{
-
-
                     }
-                    
-                    $('#submit').click(function() {
-                        $('#fund-wallet-form').validate({
-                            rules: {
-                                amount: {
-                                    required: true,
-                                    range: limit
-                                }
-                            },
-                            messages: {
-                                amount: {
-                                    required: "Please enter amount.",
-                                    range: jQuery.validator.format("Minimum of ₦{0} Maximum of ₦{1}"),
-                                }
-
-                            }
-                        });
-                    });
-
                 });
-
-
 
                 $('#chooseBank').change(function(){
                     let banks = @json($banks);
@@ -378,6 +360,34 @@
                     $('.radio').find('.accNo').text(bankDetails.acc_no);
                     $('.radio').find('.accName').text(bankDetails.acc_name);
                     $('.radio').show();
+                });
+            });
+        </script>
+
+        <script>
+
+            let validateBankTransfer = (val) => {
+                $('#fund-wallet-form').validate().destroy();
+                $('#amount-field').find(':input').val().length > 0 ? $('#bank-component').hide() : $('#bank-component').show();
+                $('#fund-wallet-form').validate({
+                    rules: { amount: { required: true, range: [5000,50000] } },
+                    messages: { amount: { required: "Please enter amount.", range: jQuery.validator.format("Minimum of ₦{0} Maximum of ₦{1}"),}}
+                });
+            }
+
+            let validateCardFunding = () => {
+                $('#fund-wallet-form').validate().destroy();
+                limit = [{{ config('constants.fundings.paystack.min') }},{{ config('constants.fundings.paystack.max') }}];
+                $('#fund-wallet-form').validate({
+                    rules: { amount: { required: true, number: true, range: limit } },
+                    messages: { amount: { required: "Please enter amount.", number: "Please enter a vailid amount.", range: jQuery.validator.format("Minimum of ₦{0} Maximum of ₦{1}"),}}
+                });
+            }
+
+            $('#submit').click(function() {
+                $('#fund-wallet-form').validate({
+                    rules: {gateway: { required: true, },},
+                    messages: {gateway: { required: "Please a payment gateway/method.", },}
                 });
             });
 

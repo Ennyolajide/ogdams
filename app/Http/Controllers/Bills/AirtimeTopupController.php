@@ -41,10 +41,14 @@ class AirtimeTopupController extends RingoController
     public function store()
     {
         $this->validate(request(), [
-            'amount' => 'required|numeric',
+            'amount' => 'required|numeric|min:50|max:50000',
             'network' => 'required|numeric',
             'phone' => 'required|string|min:11|max:13'
         ]);
+
+        request()->merge([ 'amount' => (int) request()->amount]);
+
+        dd(request()->all());
 
         $status = $this->processAirtimeTopup();
         $message = $status ? $this->successResponse : $this->failureResponse;

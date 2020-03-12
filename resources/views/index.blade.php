@@ -482,7 +482,7 @@
             <p>CableTV Subscription</p>
             <p>Electricity Payment</p>
             <p>Bulk SMS</p>
-            
+
             </div>
 
             <div class="row">
@@ -589,7 +589,7 @@
                         </div>
                     </div>
                 @endforeach
- 
+
   </div>
 
         </div>
@@ -734,7 +734,7 @@
       <div class="copyright">
         &copy; 2020 Copyright <strong>{{ config('constants.site.bussinessName') }}</strong>. All Rights Reserved
       </div>
-    
+
     </div>
   </footer><!-- #footer -->
 

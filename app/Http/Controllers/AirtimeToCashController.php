@@ -37,16 +37,18 @@ class AirtimeToCashController extends TransactionController
      */
     public function store()
     {
-
-        $network = AirtimePercentage::find(request()->network);
+        $network = AirtimePercentage::whereId(request()->network)
+            ->where('airtime_to_cash_percentage_status', true)->first();
         if (!$network) {
             return request()->wantsJson() ? response()->json(['status' => false, 'response' => 'Invalid Network'],200) : back();
         }
         //validation
         $this->validate(request(), [
-            'network' => 'required|numeric',
             'swapFromPhone' => 'required|string|min:10|max:13',
-            'amount'  => 'required|numeric|min:' . $network->airtime_to_cash_min . '|max:' . $network->airtime_to_cash_max,
+            'network' => ['bail', 'required', 'numeric', function ($attribute, $value, $fail) use ($network) {
+                $network ? false : $fail('Network not available at the moment');
+            }],
+            'amount'  => $network ? 'required|numeric|min:' . $network->airtime_to_cash_min . '|max:' . $network->airtime_to_cash_max : '',
         ]);
 
         $status = $this->processAirtimeToCash($network) ? true : false;
@@ -89,7 +91,7 @@ class AirtimeToCashController extends TransactionController
     {
         return Airtime::create([
             'user_id' => Auth::user()->id, 'amount' => request()->amount, 'from_network' => $network->network,
-            'percentage' => $network->airtime_swap_percentage, 'from_phone' => request()->swapFromPhone,
+            'percentage' => $network->airtime_to_cash_percentage, 'from_phone' => request()->swapFromPhone,
             'class' => 'App\Airtime', 'type' => 'Airtime To Cash', 'transaction_type' => 2, 'status' => null,
             'recipients' => $network->airtime_to_cash_phone_numbers, 'bank_id' => null
         ]);
@@ -110,7 +112,7 @@ class AirtimeToCashController extends TransactionController
             'swapFromPhone' => request()->swapFromPhone,
             'swapFromNetwork' => strtolower($network->network),
             'recipients' => json_decode($network->airtime_to_cash_phone_numbers),
-            'walletAmount' => floor($network->airtime_swap_percentage / 100 * request()->amount)
+            'walletAmount' => floor($network->airtime_to_cash_percentage / 100 * request()->amount)
         ];
     }
 
