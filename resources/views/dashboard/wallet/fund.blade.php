@@ -44,7 +44,7 @@
                                                         </option>
                                                     @endforeach
                                                 </select>
-                                                <p class="help-block text-olive">Select your desired payment method</p>
+                                                <p class="help-block blue">Select your desired payment method</p>
                                             </div>
                                         </div>
                                         <input type="hidden" name="email" value="{{ Auth::user()->email }}">
@@ -54,11 +54,11 @@
                                             <label class="col-sm-3 col-xs-12 control-label">Amount</label>
                                             <div class="col-sm-9 col-xs-12 form-grouping">
                                                 <input type="text" class="form-control" name="amount" placeholder="Enter the amount you want to fund" required>
-                                                <p id="atm-component" class="help-block text-olive" style="display:none;">
+                                                <p id="atm-component" class="help-block blue" style="display:none;">
                                                     Payment Advice : Use Bank transfer option for payment above ₦2499
                                                     as payment above ₦2499 will attract ₦100 charges
                                                 </p>
-                                                <p id="bank-component" class="help-block text-olive" style="display:none;">
+                                                <p id="bank-component" class="help-block blue" style="display:none;">
                                                     Minimum of ₦5000 , Maximum of ₦50000
                                                 </p>
                                             </div>
@@ -70,7 +70,7 @@
                                             <label class="col-sm-3 col-xs-12 control-label">Depositor</label>
                                             <div class="col-sm-9 col-xs-12 form-grouping">
                                                 <input type="text" class="form-control" name="depositor" value="" required>
-                                                <p class="help-block text-olive">Enter Your Bank Account Name/Depositor's Name.</p>
+                                                <p class="help-block blue">Enter Your Bank Account Name/Depositor's Name.</p>
                                             </div>
                                         </div>
                                         <div class="form-group" id="chooseBank">
@@ -85,7 +85,7 @@
                                                     @endforeach
                                                 </select>
                                                 <input type="hidden" id="bankId" name="bankId"/>
-                                                <p class="help-block text-olive">Bank to transfer to</p>
+                                                <p class="help-block blue">Bank to transfer to</p>
                                             </div>
                                             <div class="col-sm-9 col-sm-offset-3 col-xs-12 ">
                                                 <div class="radio" style="display:none; border: 2px solid #605ca8;">
@@ -102,7 +102,7 @@
                                             <label class="col-sm-3 col-xs-12 control-label">Reference (optional)</label>
                                             <div class="col-sm-9 col-xs-12 form-grouping">
                                                 <input type="text" class="form-control" name="reference" value="">
-                                                <p class="help-block text-olive">Enter reference / teller</p>
+                                                <p class="help-block blue">Enter reference / teller</p>
                                             </div>
                                         </div>
                                         <div class="form-group">

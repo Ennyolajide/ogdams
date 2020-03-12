@@ -168,7 +168,7 @@ class Controller extends BaseController
         try {
             $response = $twilio->messages->create($to, [
                 'body' =>  $content,
-                'from' => $from ?? \config('constants.twilio.number'),
+                'from' => $from ?? config('constants.twilio.number'),
             ]);
         } catch (\Exception $e) {
             Log::info($e) ;
