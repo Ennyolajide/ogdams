@@ -48,8 +48,6 @@ class AirtimeTopupController extends RingoController
 
         request()->merge([ 'amount' => (int) request()->amount]);
 
-        dd(request()->all());
-
         $status = $this->processAirtimeTopup();
         $message = $status ? $this->successResponse : $this->failureResponse;
 
